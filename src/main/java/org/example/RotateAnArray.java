@@ -8,6 +8,9 @@ public class RotateAnArray {
 //    I/P: 30, 5, 20
 //    O/P: 5, 20, 30
 
+//    Time complexity: O(n)
+//    Space: O(1)
+
     public static void leftRotateByOne(int[] arr){
         int n = arr.length;
         int temp = arr[0];
