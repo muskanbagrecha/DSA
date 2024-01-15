@@ -1,6 +1,8 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
 
 public class Arrays {
 
@@ -240,5 +242,139 @@ public class Arrays {
                 j++;
             }
         }
+    }
+
+    //Snowball approach: https://leetcode.com/problems/move-zeroes/solutions/172432/the-easiest-but-unusual-snowball-java-solution-beats-100-o-n-clear-explanation
+    public void moveZeroes(int[] arr) {
+        int n = arr.length;
+        int snowBall = 0;
+        for(int i = 0; i<n; i++){
+            if(arr[i] == 0){
+                snowBall++;
+            }
+            else{
+                swap(arr, i, i-snowBall);
+            }
+        }
+    }
+    public void swap(int[] arr, int first, int second){
+        int temp = arr[first];
+        arr[first] = arr[second];
+        arr[second] = temp;
+    }
+
+//    Problem statement
+//    Given two sorted arrays, ‘a’ and ‘b’, of size ‘n’ and ‘m’, respectively, return the union of the arrays.
+//    The union of two sorted arrays can be defined as an array consisting of the common and the distinct elements of the two arrays. The final array should be sorted in ascending order.
+//    Note: 'a' and 'b' may contain duplicate elements, but the union array must contain unique elements.
+
+//    Brute force
+//    Time complexity: O(aloga) + O(blog(a+b) + O(a+b) = O((a + b) log (a + b)) //simplified
+    public static List< Integer > sortedArray(int []a, int []b) {
+        // Write your code here
+        TreeSet<Integer> set = new TreeSet<>();
+        for(int i=0; i<a.length; i++){
+            set.add(a[i]);
+        }
+        for(int i=0; i<b.length; i++){
+            set.add(b[i]);
+        }
+        List<Integer> list = new ArrayList<>();
+        for(int num:set){
+            list.add(num);
+        }
+        return list;
+    }
+
+    //Optimal
+    public static List< Integer > sortedArray2(int []a, int []b) {
+        // Write your code here
+        TreeSet<Integer> set = new TreeSet<>();
+        for(int i=0; i<a.length; i++){
+            set.add(a[i]);
+        }
+        for(int i=0; i<b.length; i++){
+            set.add(b[i]);
+        }
+        List<Integer> list = new ArrayList<>();
+        for(int num:set){
+            list.add(num);
+        }
+        return list;
+    }
+//    Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+//    You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+//    Input: nums = [2,2,1]
+//    Output: 1
+
+//    Input: nums = [4,1,2,1,2]
+//    Output: 4
+    public static int findMaxConsecutiveOnes(int[] nums) {
+        int n = nums.length;
+        int count = 0; int maxCount = 0;
+        for(int i = 0; i<n; i++){
+            if(nums[i]==1){
+                count++;
+            }
+            else{
+                maxCount = Math.max(count, maxCount);
+                count = 0;
+            }
+        }
+        return Math.max(count, maxCount);
+    }
+
+    //Brute
+    public static int singleNumber(int[] nums) {
+        for(int i = 0; i<nums.length; i++){
+            boolean flag = false;
+            for(int j = 0; j<nums.length; j++){
+                if(i!=j && nums[i]==nums[j]){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag){
+                return nums[i];
+            }
+        }
+        return -1;
+    }
+
+    //Optimal
+    public int singleNumber2(int[] nums) {
+        int val = 0;
+        for(int i = 0; i<nums.length; i++){
+            val^=nums[i];
+        }
+        return val;
+    }
+
+//    You are given an array 'a' of size 'n' and an integer 'k'.
+//    Find the length of the longest subarray of 'a' whose sum is equal to 'k'.
+//    Example :
+//    Input: ‘n’ = 7 ‘k’ = 3
+//            ‘a’ = [1, 2, 3, 1, 1, 1, 1]
+    //Brute
+    public static int longestSubarrayWithSumK(int []a, long k) {
+        // Write your code here
+        int maxCount = 0;
+        int n = a.length;
+        int j;
+        for(int i = 0; i<n ;i++){
+            long sum = 0;
+            for(j = i; j<n; j++){
+                sum+=a[j];
+                if(sum==k){
+                    maxCount = Math.max(maxCount, j-i+1);
+                }
+                if(sum>k){
+                    break;
+                }
+            }
+
+        }
+        return maxCount;
     }
 }
