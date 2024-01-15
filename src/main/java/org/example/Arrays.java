@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.ArrayList;
+
 public class Arrays {
 
     /*
@@ -113,5 +115,130 @@ public class Arrays {
         return j;
     }
 
+//    Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
+//    Input: nums = [1,2,3,4,5,6,7], k = 3
+//    Output: [5,6,7,1,2,3,4]
+//    Explanation:
+//    rotate 1 steps to the right: [7,1,2,3,4,5,6]
+//    rotate 2 steps to the right: [6,7,1,2,3,4,5]
+//    rotate 3 steps to the right: [5,6,7,1,2,3,4]
+//    Example 2:
+//
+//    Input: nums = [-1,-100,3,99], k = 2
+//    Output: [3,99,-1,-100]
+//    Explanation:
+//    rotate 1 steps to the right: [99,-1,-100,3]
+//    rotate 2 steps to the right: [3,99,-1,-100]
 
+    //Brute force
+    public static int[] rotate1(int[] nums, int k) {
+        int n = nums.length;
+        int[] rotatedElements = java.util.Arrays.copyOfRange(nums, 0, n);
+        if(k>n){
+            k = k%n;
+        }
+        int j=0;
+        for(int i = n-k;i<n;i++){
+            nums[j] = rotatedElements[i];
+            j++;
+        }
+        for(int i = 0; i<n-k; i++){
+            nums[j] = rotatedElements[i];
+            j++;
+        }
+        return nums;
+    }
+    public static void rotate2(int[] nums, int k) {
+        int n = nums.length;
+        k = k%n;
+        reverse(nums,0, n);
+        reverse(nums, 0, k);
+        reverse(nums, k,n);
+        Helper.printArray(nums);
+    }
+
+    public static void reverse(int[] arr, int start, int end){
+        while(start<end)
+        {
+            int i = start;
+            int j = end-1;
+            int temp = arr[i];
+            arr[i] =  arr[j];
+            arr[j] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    public static ArrayList<Integer> rotateArray(ArrayList<Integer> arr, int k) {
+        // Write your code here.
+        int n = arr.size();
+        k = k % n;
+        reverse(arr, 0, n);
+        reverse(arr, 0, n-k);
+        reverse(arr, n-k, n);
+        return arr;
+    }
+
+    public static void reverse(ArrayList<Integer> arr, int start, int end){
+        // int j = end-1;
+        while(start<end)
+        {
+            int temp = arr.get(start);
+            arr.set(start, arr.get(end-1));
+            arr.set(end-1, temp);
+            start++;
+            end--;
+        }
+    }
+//    Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+//    Note that you must do this in-place without making a copy of the array.
+
+//    Input: nums = [0,1,0,3,12]
+//    Output: [1,3,12,0,0]
+
+//    Input: nums = [0]
+//    Output: [0]
+
+    //Brute force
+    public void moveZeroes1(int[] arr) {
+        int n = arr.length;
+        ArrayList<Integer> temp = new ArrayList<>();
+        for(int i = 0; i<n; i++){
+            if(arr[i]!=0){
+                temp.add(arr[i]);
+            }
+        }
+        for(int i = 0; i<temp.size();i++){
+            arr[i] = temp.get(i);
+        }
+        for(int i = temp.size(); i<n; i++){
+            arr[i] = 0;
+        }
+    }
+    //Time: O(2n) = O(n)
+    //Space: O(n) //worst case
+
+    //Optimal
+    public static void moveZeroes2(int[] arr) {
+        int n = arr.length;
+        int j=-1;
+        for(int i = 0; i<n; i++){
+            if(arr[i]==0){
+                j = i;
+                break;
+            }
+        }
+        if(j==-1){
+            return;
+        }
+        for(int i=j+1; i<n;i++){
+            if(arr[i]!=0){
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+                j++;
+            }
+        }
+    }
 }
