@@ -377,4 +377,22 @@ public class Arrays {
         }
         return maxCount;
     }
+
+    //Optimal - Sliding Window
+    public static long maximumSumSubarray(int k, ArrayList<Integer> arr,int n){
+        int i = 0, j = 0; long sum = 0; long maxSum = 0;
+        while(j<n){
+            sum+=arr.get(j);
+            if((j - i + 1) < k){
+                j++;
+            }
+            else if((j-i+1)==k){
+                maxSum = Math.max(maxSum, sum);
+                sum-=arr.get(i);
+                i++;
+                j++;
+            }
+        }
+        return maxSum;
+    }
 }
