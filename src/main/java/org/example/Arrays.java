@@ -1,8 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Arrays {
 
@@ -394,5 +392,57 @@ public class Arrays {
             }
         }
         return maxSum;
+    }
+
+    //https://www.geeksforgeeks.org/problems/first-negative-integer-in-every-window-of-size-k3345/1
+    //Brute force
+    public long[] printFirstNegativeInteger(long arr[], int n, int k)
+    {
+        long[] ans = new long[n-k+1];
+        int i=0, j=0; int ctr = 0;
+        while(j<n){
+            if(j-i+1<k){
+                j++;
+            }
+            if(j-i+1==k){
+                int t=i;
+                while(t<=j){
+                    if(arr[t]<0){
+                        ans[i] = arr[t];
+                        break;
+                    }
+                    t++;
+                }
+                if(t>j){
+                    ans[i] = 0;
+                }
+                i++; j++;
+            }
+        }
+        return ans;
+    }
+
+    //Optimal
+    public static long[] printFirstNegativeInteger2(long arr[], int n, int k)
+    {
+        long[] ans = new long[n-k+1];
+        Queue<Long> q = new LinkedList<>();
+        int i=0, j=0;
+        while(j<n){
+            if(arr[j]<0){
+                q.add(arr[j]);
+            }
+            if(j-i+1<k){
+                j++;
+            }
+            else if(j-i+1==k){
+                ans[i] = q.isEmpty() ? 0 : q.peek();
+                if(arr[i]<0){
+                    q.poll();
+                }
+                i++; j++;
+            }
+        }
+        return ans;
     }
 }
