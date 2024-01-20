@@ -445,4 +445,112 @@ public class Arrays {
         }
         return ans;
     }
+
+    //https://www.geeksforgeeks.org/problems/longest-sub-array-with-sum-k0809/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=bottom_sticky_on_article
+    //Given an array containing N integers and an integer K., Your task is to find the length of the longest Sub-Array with the sum of the elements equal to the given value K.
+    //Optimal Solution 1
+    public static int lenOfLongSubarr (int arr[], int n, int k) {
+        //Complete the function
+        int i = 0, j = 0; int sum = 0; int maxCount = 0;
+          while(j<n){
+            sum += arr[j];
+            if(sum==k){
+                maxCount = Math.max(maxCount, j-i+1);
+                j++;
+            }
+            else if(sum<k){
+                j++;
+            }
+            else if(sum>k){
+                while(sum>k){ //here i can never exceed j as we will have subtracted everything. assumption: all elements are positive
+                    sum = sum-arr[i];
+                    i++;
+                }
+                j++;
+            }
+        }
+        return maxCount;
+    }
+
+    //Solution 2 - Using hashmap (TODO)
+
+//    Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+//    https://leetcode.com/problems/two-sum/description/
+
+    //Optimal (1)
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i<nums.length; i++){
+            int complement = target - nums[i];
+            if(map.containsKey(complement)){
+                int complementIndex = map.get(complement);
+                return new int[]{i, complementIndex};
+            }
+            else{
+                map.put(nums[i], i);
+            }
+        }
+        return new int[]{0, 0};
+    }
+    //Time: O(n)
+    //Space: O(n)
+
+//    https://leetcode.com/problems/majority-element/description/
+//    Given an array nums of size n, return the majority element.
+//    The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+//    Input: nums = [3,2,3]
+//    Output: 3
+
+//    Input: nums = [2,2,1,1,1,2,2]
+//    Output: 2
+
+    //Brute force (1)
+    public static int majorityElement1(int[] nums) {
+        java.util.Arrays.sort(nums);
+        return nums[nums.length/2]; //key assumption is majority element occurs greater than n/2 times.
+    }
+    //Time complexity: O(nlogn)
+    //Space complexity: O(1) -- extra space complexity
+    //Space complexity: O(n) -- if we also consider input array as we are moving elements around
+
+    //Better
+    public static int majorityElement2(int[] nums) {
+        int n = nums.length; int newValue;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i<n;i++){
+            newValue = 1; //if element is not present, frequency will be 1
+            if(map.containsKey(nums[i])){
+                newValue = map.get(nums[i]) + 1; //if element is present frequency gets updated here
+                if(newValue > n/2) {
+                    return nums[i];
+                }
+            }
+            map.put(nums[i], newValue);
+        }
+        return nums[0];
+    }
+
+    //Time complexity: O(n)
+    //Space complexity: O(n)
+
+    //Optimal: Moore's voting algo
+    public static int majorityElement3(int[] nums){
+        int element = nums[0], ctr = 1;
+        int n = nums.length;
+        for(int i = 1; i<n; i++){
+            if(nums[i]==element){
+                ctr++;
+            }
+            else if(ctr==0){
+                element = nums[i];
+                ctr++;
+            }
+            else{
+                ctr--;
+            }
+        }
+        return element;
+    }
+    //Time complexity: O(n)
+    //Space complexity: O(1)
 }
