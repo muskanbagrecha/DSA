@@ -152,13 +152,8 @@ public class BinarySearch {
         return -1;
     }
 
-    public static int findAnElementInSortedRotatedArray(int[] arr) {
-        //find the min index
-        //check if element is between min index value and end of array value -> if yes do BS on that portion
-        //If element is in first half -> do BS on first portion
-        // if -1 then element is absent.
-        return -1;
-    }
+    //Search in Rotated Sorted Array
+    //https://leetcode.com/problems/search-in-rotated-sorted-array/description/
 
     public static int search(int[] arr, int target) {
         int ans;
@@ -188,7 +183,15 @@ public class BinarySearch {
         }
         return ans;
     }
+    //find the min index
+    //check if element is between min index value and end of array value -> if yes do BS on that portion
+    //If element is in first half -> do BS on first portion
+    // if -1 then element is absent.
 
+    //Time complexity: The overall time complexity of the search method is dominated by the two binary search operations (finding the pivot and searching for the target), each of which is O(log n). Since these operations are not nested but sequential, the overall time complexity remains O(log n).
+    //Space complexity: O(1)
+
+    //Helper function for above problem
     public static int find(int[] arr, int start, int end, int target) {
         while(start<=end){
             int mid = start + ((end-start)/2);
@@ -208,6 +211,63 @@ public class BinarySearch {
     //Q Find element in a nearly sorted array
     //element can be present at i or i-1 or i+1 position
     //Input: 5,10,30,20,40
+
+    //Solution 1
+    public int search1(int[] arr, int target) {
+        int n = arr.length;
+        int low = 0, high = n-1;
+        while(low<=high){
+            int mid = low + ((high-low)/2);
+            if(arr[mid]==target){
+                return mid;
+            }
+            else if(arr[mid]>=arr[0]){//sorted
+                if(target>=arr[0] && target<arr[mid]){
+                    high = mid-1;
+                }
+                else{
+                    low = mid+1;
+                }
+            }
+            else{
+                if(target<=arr[n-1] && target>arr[mid]){
+                    low = mid+1;
+                }
+                else{
+                    high = mid-1;
+                }
+            }
+        }
+        return -1;
+    }
+//    Solution 2
+    public int search2(int[] arr, int target) {
+        int n = arr.length;
+        int low = 0, high = n-1;
+        while(low<=high){
+            int mid = low + ((high-low)/2);
+            if(arr[mid]==target){
+                return mid;
+            }
+            else if(arr[mid]>=arr[0]){//sorted
+                if(target>=arr[0] && target<arr[mid]){
+                    high = mid-1;
+                }
+                else{
+                    low = mid+1;
+                }
+            }
+            else{
+                if(target<=arr[n-1] && target>arr[mid]){
+                    low = mid+1;
+                }
+                else{
+                    high = mid-1;
+                }
+            }
+        }
+        return -1;
+    }
 
     public static int nearlySortedSearch(int[] arr, int target) {
         int n = arr.length;
