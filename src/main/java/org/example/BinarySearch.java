@@ -160,60 +160,50 @@ public class BinarySearch {
         return -1;
     }
 
-    //Answer
-    public static int search(int[] nums, int target) {
-        int pivot = findMinIndex(nums);
-        int n = nums.length;
-        if (n == 1) {
-            if (nums[0] != target) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-        if (target >= nums[0]) {
-            return bs(nums, 0, pivot - 1, target);
-        } else {
-            return bs(nums, pivot, n - 1, target);
-        }
-    }
-
-    public static int findMinIndex(int[] arr) {
+    public static int search(int[] arr, int target) {
+        int ans;
         int n = arr.length;
-        int start = 0;
-        int end = n - 1;
-        if (arr[0] <= arr[end]) {
-            return 0;
+        if (arr[0] <= arr[n - 1]) {
+            ans = find(arr, 0, n - 1, target);
+            return ans;
         }
-        while (start <= end) {
-            int mid = start + (int) ((end - start) / 2);
-            int prev = (mid + n - 1) % n;
-            int next = (mid + 1) % n;
-            if (arr[mid] < arr[prev] && arr[mid] < arr[next]) {
-                return mid;
-            } else if (arr[mid] >= arr[0]) { //first half is sorted
-                start = mid + 1;
+        int low = 0, high = n - 1;
+        int pivot = 0;
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+            int left = (mid - 1 + n) % n;
+            if (arr[mid] < arr[left]) {
+                pivot = mid;
+                break;
+            } else if (arr[mid] < arr[0]) {
+                high = mid - 1;
             } else {
-                end = mid - 1;
+                low = mid + 1;
             }
         }
-        return -1;
+        if (target >= arr[0]) {
+            ans = find(arr, 0, pivot - 1, target);
+        } else {
+            ans = find(arr, pivot, n - 1, target);
+        }
+        return ans;
     }
 
-    public static int bs(int[] arr, int start, int end, int element) {
-        while (start <= end && start >= 0 && end <= arr.length - 1) {
-            int mid = start + (int) ((end - start) / 2);
-            if (arr[mid] == element) {
+    public static int find(int[] arr, int start, int end, int target) {
+        while(start<=end){
+            int mid = start + ((end-start)/2);
+            if(arr[mid]==target){
                 return mid;
-            } else if (element < arr[mid]) {
-                end = mid - 1;
-            } else {
-                start = mid + 1;
+            }
+            else if(arr[mid]<target){
+                start = mid +1;
+            }
+            else{
+                end = mid-1;
             }
         }
         return -1;
     }
-    //Answer end
 
     //Q Find element in a nearly sorted array
     //element can be present at i or i-1 or i+1 position
