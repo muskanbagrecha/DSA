@@ -575,44 +575,41 @@ public class Arrays {
 
     //Solution 3: using ctr
     public static void sortColors2(int[] nums) {
-        int ctr0=0, ctr1=0, ctr2=0;
+        int ctr0 = 0, ctr1 = 0, ctr2 = 0;
         int n = nums.length;
         for (int i = 0; i < n; i++) {
-            if(nums[i]==0){
+            if (nums[i] == 0) {
                 ctr0++;
-            }
-            else if(nums[i]==1){
+            } else if (nums[i] == 1) {
                 ctr1++;
-            }
-            else{
+            } else {
                 ctr2++;
             }
         }
-        for(int i = 0; i<ctr0; i++){
+        for (int i = 0; i < ctr0; i++) {
             nums[i] = 0;
         }
-        for(int i = ctr0; i<ctr0+ctr1; i++){
-            nums[i]=1;
+        for (int i = ctr0; i < ctr0 + ctr1; i++) {
+            nums[i] = 1;
         }
-        for(int i = ctr0+ctr1; i<n; i++){
+        for (int i = ctr0 + ctr1; i < n; i++) {
             nums[i] = 2;
         }
     }
+
     //Optimal - single pass
     //Dutch national flag algo
     public static void sortColors(int[] arr) {
-        int low=0, mid =0, high = arr.length -1;
-        while(mid<=high){
-            if(arr[mid]==0){
+        int low = 0, mid = 0, high = arr.length - 1;
+        while (mid <= high) {
+            if (arr[mid] == 0) {
                 swap(arr, low, mid);
                 low++;
                 mid++;
-            }
-            else if(arr[mid]==2){
+            } else if (arr[mid] == 2) {
                 swap(arr, mid, high);
                 high--;
-            }
-            else if(arr[mid]==1){
+            } else if (arr[mid] == 1) {
                 mid++;
             }
         }
@@ -620,4 +617,83 @@ public class Arrays {
     //Time complexity: O(n)
     //Space: O(1)
     // Check course sheet notes for intuition.
+
+
+//    Given an integer array nums, find the subarray with the largest sum, and return its sum.
+
+//    Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+//    Output: 6
+//    Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+
+//    Input: nums = [1]
+//    Output: 1
+//    Explanation: The subarray [1] has the largest sum 1.
+
+    //Brute force
+    public static long maxSubarraySum(int[] arr, int n) {
+        // write your code here
+        int maxSum = arr[0], sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum = 0;
+            for (int j = i; j < n; j++) {
+                sum += arr[j];
+                maxSum = Math.max(maxSum, sum);
+            }
+        }
+        return maxSum;
+    }
+
+    //Optimal
+    //Kadane's algorithm
+    public static long maxSubarraySum2(int[] arr, int n) {
+        // write your code here
+        int max = arr[0], sum = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            sum += arr[i];
+            max = Math.max(max, sum);
+            sum = sum >= 0 ? sum : 0;
+        }
+        return max;
+    }
+
+    //    Given an ascending sorted rotated array Arr of distinct integers of size N. The array is right rotated K times. Find the value of K.
+//    https://www.geeksforgeeks.org/problems/rotation4723/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=bottom_sticky_on_article
+    //Brute force
+    int findKRotation1(int arr[], int n) {
+        // code here
+        int min = arr[0];
+        int minIndex = 0;
+        for (int i = 0; i < n; i++) {
+            if (arr[i] < min) {
+                min = arr[i];
+                minIndex = i;
+            }
+        }
+        return minIndex;
+    }
+
+    //    linear search
+//    Time: O(n), space: O(1)
+
+    //    Optimal
+//    Binary search
+    public static int findKRotation3(int arr[], int n) {
+        // code here
+        int low = 0, high = n - 1;
+        if (arr[0] <= arr[n - 1]) {
+            return 0;
+        }
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+            int left = (mid - 1 + n) % n;
+            if (arr[mid] < arr[left]) {
+                return mid;
+            } else if (arr[mid] < arr[0]) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return 0;
+    }
 }
