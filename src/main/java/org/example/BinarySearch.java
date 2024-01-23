@@ -88,7 +88,7 @@ public class BinarySearch {
     public static int findKRightRotation(int arr[], int n) {
         // code here
         int low = 0, high = n - 1;
-        if(arr[0]<=arr[n-1]){
+        if (arr[0] <= arr[n - 1]) {
             return 0;
         }
         while (low <= high) {
@@ -105,9 +105,9 @@ public class BinarySearch {
         return 0;
     }
 
-   // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
-   // Variation of above problem.
-   // important - revise
+    // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+    // Variation of above problem.
+    // important - revise
     public int findMin(int[] arr) {
         int n = arr.length;
         int low = 0, high = n - 1;
@@ -193,16 +193,14 @@ public class BinarySearch {
 
     //Helper function for above problem
     public static int find(int[] arr, int start, int end, int target) {
-        while(start<=end){
-            int mid = start + ((end-start)/2);
-            if(arr[mid]==target){
+        while (start <= end) {
+            int mid = start + ((end - start) / 2);
+            if (arr[mid] == target) {
                 return mid;
-            }
-            else if(arr[mid]<target){
-                start = mid +1;
-            }
-            else{
-                end = mid-1;
+            } else if (arr[mid] < target) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
             }
         }
         return -1;
@@ -215,79 +213,69 @@ public class BinarySearch {
     //Solution 1
     public int search1(int[] arr, int target) {
         int n = arr.length;
-        int low = 0, high = n-1;
-        while(low<=high){
-            int mid = low + ((high-low)/2);
-            if(arr[mid]==target){
+        int low = 0, high = n - 1;
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+            if (arr[mid] == target) {
                 return mid;
-            }
-            else if(arr[mid]>=arr[0]){//sorted
-                if(target>=arr[0] && target<arr[mid]){
-                    high = mid-1;
+            } else if (arr[mid] >= arr[0]) {//sorted
+                if (target >= arr[0] && target < arr[mid]) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
                 }
-                else{
-                    low = mid+1;
-                }
-            }
-            else{
-                if(target<=arr[n-1] && target>arr[mid]){
-                    low = mid+1;
-                }
-                else{
-                    high = mid-1;
-                }
-            }
-        }
-        return -1;
-    }
-//    Solution 2
-    public int search2(int[] arr, int target) {
-        int n = arr.length;
-        int low = 0, high = n-1;
-        while(low<=high){
-            int mid = low + ((high-low)/2);
-            if(arr[mid]==target){
-                return mid;
-            }
-            else if(arr[mid]>=arr[0]){//sorted
-                if(target>=arr[0] && target<arr[mid]){
-                    high = mid-1;
-                }
-                else{
-                    low = mid+1;
-                }
-            }
-            else{
-                if(target<=arr[n-1] && target>arr[mid]){
-                    low = mid+1;
-                }
-                else{
-                    high = mid-1;
+            } else {
+                if (target <= arr[n - 1] && target > arr[mid]) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
                 }
             }
         }
         return -1;
     }
 
-    public static int nearlySortedSearch(int[] arr, int target){
+    //    Solution 2
+    public int search2(int[] arr, int target) {
         int n = arr.length;
-        int low = 0, high = n-1;
-        while(low<=high){
-            int mid = low + ((high-low)/2);
-            if(arr[mid]==target){
+        int low = 0, high = n - 1;
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+            if (arr[mid] == target) {
                 return mid;
+            } else if (arr[mid] >= arr[0]) {//sorted
+                if (target >= arr[0] && target < arr[mid]) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            } else {
+                if (target <= arr[n - 1] && target > arr[mid]) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
             }
-            else if(mid>0 && arr[mid-1]==target){
-                return mid-1;
-            }
-            else if(mid<n-1 && arr[mid+1]==target){
-                return mid+1;
-            }
-            else if(target<arr[mid]){
-                high = mid-2;
-            }
-            else{
-                low = mid+2;
+        }
+        return -1;
+    }
+
+    //    https://www.geeksforgeeks.org/search-almost-sorted-array/
+    public static int nearlySortedSearch(int[] arr, int target) {
+        int n = arr.length;
+        int low = 0, high = n - 1;
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+            if (arr[mid] == target) {
+                return mid;
+            } else if (mid > 0 && arr[mid - 1] == target) {
+                return mid - 1;
+            } else if (mid < n - 1 && arr[mid + 1] == target) {
+                return mid + 1;
+            } else if (target < arr[mid]) {
+                high = mid - 2;
+            } else {
+                low = mid + 2;
             }
         }
         return -1;
@@ -297,29 +285,73 @@ public class BinarySearch {
     //Input: 1 2 3 4 8 10 10 12 19, element = 5
     //output: 4
 
-    public static int floorInSortedAarray(int[] arr, int ele) {
-        int n = arr.length;
-        int start = 0;
-        int end = n - 1;
-        if (ele > arr[end]) {
-            return end;
+    public static int findFloor(long arr[], int n, long target) {
+        int low = 0;
+        int high = n - 1;
+        if (arr[low] > target) { //this condition will take care of mid-1 never being negative so we dont need to check mid>0
+            return -1;
         }
-        while (start <= end) {
-            int mid = start + (int) ((end - start) / 2);
-            int prev = (mid + n - 1) % n;
-            int next = (mid + 1) % n;
-            if (arr[mid] == ele) {
+        if (arr[high] < target) { //this condition is not really required but it is just for an early return
+            return high;
+        }
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+            if (arr[mid] == target) {
                 return mid;
-            }
-            if (arr[mid] < ele && arr[next] > ele) {
-                return mid;
-            }
-            if (arr[mid] < ele) {
-                end = mid - 1;
+            } else if (arr[mid] > target && arr[mid - 1] < target) {
+                return mid - 1;
+            } else if (arr[mid] > target) {
+                high = mid - 1;
             } else {
-                start = mid + 1;
+                low = mid + 1;
             }
         }
         return -1;
+    }
+
+    //mid is target - done
+    //mid is greater than target but previous element is smaller than target return prev - done
+    //first element is greater than target so return -1 - done
+    //last element is smaller than target - return it' - done
+
+//    Time: O(logn)
+//    Space: O(1)
+
+    //Solution 2
+    public static int findFloor2(long arr[], int n, long target) {
+        int low = 0;
+        int high = n - 1;
+        int res = -1;
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                res = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return res;
+    }
+
+    public static int[] getFloorAndCeil(int[] arr, int n, int x) {
+        int floor = -1, ceil = -1;
+        int low = 0, high = n - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] == x) {
+                return new int[]{x, x};
+            } else if (arr[mid] < x) {
+                floor = arr[mid];
+                low = mid + 1;
+            } else {
+                ceil = arr[mid];
+                high = mid - 1;
+            }
+        }
+        return new int[]{floor, ceil};
     }
 }
