@@ -269,27 +269,25 @@ public class BinarySearch {
         return -1;
     }
 
-    public static int nearlySortedSearch(int[] arr, int target) {
+    public static int nearlySortedSearch(int[] arr, int target){
         int n = arr.length;
-        int start = 0;
-        int end = n - 1;
-        while (start <= end) {
-            int mid = start + (int) ((end - start) / 2);
-            int prev = (mid - 1 + n) % n;
-            int next = (mid + 1) % n;
-            if (arr[mid] == target) {
+        int low = 0, high = n-1;
+        while(low<=high){
+            int mid = low + ((high-low)/2);
+            if(arr[mid]==target){
                 return mid;
             }
-            if (arr[prev] == target) {
-                return prev;
+            else if(mid>0 && arr[mid-1]==target){
+                return mid-1;
             }
-            if (arr[next] == target) {
-                return next;
+            else if(mid<n-1 && arr[mid+1]==target){
+                return mid+1;
             }
-            if (target < arr[mid]) {
-                end = mid - 2;
-            } else {
-                start = mid + 2;
+            else if(target<arr[mid]){
+                high = mid-2;
+            }
+            else{
+                low = mid+2;
             }
         }
         return -1;
