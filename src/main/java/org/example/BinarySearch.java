@@ -336,6 +336,7 @@ public class BinarySearch {
         return res;
     }
 
+    //    https://www.codingninjas.com/studio/problems/ceiling-in-a-sorted-array_1825401?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf&leftPanelTabValue=PROBLEM
     public static int[] getFloorAndCeil(int[] arr, int n, int x) {
         int floor = -1, ceil = -1;
         int low = 0, high = n - 1;
@@ -353,5 +354,94 @@ public class BinarySearch {
             }
         }
         return new int[]{floor, ceil};
+    }
+
+//    https://leetcode.com/problems/find-smallest-letter-greater-than-target/
+    public static char nextLetter(char[] arr, int n, int targetLetter) {
+        int low = 0, high = n - 1;
+        char nextLetter = arr[0];
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+            if (arr[mid] > targetLetter) {
+                nextLetter = arr[mid];
+                high = mid - 1;
+            }
+            else {
+                low = mid + 1;
+            }
+        }
+        return nextLetter;
+    }
+
+    //https://leetcode.com/problems/search-insert-position/
+    public int searchInsert(int[] arr, int target) {
+        int n = arr.length;
+        int low = 0, high = n-1; int ceil = n;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(arr[mid]==target){
+                return mid;
+            }
+            else if(arr[mid]>target){
+                ceil = mid;
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return ceil;
+    }
+
+//    https://www.geeksforgeeks.org/find-position-element-sorted-array-infinite-numbers/
+    public static int binarySearchInInfiniteSortedArray(int[] arr, int target){
+        int low = 0, high = 1;
+        while(target>arr[high]){
+            if(high*2>=arr.length){
+                high = arr.length-1;
+                break;
+            }
+            low = high;
+            high = high*2;
+        }
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(arr[mid]==target){
+                return  mid;
+            }
+            else if(arr[mid]<target){
+                low = mid+1;
+            }
+            else{
+                high = mid-1;
+            }
+        }
+        return -1;
+    }
+
+    public static int searchOneinInfiniteSortedArray(int[] arr){
+        int low = 0, high = 1;
+        while(arr[high]==0){
+            if(high*2>=arr.length){ //this is only for practical purpose. Theoretically we should never get out of bound exception
+                low = high;
+                high = arr.length-1;
+                break;
+            }
+            low = high;
+            high = high*2;
+        }
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(arr[mid]==1 && (mid==0 || arr[mid-1]==0)){
+                return  mid;
+            }
+            else if(arr[mid]==0){
+                low = mid+1;
+            }
+            else{
+                high = mid-1;
+            }
+        }
+        return -1;
     }
 }
