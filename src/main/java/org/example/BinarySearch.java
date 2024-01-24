@@ -356,7 +356,7 @@ public class BinarySearch {
         return new int[]{floor, ceil};
     }
 
-//    https://leetcode.com/problems/find-smallest-letter-greater-than-target/
+    //    https://leetcode.com/problems/find-smallest-letter-greater-than-target/
     public static char nextLetter(char[] arr, int n, int targetLetter) {
         int low = 0, high = n - 1;
         char nextLetter = arr[0];
@@ -365,8 +365,7 @@ public class BinarySearch {
             if (arr[mid] > targetLetter) {
                 nextLetter = arr[mid];
                 high = mid - 1;
-            }
-            else {
+            } else {
                 low = mid + 1;
             }
         }
@@ -376,72 +375,133 @@ public class BinarySearch {
     //https://leetcode.com/problems/search-insert-position/
     public int searchInsert(int[] arr, int target) {
         int n = arr.length;
-        int low = 0, high = n-1; int ceil = n;
-        while(low<=high){
-            int mid = low + (high-low)/2;
-            if(arr[mid]==target){
+        int low = 0, high = n - 1;
+        int ceil = n;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] == target) {
                 return mid;
-            }
-            else if(arr[mid]>target){
+            } else if (arr[mid] > target) {
                 ceil = mid;
-                high = mid-1;
-            }
-            else{
-                low = mid+1;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
         return ceil;
     }
 
-//    https://www.geeksforgeeks.org/find-position-element-sorted-array-infinite-numbers/
-    public static int binarySearchInInfiniteSortedArray(int[] arr, int target){
+    //    https://www.geeksforgeeks.org/find-position-element-sorted-array-infinite-numbers/
+    public static int binarySearchInInfiniteSortedArray(int[] arr, int target) {
         int low = 0, high = 1;
-        while(target>arr[high]){
-            if(high*2>=arr.length){
-                high = arr.length-1;
+        while (target > arr[high]) {
+            if (high * 2 >= arr.length) {
+                high = arr.length - 1;
                 break;
             }
             low = high;
-            high = high*2;
+            high = high * 2;
         }
-        while(low<=high){
-            int mid = low + (high-low)/2;
-            if(arr[mid]==target){
-                return  mid;
-            }
-            else if(arr[mid]<target){
-                low = mid+1;
-            }
-            else{
-                high = mid-1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
         }
         return -1;
     }
 
-    public static int searchOneinInfiniteSortedArray(int[] arr){
+    public static int searchOneinInfiniteSortedArray(int[] arr) {
         int low = 0, high = 1;
-        while(arr[high]==0){
-            if(high*2>=arr.length){ //this is only for practical purpose. Theoretically we should never get out of bound exception
+        while (arr[high] == 0) {
+            if (high * 2 >= arr.length) { //this is only for practical purpose. Theoretically we should never get out of bound exception
                 low = high;
-                high = arr.length-1;
+                high = arr.length - 1;
                 break;
             }
             low = high;
-            high = high*2;
+            high = high * 2;
         }
-        while(low<=high){
-            int mid = low + (high-low)/2;
-            if(arr[mid]==1 && (mid==0 || arr[mid-1]==0)){
-                return  mid;
-            }
-            else if(arr[mid]==0){
-                low = mid+1;
-            }
-            else{
-                high = mid-1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] == 1 && (mid == 0 || arr[mid - 1] == 0)) {
+                return mid;
+            } else if (arr[mid] == 0) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
         }
         return -1;
+    }
+
+    //Find the upper bound
+//    https://www.codingninjas.com/studio/problems/implement-upper-bound_8165383?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf&leftPanelTabValue=PROBLEM/
+    public static int upperBound(int[] arr, int target, int n) {
+        // Write your code here.
+        int low = 0, high = n - 1;
+        int upper = n;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] > target) {
+                upper = mid;
+                high = mid - 1;
+            } else if (arr[mid] <= target) {
+                low = mid + 1;
+            }
+        }
+        return upper;
+    }
+
+    //Find the lower bound
+//    https://www.codingninjas.com/studio/problems/lower-bound_8165382?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf
+    public static int lowerBound(int[] arr, int n, int target) {
+        // Write your code here
+        int low = 0;
+        int high = n - 1;
+        int lower = 0;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] >= target) {
+                high = mid - 1;
+            } else if (arr[mid] < target) {
+                lower = mid;
+                low = mid + 1;
+            }
+        }
+        return lower;
+    }
+
+    public static int singleNonDuplicate(int[] arr) {
+        int n = arr.length;
+        if (n == 1) {
+            return arr[0];
+        }
+        int low = 0, high = n - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (mid != 0 && arr[mid] == arr[mid - 1]) {
+                if (mid % 2 != 0) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+            else if (mid != n - 1 && arr[mid] == arr[mid + 1]) {
+                if (mid % 2 == 0) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+            else {
+                return arr[mid];
+            }
+        }
+        return arr[0];
     }
 }
