@@ -476,6 +476,7 @@ public class BinarySearch {
         return lower;
     }
 
+//    https://leetcode.com/problems/single-element-in-a-sorted-array/description/
     public static int singleNonDuplicate(int[] arr) {
         int n = arr.length;
         if (n == 1) {
@@ -502,6 +503,10 @@ public class BinarySearch {
                 return arr[mid];
             }
         }
-        return arr[0];
+        return arr[low];
+    }
+
+    public static int peakElement(int[] arr){
+       return 0;
     }
 }
