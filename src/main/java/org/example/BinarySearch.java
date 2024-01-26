@@ -476,7 +476,7 @@ public class BinarySearch {
         return lower;
     }
 
-//    https://leetcode.com/problems/single-element-in-a-sorted-array/description/
+    //    https://leetcode.com/problems/single-element-in-a-sorted-array/description/
     public static int singleNonDuplicate(int[] arr) {
         int n = arr.length;
         if (n == 1) {
@@ -491,22 +491,59 @@ public class BinarySearch {
                 } else {
                     high = mid - 1;
                 }
-            }
-            else if (mid != n - 1 && arr[mid] == arr[mid + 1]) {
+            } else if (mid != n - 1 && arr[mid] == arr[mid + 1]) {
                 if (mid % 2 == 0) {
                     low = mid + 1;
                 } else {
                     high = mid - 1;
                 }
-            }
-            else {
+            } else {
                 return arr[mid];
             }
         }
         return arr[low];
     }
 
-    public static int peakElement(int[] arr){
-       return 0;
+    public static int findPeakElement(int[] arr) {
+        int n = arr.length;
+        int low = 0, high = n - 1;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (mid == 0) {
+                return arr[0] > arr[1] ? 0 : 1;
+            }
+            if (mid == n - 1) {
+                return arr[n-1] > arr[n-2] ? n-1: n-2;
+            }
+            if (arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
+                return mid;
+            } else if (arr[mid + 1] > arr[mid]) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return low;
     }
+
+    //This will return as soon as a peak element is found.
+    //If mid is 0, and arr[0] < arr[1], we return 0, that makes sense. But in the else, we return 1 because if mid = 0, low is 0, high is 1, so at that point one of the two elements has to be a peak element. Otherwise low and high wouldnt have converged to that point.
+    //low<high takes care of n = 1 condition as while is never executed.
+
+    public static int findPeakElement2(int[] arr) {
+        int n = arr.length;
+        int low = 0, high = n - 1;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (mid!=n-1 && arr[mid] < arr[mid + 1]) {
+                low = mid+1;
+            } else {
+                high=mid;
+            }
+        }
+        return low;
+    }
+    //This code is less verbose but will run till low<high, no early returns.
+    //Since low<high we dont need to handle edge case of one element only.
+    //The loop continues until low and high converge to a single index, which is guaranteed to be a peak by the nature of binary search, and it may or may not be the first peak the original algorithm would find.
 }
