@@ -504,6 +504,8 @@ public class BinarySearch {
         return arr[low];
     }
 
+//    Binary search on answers
+//The algorithm for finding a peak element is often referred to as "binary search on answer" because it uses the binary search technique not on the element values themselves, but on the range of possible solutions—the "answer." It narrows down this range by effectively deciding at each step if a peak can exist to the left or right of the current position, halving the search space with each iteration, much like binary search does when looking for a specific value. This approach is based on the decision, rather than direct value comparison, hence the name.
     public static int findPeakElement(int[] arr) {
         int n = arr.length;
         int low = 0, high = n - 1;
@@ -546,4 +548,130 @@ public class BinarySearch {
     //This code is less verbose but will run till low<high, no early returns.
     //Since low<high we dont need to handle edge case of one element only.
     //The loop continues until low and high converge to a single index, which is guaranteed to be a peak by the nature of binary search, and it may or may not be the first peak the original algorithm would find.
+
+    //Variation of above problem: find max element in bitonic array or find bitonic point: https://www.geeksforgeeks.org/problems/maximum-value-in-a-bitonic-array3001/1
+
+    public static int sqrtN(long n) {
+        if(n==1){ // we need to check this as we are doing (int) n/2. So if n = 1, it will round it down to 0 and ans will be wrong. Else we can take high = n also.
+            return 1;
+        }
+        int low = 0; int high = (int) n/2; int result = 1;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            int currentSquare = (int) Math.pow(mid, 2);
+            if(currentSquare == n){
+                return mid;
+            }
+            else if(currentSquare>n){
+                high = mid-1;
+            }
+            else{
+                result = mid;
+                low = mid+1;
+            }
+        }
+        return result;
+        //instead of storing in result, we can also return high as it will point to the last possible value (floor) and low will point to the first value which does not qualify for the answer. Example below.
+    }
+    public static int sqrtN2(long n) {
+        if(n==1){
+            return 1;
+        }
+        int low = 0; int high = (int) n/2;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            int currentSquare = mid * mid;
+            if(currentSquare == n){
+                return mid;
+            }
+            else if(currentSquare>n){
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return high;
+    }
+
+    public static int NthRoot(int n, int m) {
+        // Write your code here.
+        int low = 0; int high = m;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            int current = (int)Math.pow(mid, n);
+            if(current == m){
+                return mid;
+            }
+            else if(current > m){
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return -1;
+    }
+
+    public static int findMaximum(int[] arr) {
+        int n = arr.length;
+        // code here
+        int low = 0, high = n-1;
+        while(low<high){
+            int mid = low + (high-low)/2;
+            if(mid!=n-1 && arr[mid]>arr[mid+1]){
+                high = mid;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        System.out.println(low + " " + high);
+        return arr[high];
+
+    }
+
+    //VVV IMP PROBLEMS FROM HERE.
+
+    //https://www.geeksforgeeks.org/allocate-minimum-number-pages/
+    public static int findPages(int[] arr, int n, int noOfStudents)
+    {
+        //Your code here
+        if(n<noOfStudents){
+            return -1;
+        }
+        int low = arr[0], high = arr[0]; //low will be the max, high will be the sum as the range will be from maxbooks to total books.
+        for(int i = 1; i<n; i++){
+            low = Math.max(arr[i], low);
+            high+=arr[i];
+        }
+        int result = high;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(isValid(arr, n, noOfStudents, mid)){
+                result=Math.min(result, mid);
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return result;
+    }
+
+    public static boolean isValid(int[] arr, int n, int noOfStudents, int max){
+        int sum = 0, count = 1;
+        for(int i = 0; i<n; i++){
+            sum += arr[i];
+            if(sum>max){
+                count++;
+                sum = arr[i];
+            }
+            if(count>noOfStudents){
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
