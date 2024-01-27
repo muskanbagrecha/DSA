@@ -659,6 +659,8 @@ public class BinarySearch {
         return result;
     }
 
+//    Time complexity: O(nlogn)
+
     public static boolean isValid(int[] arr, int n, int noOfStudents, int max){
         int sum = 0, count = 1;
         for(int i = 0; i<n; i++){
@@ -674,4 +676,40 @@ public class BinarySearch {
         return true;
     }
 
+//    Koko eating bananas
+    public static int minEatingSpeed(int[] piles, int h) {
+        int n = piles.length;
+        int low = 0, high = piles[0];
+        for(int i = 1; i<n; i++){
+            high = Math.max(high, piles[i]);
+        }
+        int result = high;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(isEatingValid(piles, n, h, mid)){
+                result = Math.min(result, mid);
+                high = mid-1;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        return result;
+    }
+    public static boolean isEatingValid(int[] piles, int n, int h, int limit){
+        int count = 0;
+        for(int i = 0; i<n; i++){
+            if(piles[i]<limit){
+                count++;
+            }
+            else{
+//                count = count + (int)Math.ceil(piles[i]/(double)limit); //either this or below, dont use float here as it cannot accurately represent large integers
+                count += (piles[i] + limit - 1) / limit;
+            }
+            if(count>h){
+                return false;
+            }
+        }
+        return true;
+    }
 }
