@@ -504,7 +504,7 @@ public class BinarySearch {
         return arr[low];
     }
 
-//    Binary search on answers
+    //    Binary search on answers
 //The algorithm for finding a peak element is often referred to as "binary search on answer" because it uses the binary search technique not on the element values themselves, but on the range of possible solutions—the "answer." It narrows down this range by effectively deciding at each step if a peak can exist to the left or right of the current position, halving the search space with each iteration, much like binary search does when looking for a specific value. This approach is based on the decision, rather than direct value comparison, hence the name.
     public static int findPeakElement(int[] arr) {
         int n = arr.length;
@@ -515,7 +515,7 @@ public class BinarySearch {
                 return arr[0] > arr[1] ? 0 : 1;
             }
             if (mid == n - 1) {
-                return arr[n-1] > arr[n-2] ? n-1: n-2;
+                return arr[n - 1] > arr[n - 2] ? n - 1 : n - 2;
             }
             if (arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
                 return mid;
@@ -537,10 +537,10 @@ public class BinarySearch {
         int low = 0, high = n - 1;
         while (low < high) {
             int mid = low + (high - low) / 2;
-            if (mid!=n-1 && arr[mid] < arr[mid + 1]) {
-                low = mid+1;
+            if (mid != n - 1 && arr[mid] < arr[mid + 1]) {
+                low = mid + 1;
             } else {
-                high=mid;
+                high = mid;
             }
         }
         return low;
@@ -552,43 +552,43 @@ public class BinarySearch {
     //Variation of above problem: find max element in bitonic array or find bitonic point: https://www.geeksforgeeks.org/problems/maximum-value-in-a-bitonic-array3001/1
 
     public static int sqrtN(long n) {
-        if(n==1){ // we need to check this as we are doing (int) n/2. So if n = 1, it will round it down to 0 and ans will be wrong. Else we can take high = n also.
+        if (n == 1) { // we need to check this as we are doing (int) n/2. So if n = 1, it will round it down to 0 and ans will be wrong. Else we can take high = n also.
             return 1;
         }
-        int low = 0; int high = (int) n/2; int result = 1;
-        while(low<=high){
-            int mid = low + (high-low)/2;
+        int low = 0;
+        int high = (int) n / 2;
+        int result = 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
             int currentSquare = (int) Math.pow(mid, 2);
-            if(currentSquare == n){
+            if (currentSquare == n) {
                 return mid;
-            }
-            else if(currentSquare>n){
-                high = mid-1;
-            }
-            else{
+            } else if (currentSquare > n) {
+                high = mid - 1;
+            } else {
                 result = mid;
-                low = mid+1;
+                low = mid + 1;
             }
         }
         return result;
         //instead of storing in result, we can also return high as it will point to the last possible value (floor) and low will point to the first value which does not qualify for the answer. Example below.
     }
+
     public static int sqrtN2(long n) {
-        if(n==1){
+        if (n == 1) {
             return 1;
         }
-        int low = 0; int high = (int) n/2;
-        while(low<=high){
-            int mid = low + (high-low)/2;
+        int low = 0;
+        int high = (int) n / 2;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
             int currentSquare = mid * mid;
-            if(currentSquare == n){
+            if (currentSquare == n) {
                 return mid;
-            }
-            else if(currentSquare>n){
-                high = mid-1;
-            }
-            else{
-                low = mid+1;
+            } else if (currentSquare > n) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
         return high;
@@ -596,18 +596,17 @@ public class BinarySearch {
 
     public static int NthRoot(int n, int m) {
         // Write your code here.
-        int low = 0; int high = m;
-        while(low<=high){
-            int mid = low + (high-low)/2;
-            int current = (int)Math.pow(mid, n);
-            if(current == m){
+        int low = 0;
+        int high = m;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            int current = (int) Math.pow(mid, n);
+            if (current == m) {
                 return mid;
-            }
-            else if(current > m){
-                high = mid-1;
-            }
-            else{
-                low = mid+1;
+            } else if (current > m) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
         return -1;
@@ -616,13 +615,12 @@ public class BinarySearch {
     public static int findMaximum(int[] arr) {
         int n = arr.length;
         // code here
-        int low = 0, high = n-1;
-        while(low<high){
-            int mid = low + (high-low)/2;
-            if(mid!=n-1 && arr[mid]>arr[mid+1]){
+        int low = 0, high = n - 1;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (mid != n - 1 && arr[mid] > arr[mid + 1]) {
                 high = mid;
-            }
-            else{
+            } else {
                 low = mid + 1;
             }
         }
@@ -634,26 +632,24 @@ public class BinarySearch {
     //VVV IMP PROBLEMS FROM HERE.
 
     //https://www.geeksforgeeks.org/allocate-minimum-number-pages/
-    public static int findPages(int[] arr, int n, int noOfStudents)
-    {
+    public static int findPages(int[] arr, int n, int noOfStudents) {
         //Your code here
-        if(n<noOfStudents){
+        if (n < noOfStudents) {
             return -1;
         }
         int low = arr[0], high = arr[0]; //low will be the max, high will be the sum as the range will be from maxbooks to total books.
-        for(int i = 1; i<n; i++){
+        for (int i = 1; i < n; i++) {
             low = Math.max(arr[i], low);
-            high+=arr[i];
+            high += arr[i];
         }
         int result = high;
-        while(low<=high){
-            int mid = low + (high-low)/2;
-            if(isValid(arr, n, noOfStudents, mid)){
-                result=Math.min(result, mid);
-                high = mid-1;
-            }
-            else{
-                low = mid+1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (isValid(arr, n, noOfStudents, mid)) {
+                result = Math.min(result, mid);
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
         return result;
@@ -661,52 +657,124 @@ public class BinarySearch {
 
 //    Time complexity: O(nlogn)
 
-    public static boolean isValid(int[] arr, int n, int noOfStudents, int max){
+    public static boolean isValid(int[] arr, int n, int noOfStudents, int max) {
         int sum = 0, count = 1;
-        for(int i = 0; i<n; i++){
+        for (int i = 0; i < n; i++) {
             sum += arr[i];
-            if(sum>max){
+            if (sum > max) {
                 count++;
                 sum = arr[i];
             }
-            if(count>noOfStudents){
+            if (count > noOfStudents) {
                 return false;
             }
         }
         return true;
     }
 
-//    Koko eating bananas
+    //    Koko eating bananas: https://leetcode.com/problems/koko-eating-bananas/
+//    Brute force: Start from 1 banana to max of the array. Return as soon as h is satisfied.
+    // Optimal: Binary search
     public static int minEatingSpeed(int[] piles, int h) {
         int n = piles.length;
-        int low = 0, high = piles[0];
-        for(int i = 1; i<n; i++){
+        int low = 1, high = piles[0]; //Initially, low points to min impossible value and high points to max possible value.
+        //After binary search low and high will point to opposite polarity, ie, low will point to min possible value and high will point to max impossible value.
+        for (int i = 1; i < n; i++) {
             high = Math.max(high, piles[i]);
         }
-        int result = high;
-        while(low<=high){
-            int mid = low + (high-low)/2;
-            if(isEatingValid(piles, n, h, mid)){
-                result = Math.min(result, mid);
-                high = mid-1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (isEatingValid(piles, n, h, mid)) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
-            else{
+        }
+        return low; //We will return just low as it will point to min possible value after search
+    }
+
+    //    Time:  O(n * log max_el) => O(nlogn)
+    public static boolean isEatingValid(int[] piles, int n, int h, int limit) {
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (piles[i] < limit) {
+                count++;
+            } else {
+//                count = count + (int)Math.ceil(piles[i]/(double)limit); //either this or below, dont use float here as it cannot accurately represent large integers
+                count += (piles[i] + limit - 1) / limit;
+            }
+            if (count > h) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //    https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/description/
+    public int minDays(int[] bloomDay, int m, int k) {
+        int n = bloomDay.length;
+        int noOfFlowers = m * k;
+        if (noOfFlowers > n) {
+            return -1;
+        }
+        int low = 0, high = bloomDay[0];
+        for (int i = 0; i < n; i++) {
+            high = Math.max(high, bloomDay[i]);
+        }
+        int result = -1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (canMakeBouquets(bloomDay, m, k, mid)) {
+                result = mid;
+                high = mid - 1; //as we want to minimize
+            } else {
                 low = mid + 1;
             }
         }
         return result;
     }
-    public static boolean isEatingValid(int[] piles, int n, int h, int limit){
-        int count = 0;
-        for(int i = 0; i<n; i++){
-            if(piles[i]<limit){
-                count++;
+
+    public static boolean canMakeBouquets(int[] bloomDay, int m, int k, int limit) {
+        int totalFlowers = 0, totalBouquets = 0;
+        for (int i = 0; i < bloomDay.length; i++) {
+            if (bloomDay[i] <= limit) {
+                totalFlowers++;
+            } else {
+                totalFlowers = 0;
             }
-            else{
-//                count = count + (int)Math.ceil(piles[i]/(double)limit); //either this or below, dont use float here as it cannot accurately represent large integers
-                count += (piles[i] + limit - 1) / limit;
+            if (totalFlowers == k) {
+                totalBouquets++;
+                totalFlowers = 0;
             }
-            if(count>h){
+        }
+        return totalBouquets >= m;
+    }
+
+    //    https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold/description/
+    public int smallestDivisor(int[] nums, int threshold) {
+        int low = 1, high = 1;
+        int n = nums.length;
+        int result = 1;
+        for (int i = 0; i < n; i++) {
+            high = Math.max(nums[i], high);
+        }
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (isValidForAnswer(nums, n, threshold, mid)) {
+                result = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return result;
+    }
+
+    public static boolean isValidForAnswer(int[] arr, int n, int k, int limit) {
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += ((arr[i] + limit - 1) / limit);
+            if (sum > k) {
                 return false;
             }
         }
