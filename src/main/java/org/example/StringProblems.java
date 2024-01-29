@@ -120,13 +120,6 @@ public class StringProblems {
         return "";
     }
 
-    public static String longestCommonPrefix(String[] strs) {
-        int common = Integer.MAX_VALUE;
-        for(int i = 1; i<strs.length; i++){
-            common = Math.min(common, strs[i-1].compareTo(strs[i]));
-        }
-        return common!=0 ? strs[0].substring(common) : "";
-    }
 }
 
 
