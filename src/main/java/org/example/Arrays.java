@@ -49,22 +49,29 @@ public class Arrays {
     //Input: 8,9,9,10,10
     //Output: 9
 
-    //TODO: fix this code
-    public static int getSecondSmallestElementsWhenElementsAreRepeating(int[] a, int n) {
-        int max = Math.max(a[0], a[1]);
-        int secondMax = Math.min(a[0], a[1]);
-        if (max == secondMax) {
-            max = secondMax = -1;
-        }
-        for (int i = 2; i < n; i++) {
-            if (a[i] > max) {
-                secondMax = max;
-                max = a[i];
-            } else if (a[i] > secondMax && a[i] != max) {
-                secondMax = a[i];
+    public static long[] getSecondSmallestElementsWhenElementsAreRepeating(long a[])
+    {
+        long n = a.length;
+        long smallest = Math.min(a[0], a[1]);
+        long secondSmallest = Math.max(a[0], a[1]);
+
+        for(int i = 2; i < n; i++) {
+            if(a[i] < smallest) {
+                secondSmallest = smallest;
+                smallest = a[i];
+            } else if(a[i] < secondSmallest && a[i]!=smallest) {
+                secondSmallest = a[i];
+            }
+            if(smallest==secondSmallest){
+                secondSmallest = a[i];
             }
         }
-        return secondMax;
+
+        if(smallest == secondSmallest){
+            return new long[]{-1, -1};
+        }
+
+        return new long[]{smallest, secondSmallest};
     }
 
     //Input: 4, 5, 1, 2, 3
