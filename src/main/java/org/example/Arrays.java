@@ -49,25 +49,24 @@ public class Arrays {
     //Input: 8,9,9,10,10
     //Output: 9
 
-    public static long[] getSecondSmallestElementsWhenElementsAreRepeating(long a[])
-    {
+    public static long[] getSecondSmallestElementsWhenElementsAreRepeating(long a[]) {
         long n = a.length;
         long smallest = Math.min(a[0], a[1]);
         long secondSmallest = Math.max(a[0], a[1]);
 
-        for(int i = 2; i < n; i++) {
-            if(a[i] < smallest) {
+        for (int i = 2; i < n; i++) {
+            if (a[i] < smallest) {
                 secondSmallest = smallest;
                 smallest = a[i];
-            } else if(a[i] < secondSmallest && a[i]!=smallest) {
+            } else if (a[i] < secondSmallest && a[i] != smallest) {
                 secondSmallest = a[i];
             }
-            if(smallest==secondSmallest){
+            if (smallest == secondSmallest) {
                 secondSmallest = a[i];
             }
         }
 
-        if(smallest == secondSmallest){
+        if (smallest == secondSmallest) {
             return new long[]{-1, -1};
         }
 
@@ -117,6 +116,102 @@ public class Arrays {
             }
         }
         return j;
+    }
+
+    public static int removeDuplicates2(int[] nums) {
+        int n = nums.length;
+        int i = 0;
+        int j = 1;
+        while (j < n) {
+            if (nums[i] == nums[j]) {
+                j++;
+            } else {
+                i++;
+                nums[i] = nums[j];
+                j++;
+            }
+        }
+        return i + 1;
+    }
+
+    //    https://leetcode.com/problems/remove-element/
+    public int removeElement(int[] nums, int val) {
+        int i = 0;
+        int j = 0;
+        int n = nums.length;
+        while (j < n) {
+            if (nums[j] == val) {
+                j++;
+            } else {
+                nums[i] = nums[j];
+                i++;
+                j++;
+            }
+        }
+        return i;
+    }
+
+    //    https://leetcode.com/problems/apply-operations-to-an-array/
+    public int[] applyOperations(int[] nums) {
+        int n = nums.length;
+        int i;
+        int j = 0;
+        for (i = 0; i < n - 1; i++) {
+            if (nums[i] == nums[i + 1]) {
+                nums[i] *= 2;
+                nums[i + 1] = 0;
+            }
+        }
+        i = 0;
+        j = 0; //go from 0 to n, swap wherever we encounter a non-zero in j. We can also track the first 0th element in the above loop and start the inspection process from that element. Find example below.
+        while (j < n) {
+            if (nums[j] == 0) {
+                j++;
+            } else {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                i++;
+                j++;
+            }
+        }
+        return nums;
+    }
+
+    public int[] applyOperations2(int[] nums) {
+        int n = nums.length;
+        int i;
+        int j = -1;
+        for (i = 0; i < n - 1; i++) {
+            if (nums[i] == 0) {
+                if (j == -1) {
+                    j = i;
+                }
+            }
+            if (nums[i] == nums[i + 1]) {
+                nums[i] *= 2;
+                nums[i + 1] = 0;
+                if (j == -1) {
+                    j = i + 1; //first 0
+                }
+            }
+        }
+        if (j == -1) { //no
+            return nums;
+        }
+        i = j;
+        while (j < n) {
+            if (nums[j] == 0) {
+                j++;
+            } else {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                i++;
+                j++;
+            }
+        }
+        return nums;
     }
 
 //    Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
