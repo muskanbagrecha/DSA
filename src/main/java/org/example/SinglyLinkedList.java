@@ -2,33 +2,17 @@ package org.example;
 
 import java.util.NoSuchElementException;
 
-public class MyLinkedList<T> {
+public class SinglyLinkedList<T> {
 
     private Node head;
 
-    public MyLinkedList() {
+    public SinglyLinkedList() {
         this.head = null;
     }
 
-    private class Node {
-        private T data;
-        public Node next;
 
-        public Node(T data) {
-            this.data = data;
-            this.next = null;
-        }
 
-        public T getData() {
-            return data;
-        }
-
-        public Node getNext() {
-            return next;
-        }
-    }
-
-    public MyLinkedList(T[] arr) {
+    public SinglyLinkedList(T[] arr) {
         if (arr.length == 0) {
             return;
         }
@@ -97,7 +81,7 @@ public class MyLinkedList<T> {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
-        Node temp = head;
+        Node<T> temp = head;
         int current = 0;
         while (current != index) {
             temp = temp.next;
@@ -150,7 +134,7 @@ public class MyLinkedList<T> {
         prev.next = temp.next;
     }
 
-//    https://leetcode.com/problems/remove-linked-list-elements/description/
+    //    https://leetcode.com/problems/remove-linked-list-elements/description/
     public void removeElement(T data) {
         if (head == null) {
             return;
@@ -159,14 +143,12 @@ public class MyLinkedList<T> {
         Node prev = null;
         while (temp != null) {
             if (temp.getData() == data) {
-                if(prev == null){
+                if (prev == null) {
                     head = temp.next;
-                }
-                else{
+                } else {
                     prev.next = temp.next;
                 }
-            }
-            else{
+            } else {
                 prev = temp;
             }
             temp = temp.next;
@@ -177,10 +159,33 @@ public class MyLinkedList<T> {
     //1. prev should be initialized to null, temp will be initialized to head
     //2. we will run the loop till last element (temp!=null)
     //3. Check first if temp data is the element to be removed,
-        //3.1. If yes, check if prev is null. If it is it means temp is pointing to the first element in the array, which means we need to update head to point to second element (temp.next)
-        //3.2 If prev is not null, it will point to the element after temp so temp can be skipped(removed)
+    //3.1. If yes, check if prev is null. If it is it means temp is pointing to the first element in the array, which means we need to update head to point to second element (temp.next)
+    //3.2 If prev is not null, it will point to the element after temp so temp can be skipped(removed)
     //4. If temp is not the element to be removed, it means we need to keep going forward so prev will become temp
     //5 Common step: update temp to temp.next. This is common as at any point we need to keep going forward else it will cause infinite loop.
+
+    //Solution 2:
+    public Node removeElements2(Node head, int data) {
+        if (head == null) {
+            return null;
+        }
+        Node dummy = new Node();
+        dummy.next = head;
+        Node temp = head;
+        Node prev = dummy;
+        while (temp != null) {
+            if (temp.getData().equals(data)) {
+                prev.next = temp.next;
+            } else {
+                prev = temp;
+            }
+            temp = temp.next;
+        }
+        return dummy.next;
+    }
+
+    //Here, we create a dummy node and set dummy.next = head. This node helps us keep track of the new head in case the existing head has to be removed.
+    //We are always updating dummy as prev = dummy so as and when prev is changing
 
     public void removeLastOccurenceOf(T data) {
         if (head == null) {
