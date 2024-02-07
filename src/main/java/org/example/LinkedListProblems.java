@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.ArrayList;
+
 public class LinkedListProblems {
 
     //    https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/description/
@@ -50,4 +52,41 @@ public class LinkedListProblems {
     //3. For three elements, fast will be last element, while loop will never execute as fast.next will be null. So slow.next = slow.next.next will end up making first node point to last element(fast).
     //4. For odd elements, while will execute, fast will point to last element & slow will end up pointing to one index less than the mid so we can remove the next element
     //5. For even elements, while will execute, fast will end up becoming null, slow will point to one element left of element to be removed.
+
+    //https://leetcode.com/problems/middle-of-the-linked-list/description/
+    //Similar problem
+    public static Node middleNode(Node head) {
+        Node slow = head;
+        Node fast = head;
+        while (fast != null && fast.next!=null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    //Reverse a singly listed list which has only head
+
+    //Solution 1: Using extra space (arr) to store the elements, we then iterate through the LL again and copy the elements from the end of the array.
+    //Use stack instead of arraylist so we pop elements in reversed order by default
+    public static Node reverseList(Node head) {
+        ArrayList arr = new ArrayList();
+        Node temp = head;
+        while(temp!=null){
+            arr.add(temp.data);
+            temp=temp.next;
+        }
+        System.out.println(arr);
+        temp = head;
+        while(temp!=null && arr.size()>0){
+            int index = arr.size()-1;
+            temp.data = arr.get(index);
+            arr.remove(index);
+        }
+        return head;
+    }
+
+    //Time complexity: O(n) - two passes
+    //Space complexity: O(n)
+
 }
