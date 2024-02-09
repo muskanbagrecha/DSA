@@ -1,6 +1,8 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class LinkedListProblems {
 
@@ -65,6 +67,8 @@ public class LinkedListProblems {
         return slow;
     }
 
+    //Important to practice
+
     //Reverse a singly listed list which has only head
 
     //Solution 1: Using extra space (arr) to store the elements, we then iterate through the LL again and copy the elements from the end of the array.
@@ -88,5 +92,135 @@ public class LinkedListProblems {
 
     //Time complexity: O(n) - two passes
     //Space complexity: O(n)
+    public static Node reverseList2(Node head) {
+        Node temp = head;
+        Node prev = null;
+        Node front;
+        while(temp!=null){
+            front = temp.next;
+            temp.next = prev;
+            prev = temp;
+            temp = front;
+        }
+        return prev;
+    }
+//    Time: O(n) single pass
+//    Space: O(1)
+
+//    https://leetcode.com/problems/linked-list-cycle/
+
+    //Brute force
+    public static boolean hasCycle1(Node head) {
+        if(head==null){
+            return false;
+        }
+        HashSet<Node> mySet = new HashSet<>();
+        Node temp = head;
+        while(temp!=null){
+            if(mySet.contains(temp)){
+                return true;
+            }
+            mySet.add(temp);
+        }
+        return false;
+    }
+
+    //Space: O(n)
+    //Time: O(n)
+
+    //Optimal
+    public boolean hasCycle2(Node head) {
+        Node slow = head;
+        Node fast = head;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow==fast){
+                return true;
+            }
+        }
+        return false;
+    }
+    //Hare and tortoise solution
+    //Time: O(n)
+    //Space: O(1)
+
+    //Time Complexity (O(n)): The fast pointer moves twice as fast as the slow pointer, so if there's no cycle, the fast pointer will reach the end in n/2 steps. If a cycle exists, the pointers will meet within the cycle at some point, also resulting in O(n) time complexity.
+
+
+    //https://leetcode.com/problems/linked-list-cycle-ii/description/
+
+    //Naive:
+    public Node detectCycle(Node head) {
+
+        Node temp = head;
+        HashSet<Node> set = new HashSet<>();
+        while(temp!=null){
+            if(set.contains(temp)){
+                return temp;
+            }
+            set.add(temp);
+            temp = temp.next;
+        }
+        return null;
+    }
+
+    //Time: O(n)
+    //Space: O(n)
+
+    //Optimal
+
+    //https://www.codingninjas.com/studio/problems/find-length-of-loop_8160455
+
+    //Naive:
+    public static int lengthOfLoop(Node head) {
+        // Write your code here
+
+        Node temp = head;
+        HashMap<Node, Integer> map = new HashMap<>();
+        int ctr = 0;
+        while(temp!=null){
+            if(map.containsKey(temp)){
+                return ctr - map.get(temp);
+            }
+            map.put(temp, ctr);
+            ctr++;
+            temp = temp.next;
+        }
+        return 0;
+    }
+
+    //Time: O(n)
+    //Space: O(n)
+
+    //Optimal
+    public static int lengthOfLoop2(Node head) {
+        // Write your code here
+
+        if(head==null || head.next==null){
+            return 0;
+        }
+        Node slow = head;
+        Node fast = head;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow==fast){
+                break;
+            }
+        }
+        if(fast==null || fast.next==null){
+            return 0;
+        }
+        slow = slow.next;
+        int ctr = 1;
+        while(slow!=fast){
+            slow = slow.next;
+            ctr++;
+        }
+        return ctr;
+    }
+    //Time: O(n)
+    //Space: O(1)
 
 }
