@@ -3,6 +3,7 @@ package org.example;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Stack;
 
 public class LinkedListProblems {
 
@@ -150,6 +151,8 @@ public class LinkedListProblems {
 
     //https://leetcode.com/problems/linked-list-cycle-ii/description/
 
+    //Detect starting point of the cycle
+
     //Naive:
     public Node detectCycle(Node head) {
 
@@ -169,6 +172,8 @@ public class LinkedListProblems {
     //Space: O(n)
 
     //Optimal
+
+    
 
     //https://www.codingninjas.com/studio/problems/find-length-of-loop_8160455
 
@@ -222,5 +227,48 @@ public class LinkedListProblems {
     }
     //Time: O(n)
     //Space: O(1)
+
+    //https://leetcode.com/problems/palindrome-linked-list/description/
+
+    //Brute force
+    public static boolean isPalindrome(Node head) {
+        if(head==null || head.next==null){
+            return true;
+        }
+        Node slow = head;
+        Node fast = head;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        Node temp = head;
+        Stack<Integer> stack = new Stack<>();
+        while(temp!=slow){
+            stack.push((Integer) temp.data);
+            temp = temp.next;
+        }
+        if(fast!=null){ // If odd, skip the middle element
+            temp = slow.next;
+        }
+        while(temp!=null){
+            if(temp.data != stack.pop()){
+                return false;
+            }
+            temp = temp.next;
+        }
+        return true;
+    }
+
+    //Idea:
+    //1. Traverse to the middle of the list. Using hare and turtle approach.
+    //2. If list has even elements, slow will point to the 1st element of the two mid elements.
+    //3. If list has odd elements, slow will point to the mid.
+    //4. Start iteration from head to slow (mid) and push elements in stack
+    //5. If odd elements are there, we dont need to check for the mid element, so we will check fast!=null which means list has odd elements so we will move temp to next element.
+    // Above step works as fast always points to null when elements are even
+    //6. Then traverse in the second half of the array (IMP: till null not fast) and compare with top of stack for palindrome)
+
+    //Time: half + half + half iterations in the list which simplified to O(1.5n) => O(n)
+    //Space: O(n/2) for even O((n-1)/2) for odd which simplifies to O(n)
 
 }
