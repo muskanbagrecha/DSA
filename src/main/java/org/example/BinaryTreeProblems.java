@@ -1,7 +1,5 @@
 package org.example;
 
-import java.util.List;
-
 public class BinaryTreeProblems {
 
     //    https://www.geeksforgeeks.org/problems/height-of-binary-tree/1
@@ -22,15 +20,25 @@ public class BinaryTreeProblems {
 
     //Pre-Order Traversal
     //root-left-right
-    public void preOrderTraversal(TreeNode root, List<Integer> list){
+    public void preOrderTraversal(TreeNode root){
         if(root==null){
-            System.out.println(" END ");
+            System.out.println("END");
             return;
         }
         System.out.println(root.data + " -> ");
-        preOrderTraversal(root.left, list);
-        preOrderTraversal(root.right, list);
+        preOrderTraversal(root.left);
+        preOrderTraversal(root.right);
     }
 
     //O(n) time and O(n) due to stack - in iterative we can do in O(1) time.
+
+    public void inOrderTraversal(TreeNode root){
+        if(root==null){
+            System.out.println("END");
+            return;
+        }
+        inOrderTraversal(root.left);
+        System.out.println(root.data + " -> ");
+        inOrderTraversal(root.right);
+    }
 }
