@@ -41,4 +41,16 @@ public class BinaryTreeProblems {
         System.out.println(root.data + " -> ");
         inOrderTraversal(root.right);
     }
+    //O(n) time and O(n) due to stack - in iterative we can do in O(1) time.
+
+    public void postOrderTraversal(TreeNode root){
+        if(root==null){
+            System.out.println("END");
+            return;
+        }
+        postOrderTraversal(root.left);
+        postOrderTraversal(root.right);
+        System.out.println(root.data + " -> ");
+    }
+    //O(n) time and O(n) due to stack - in iterative we can do in O(1) time.
 }
