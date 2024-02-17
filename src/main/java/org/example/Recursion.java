@@ -135,4 +135,46 @@ public class Recursion {
     //Time complexity: O(n**2)
     //Space: O(n) - recursion stack
 
+    // https://leetcode.com/problems/k-th-symbol-in-grammar
+    //Brute force
+    // Generate each row explicitly until the nth row and then returning the kth symbol in that row.
+        public int kthGrammar(int n, int k) {
+            if (n == 1) return 0; // Base case
+            StringBuilder prevRow = new StringBuilder("0"); // Starting with the first row
+            StringBuilder currentRow = new StringBuilder();
+
+            for (int row = 2; row <= n; row++) {
+                currentRow.setLength(0); // Reset currentRow for the new row
+                // Copy previous row
+                for (int i = 0; i < prevRow.length(); i++) {
+                    char c = prevRow.charAt(i);
+                    // Append '01' for '0' and '10' for '1'
+                    if (c == '0') {
+                        currentRow.append("01");
+                    } else {
+                        currentRow.append("10");
+                    }
+                }
+                prevRow.setLength(0); // Clear prevRow
+                prevRow.append(currentRow.toString()); // Set prevRow to currentRow for next iteration
+            }
+            return prevRow.charAt(k - 1) - '0'; // Convert char to int ('0' or '1') and return
+        }
+
+//        This has time & space complexity: 2^n (horrible)
+
+    //Optimize using recursion due to the pattern that first half of the elements will be same as previous and second half will be just opposite
+    public static int kthGrammar2(int n, int k) {
+        if(n==1){
+            return 0;
+        }
+        if(k<=Math.pow(2, n-2)){
+            return kthGrammar2(n-1, k);
+        }
+        else{
+            int newK = k-(int)Math.pow(2,n-2);
+            return kthGrammar2(n-1, newK)==0?1:0;
+        }
+    }
+
 }
