@@ -1,7 +1,9 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class BinaryTreeProblems {
 
@@ -84,7 +86,7 @@ public class BinaryTreeProblems {
         return 1+Math.max(heightHelper(root.left), heightHelper(root.right));
     }
 
-    static void traverse(List<Integer> current, TreeNode node, int level){
+    static void traverse(List<Integer> current, TreeNode node, int level){ //In this problem we have a requirement to store output in list of list so we are passing a new current object for every level to store elements in that level.
         if(node==null){
             return;
         }
@@ -99,13 +101,15 @@ public class BinaryTreeProblems {
 
     //Time complexity:
     // 1. O(n) to find height
-    // 2. O(n^2) for actual traversal coz for every level we are going from that level to 1st level. So 5th level would be 5th to 1st and 6th will be 6th to 1st and so on.
+    // 2. O(n^2) for actual traversal coz for every level we are going from that root to that level. So 5th level would be 1st to 5th and 6th will be 1st to 6th and for each and every node.
     // Ex: For a tree with n levels (and thus n nodes in the case of a skewed tree), you would have:
     //1 operation for the 1st level,
     //2 operations for the 2nd level,
     //...
     //n operations for the nth leve
     // Summing these up, you get a total of 1 + 2 + ... + n operations, which equals n(n+1)/2, simplifying to O(n^2) in terms of time complexity.
+
+     //Think of it as doing DFS for each level but unlike standard DFS that explores all nodes in a go,this approach starts anew from root for each level.
 
     // For a balanced tree, while the height is log(n) and the number of nodes at each level doubles, the traversal from the root to each level still involves visiting all nodes on the path to nodes at that level.
     // The method used here does not take advantage of the balanced structure to reduce the complexity to O(n log n) because it unnecessarily traverses the upper levels for each node in the lower levels.
@@ -116,6 +120,99 @@ public class BinaryTreeProblems {
 
 
     //Iterative using Queues
+    //When we want to store output in list of lists
+
+    public List<List<Integer>> levelOrder2(TreeNode root) {
+        List<List<Integer> > ans = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        if(root==null){
+            return ans;
+        }
+        q.add(root);
+        q.add(null);
+        List<Integer> current = new ArrayList<>();
+        while(!q.isEmpty()){
+            TreeNode element = q.remove();
+            if(element==null){
+                ans.add(current);
+                if(q.isEmpty()){
+                    return ans;
+                }
+                current = new ArrayList<>();
+                q.add(null);
+                continue;
+            }
+            current.add(element.data);
+            if(element.left!=null){
+                q.add(element.left);
+            }
+            if(element.right!=null){
+                q.add(element.right);
+            }
+        }
+        return ans;
+    }
+
+    //Here, null is used to track it is the end of the level.
+
+    //Without null:
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer> > ans = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        if(root==null){
+            return ans;
+        }
+        q.add(root);
+        while(!q.isEmpty()){
+            List<Integer> current = new ArrayList<>();
+            int count = q.size();
+            for(int i = 0; i<count; i++){
+                TreeNode element = q.remove();
+                current.add(element.data);
+                if(element.left!=null){
+                    q.add(element.left);
+                }
+                if(element.right!=null){
+                    q.add(element.right);
+                }
+            }
+            ans.add(current);
+        }
+        return ans;
+    }
+
+    //At any point, number of elements in the queue will correspond to number of elements in a level
+
+    //Both the above methods are same in terms of complexity.
+
+    //Time: O(n) -> visiting each node once.
+    //Space: O(n) -> queue
+
+    //When we only want to print the data (https://www.geeksforgeeks.org/problems/level-order-traversal)
+    static ArrayList <Integer> levelOrder3(TreeNode root)
+    {
+        // Your code here
+        ArrayList<Integer> list = new ArrayList<>();
+
+        if(root==null){
+            return list;
+        }
+
+        Queue<TreeNode> q = new LinkedList<>();
+
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode node = q.remove();
+            list.add(node.data);
+            if(node.left!=null){
+                q.add(node.left);
+            }
+            if(node.right!=null){
+                q.add(node.right);
+            }
+        }
+        return list;
+    }
 
 
     //Min depth of a binary tree
