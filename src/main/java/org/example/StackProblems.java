@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.Stack;
 
 public class StackProblems {
@@ -47,4 +48,63 @@ public class StackProblems {
 
     //Time complexity: O(n**2)
     //Space: O(n) - recursion stack
+
+    //https://leetcode.com/problems/valid-parentheses/
+    public static boolean isValid(String s) {
+        char[] charArray = s.toCharArray();
+        int n = charArray.length;
+        if(n%2!=0){
+            return false;
+        }
+        Stack<Character> stack = new Stack<>();
+        HashMap<Character, Character> map = new HashMap<>();
+        map.put('(', ')');
+        map.put('{', '}');
+        map.put('[', ']');
+        for(int i = 0; i<n; i++){
+            if(map.get(charArray[i])==null){
+                if(!stack.isEmpty() && map.get(stack.peek())-charArray[i]==0){
+                    stack.pop();
+                }
+                return false;
+            }
+            else{
+                stack.push(charArray[i]);
+            }
+        }
+        if(!stack.isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    //Time complexity: O(n)
+    //Space: O(n) for stack and map for storing the pairs of brackets
+
+    //Slightly improved version (without maps) but time and space complexity is same.
+    public static boolean isValid2(String s) {
+        char[] charArray = s.toCharArray();
+        int n = charArray.length;
+        if(n%2!=0){
+            return false;
+        }
+        Stack<Character> stack = new Stack<>();
+        for(int i = 0; i<n; i++){
+            char c = charArray[i];
+            if(c==')' || c=='}' || c==']'){
+                if(!stack.isEmpty() && (c-stack.peek()==1 || c-stack.peek()==2)){
+                    stack.pop();
+                    continue;
+                }
+                return false;
+            }
+            else{
+                stack.push(charArray[i]);
+            }
+        }
+        if(!stack.isEmpty()){
+            return false;
+        }
+        return true;
+    }
 }
