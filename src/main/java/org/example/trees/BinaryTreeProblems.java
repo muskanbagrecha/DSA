@@ -1,4 +1,4 @@
-package org.example;
+package org.example.trees;
 
 import java.util.*;
 
@@ -58,18 +58,18 @@ public class BinaryTreeProblems {
     }
     //O(n) time and O(n) due to stack
 
-    public List<Integer> preorderNAryTree(Node root) {
+    public List<Integer> preorderNAryTree(NaryNode root) {
         List<Integer> list = new ArrayList<>();
         traverse(root, list);
         return list;
     }
 
-    public void traverse(Node root, List<Integer> list){
+    public void traverse(NaryNode root, List<Integer> list){
         if(root==null){
             return;
         }
         list.add(root.data);
-        for(Node child : root.children){
+        for(NaryNode child : root.children){
             traverse(child, list);
         }
     }
