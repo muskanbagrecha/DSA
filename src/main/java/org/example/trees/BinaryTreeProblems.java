@@ -74,6 +74,23 @@ public class BinaryTreeProblems {
         }
     }
 
+    public List<Integer> preorderNaryIterative(NaryNode root) {
+        List<Integer> list = new LinkedList<>();
+        Stack<NaryNode> s = new Stack<>();
+        if(root==null){
+            return list;
+        }
+        s.add(root);
+        while(!s.isEmpty()){
+            NaryNode node = s.pop();
+            list.add(node.data);
+            for(int i = node.children.size()-1; i>=0; i--){
+                s.push(node.children.get(i));
+            }
+        }
+        return list;
+    }
+
     public void inOrderTraversal(TreeNode root){
         if(root==null){
             System.out.println("END");
