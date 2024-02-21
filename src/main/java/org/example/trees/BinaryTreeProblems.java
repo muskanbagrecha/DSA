@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class BinaryTreeProblems {
 
@@ -39,8 +36,43 @@ public class BinaryTreeProblems {
         preOrderTraversal(root.left);
         preOrderTraversal(root.right);
     }
+    //O(n) time and O(n) due to stack
 
-    //O(n) time and O(n) due to stack - in iterative we can do in O(1) time.
+
+    //Iterative
+    public List<Integer> preorderTraversal(TreeNode root) {
+
+        List<Integer> ans = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+
+        stack.add(root);
+        while (!stack.empty()) {
+            TreeNode node = stack.pop();
+            if (node != null) {
+                ans.add(node.data);
+                stack.push(node.right);
+                stack.push(node.left);
+            }
+        }
+        return ans;
+    }
+    //O(n) time and O(n) due to stack
+
+    public List<Integer> preorderNAryTree(Node root) {
+        List<Integer> list = new ArrayList<>();
+        traverse(root, list);
+        return list;
+    }
+
+    public void traverse(Node root, List<Integer> list){
+        if(root==null){
+            return;
+        }
+        list.add(root.data);
+        for(Node child : root.children){
+            traverse(child, list);
+        }
+    }
 
     public void inOrderTraversal(TreeNode root){
         if(root==null){
@@ -214,6 +246,26 @@ public class BinaryTreeProblems {
         return list;
     }
 
+    public void Helper(TreeNode node, int level, List<List<Integer>> result)
+    {
+        if(result.size()==level)
+            result.add(new ArrayList<Integer>());
+
+        result.get(level).add(node.data);
+
+        if(node.left!=null)
+            Helper(node.left, level+1, result);
+        if(node.right!=null)
+            Helper(node.right, level+1, result);
+    }
+
+    public List<List<Integer>> levelOrder4(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(root == null)
+            return result;
+        Helper(root,0, result);
+        return result;
+    }
 
     //Min depth of a binary tree
 
