@@ -108,6 +108,18 @@ public class LinkedListProblems {
 //    Time: O(n) single pass
 //    Space: O(1)
 
+    //Recursion
+    public Node reverseRecursion(Node head, Node prev){
+        if(head==null){
+            return prev;
+        }
+        Node front = head.next;
+        head.next = prev;
+        return reverseRecursion(front, head);
+    }
+    //    Time: O(n)
+    //    Space: O(n) - stack
+
 //    https://leetcode.com/problems/linked-list-cycle/
 
     //Brute force
@@ -173,7 +185,7 @@ public class LinkedListProblems {
 
     //Optimal
 
-    
+
 
     //https://www.codingninjas.com/studio/problems/find-length-of-loop_8160455
 
@@ -266,9 +278,63 @@ public class LinkedListProblems {
     //4. Start iteration from head to slow (mid) and push elements in stack
     //5. If odd elements are there, we dont need to check for the mid element, so we will check fast!=null which means list has odd elements so we will move temp to next element.
     // Above step works as fast always points to null when elements are even
-    //6. Then traverse in the second half of the array (IMP: till null not fast) and compare with top of stack for palindrome)
+    //6. Then preOrderTraversal in the second half of the array (IMP: till null not fast) and compare with top of stack for palindrome)
 
     //Time: half + half + half iterations in the list which simplified to O(1.5n) => O(n)
     //Space: O(n/2) for even O((n-1)/2) for odd which simplifies to O(n)
 
+    //Naive 2:
+    public boolean isPalindrome2(Node head) {
+        Node temp = head;
+        Stack<Integer> stack = new Stack<>();
+        while(temp!=null){
+            stack.push((Integer) temp.data);
+            temp = temp.next;
+        }
+        temp = head;
+        while(temp!=null){
+            if(stack.pop() != temp.data){
+                return false;
+            }
+            temp = temp.next;
+        }
+        return true;
+    }
+
+    //Instead of comparing first half of linked list with second half, we will just reverse it and compare with the original LL.
+    //1 2 3 4 3 2 1 reversed is 1 2 3 4 3 2 1 and since they are equal it is palindrome.
+    //Conclusion palindrome can be checked if original == reverse
+
+    //Time: O(n) + O(n) => O(n)
+    //Space: O(n)
+
+    public static boolean isPalindrome3(Node head) {
+        if(head==null || head.next==null){
+            return true;
+        }
+        Node slow = head;
+        Node fast = head;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        Node prev = slow;
+        Node temp = slow.next;
+        Node front;
+        slow = head;
+        while(temp!=null){
+            front = temp.next;
+            temp.next = prev;
+            prev = temp;
+            temp = front;
+        }
+        while(slow!=prev && slow.next!=prev){
+            if(slow.data != prev.data || slow.next == prev){
+                return false;
+            }
+            slow = slow.next;
+            prev = prev.next;
+        }
+        return true;
+    }
 }
