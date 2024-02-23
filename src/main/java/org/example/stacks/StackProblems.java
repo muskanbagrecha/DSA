@@ -1,4 +1,4 @@
-package org.example;
+package org.example.stacks;
 
 import java.util.HashMap;
 import java.util.Stack;
@@ -141,4 +141,27 @@ public class StackProblems {
     // So, over the course of the entire function, there will be exactly n pushes and at most n pops in total.
     // This means that the stack operations (pushing and popping) are amortized over the n iterations, resulting in an average cost of O(1) per operation.
     //So total time complexity would be only O(n) for iterative over the original array.
+
+    //Variant 2:
+    // https://leetcode.com/problems/next-greater-element-i/
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Stack<Integer> d = new Stack<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] arr = new int[nums1.length];
+        for(int i = nums2.length-1; i>=0; i--){
+            while(!d.isEmpty() && d.peek()<nums2[i]){
+                d.pop();
+            }
+            if(!d.isEmpty()){
+                map.put(nums2[i], d.peek());
+            }
+            d.push(nums2[i]);
+        }
+        for(int i = 0; i<nums1.length; i++){
+            arr[i] = map.getOrDefault(nums1[i], -1);
+        }
+        return arr;
+    }
+    //Time: O(m) + O(n) where m is length of nums1 and n is length of nums2
+    //Space: O(n) for stack and O(n) for map where n is length of nums2
 }
