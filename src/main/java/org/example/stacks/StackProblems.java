@@ -1,6 +1,8 @@
 package org.example.stacks;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 public class StackProblems {
@@ -164,4 +166,49 @@ public class StackProblems {
     }
     //Time: O(m) + O(n) where m is length of nums1 and n is length of nums2
     //Space: O(n) for stack and O(n) for map where n is length of nums2
+
+    //Nearest Greater to the left
+    public static List<Integer> nearestGreaterToLeft(int[] nums){
+        Stack<Integer> s = new Stack<>();
+        List<Integer> list = new ArrayList<>();
+        for(int num: nums){
+            while (!s.isEmpty() && s.peek()<num){
+                s.pop();
+            }
+            if(s.isEmpty()){
+                list.add(-1);
+            }
+            else{
+                list.add(s.peek());
+            }
+            s.push(num);
+        }
+        return list;
+    }
+    //O(n) - time
+
+    //https://www.geeksforgeeks.org/problems/smallest-number-on-left3403/1
+    //Smallest number on left
+
+    static List<Integer> leftSmaller(int n, int a[])
+    {
+        //code here
+        Stack<Integer> s = new Stack<>();
+        List<Integer> list = new ArrayList<>();
+        for(int num : a){
+            while(!s.isEmpty() && s.peek()>=num){
+                s.pop();
+            }
+            if(s.isEmpty()){
+                list.add(-1);
+            }
+            else{
+                list.add(s.peek());
+            }
+            s.push(num);
+        }
+        return list;
+    }
+    //Time & space: O(n)
+
 }
