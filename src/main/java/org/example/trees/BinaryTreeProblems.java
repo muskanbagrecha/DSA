@@ -413,4 +413,20 @@ public class BinaryTreeProblems {
 
     //Max depth of a binary tree
 
+    //Are two binary trees identical?
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p==null){
+            return q==null;
+        }
+        if(q==null){
+            return p==null;
+        }
+        if(p.data!=q.data){
+            return false;
+        }
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+    //Time: O(N) where N is the number of nodes in the smaller tree if they're different, or simply the number of nodes in the trees if they're the same size.
+    //Space: O(min(H1, H2)), in best case, trees are balanced so it will be O(logn) but worst case both trees are identical and skewed O(n)
+    //The recursion depth is determined by the height of the shorter tree in the worst case (since the algorithm would stop upon finding the first difference).
 }
