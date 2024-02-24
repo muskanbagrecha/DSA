@@ -102,6 +102,70 @@ public class BinaryTreeProblems {
     }
     //O(n) time and O(n) due to stack - in iterative we can do in O(1) time.
 
+    //Iterative:
+    //Approach 1:
+    //Algo:
+    //1. Add the right child, the root, the left child
+    //2. This algo adds null entries in the stack too. So if top is null, we will pop the null as after that we will have our lead node and add that lead node to the list
+    //3.  We also have to check edge case of empty list before adding to list as for the last node, the last thing in the stack will be null.
+    //4. If top is not null, we pop the top (which will be the root for that node, and push it's right child (existent or not), push the node itself and then the left.
+    public List<Integer> inorderTraversalIterative(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        Stack<TreeNode> s = new Stack<>();
+        if(root==null){
+            return list;
+        }
+        s.push(root.right);
+        s.push(root);
+        s.push(root.left);
+        while(!s.isEmpty()){
+            TreeNode top = s.peek();
+            if(top!=null){
+                s.pop();
+                s.push(top.right);
+                s.push(top);
+                s.push(top.left);
+            }
+            else{
+                s.pop();
+                if(s.isEmpty()){
+                    return list;
+                }
+                list.add(s.pop().data);
+            }
+        }
+        return list;
+    }
+
+    //Time: O(n) - each node is processed once
+    //Space: O(n) - O(logn) for balanced trees, O(n) for skewed trees
+    //However, we are taking up extra space for null entries.
+
+    //Approach 2:
+//    Start with the root node and explore as far left as possible, pushing each node onto the stack.
+//    Once you reach a node with no left child, process that node by popping it from the stack and adding its value to the result list.
+//    After processing a node, move to its right child and repeat the process of going as far left as possible from that node.
+//    Continue this pattern until you have processed all nodes. The stack's nature ensures that nodes are processed in the correct order (left, root, right).
+//    Finish when the stack is empty, indicating that all nodes have been visited in the correct order.
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        Stack<TreeNode> s = new Stack<>();
+        TreeNode current = root;
+        while(current!=null || !s.isEmpty()){
+            while(current!=null){
+                s.push(current);
+                current = current.left;
+            }
+            current = s.pop();
+            list.add(current.data);
+            current = current.right;
+        }
+        return list;
+    }
+
+    //Time & space: same as above but stack does not need to store unnecessary null entries so there is a slight optimization.
+
     public void postOrderTraversal(TreeNode root){
         if(root==null){
             System.out.println("END");
@@ -284,7 +348,69 @@ public class BinaryTreeProblems {
         return result;
     }
 
+    //Height balanced tree
+
+    //Approach 1: Brute force
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        int left = helperHeight(root.left);
+        int right = helperHeight(root.right);
+        return Math.abs(left - right)<=1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    public int helperHeight(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return 1 + Math.max(height(root.left), height(root.right));
+    }
+
+    //This is a top down approach
+    //Time: O(n^2) as we are accessing all nodes and then finding height for them also.
+
+    //Approach 2: same as above but we will use a hashmap to store height as it avoids recalculating the height of subtrees
+    public boolean isBalanced2(TreeNode root) {
+        HashMap<TreeNode, Integer> map = new HashMap<>();
+        if (root == null) {
+            return true;
+        }
+        int left = helperHeight2(root.left, map);
+        int right = helperHeight2(root.right, map);
+        return Math.abs(left - right)<=1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    public int helperHeight2(TreeNode root, HashMap<TreeNode, Integer> map) {
+        if (root == null) {
+            return 0;
+        }
+        if(!map.containsKey(root)){
+            map.put(root, 1+ Math.max(height(root.left), height(root.right)));
+        }
+        return map.get(root);
+    }
+
+    //DFS approach
+
+    public boolean isBalanced3(TreeNode root) {
+        return depth3(root)!=-1;
+    }
+
+    public int depth3(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = depth3(root.left);
+        int right = depth3(root.right);
+        if (left == -1 || right == -1 || Math.abs(left - right) > 1) {
+            return -1;
+        }
+        return 1 + Math.max(left, right);
+    }
+
     //Min depth of a binary tree
 
     //Max depth of a binary tree
+
 }
