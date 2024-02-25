@@ -177,4 +177,24 @@ public class Recursion {
         }
     }
 
+    //Print all substrings of a string
+    public static void printSubstrings(String s) {
+        printSubstringsHelper("", s, 0);
+    }
+
+    public static void printSubstringsHelper(String output, String input, int index) {
+        if (index == input.length()) {
+            System.out.println(output);
+            return;
+        }
+        // Not including the current character
+        printSubstringsHelper(output, input, index + 1);
+        // Including the current character
+        printSubstringsHelper(output + input.charAt(index), input, index + 1);
+    }
+
+    //Time: O(2^n) at each node we have two choices whether to include or not
+    //Space: O(n) recursion stack
+
+
 }
