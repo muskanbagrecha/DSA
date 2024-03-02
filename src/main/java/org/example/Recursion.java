@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class Recursion {
@@ -177,20 +179,43 @@ public class Recursion {
         }
     }
 
-    //Print all substrings of a string
-    public static void printSubstrings(String s) {
-        printSubstringsHelper("", s, 0);
+    //Subset problems
+    //https://leetcode.com/problems/subsets/description/
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        findSubsets(list, new ArrayList<>(), nums, 0);
+        return list;
     }
 
-    public static void printSubstringsHelper(String output, String input, int index) {
+    public void findSubsets(List<List<Integer>> list, List<Integer> current, int[] nums, int start){
+        if(start == nums.length){
+            list.add(new ArrayList<Integer>(current));
+            return;
+        }
+        findSubsets(list, current, nums, start+1);
+        int num = nums[start];
+        current.add(num);
+        findSubsets(list, current, nums, start+1);
+        current.remove(current.size()-1);
+    }
+
+    //Time: O(n*2^n)  where n accounts for the operations to construct and copy subsets, and 2^n represents the total number of subsets.
+    //Space: O(n) recursion stack only (not counting output storage)
+
+    //Print all substrings of a string
+    public static void printSubsets(String s) {
+        printSubsetsHelper("", s, 0);
+    }
+
+    public static void printSubsetsHelper(String output, String input, int index) {
         if (index == input.length()) {
             System.out.println(output);
             return;
         }
         // Not including the current character
-        printSubstringsHelper(output, input, index + 1);
+        printSubsetsHelper(output, input, index + 1);
         // Including the current character
-        printSubstringsHelper(output + input.charAt(index), input, index + 1);
+        printSubsetsHelper(output + input.charAt(index), input, index + 1);
     }
 
     //Time: O(2^n) at each node we have two choices whether to include or not
