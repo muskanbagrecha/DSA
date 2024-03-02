@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
@@ -221,5 +222,31 @@ public class Recursion {
     //Time: O(2^n) at each node we have two choices whether to include or not
     //Space: O(n) recursion stack
 
+    //Find unique subsets
+    //https://leetcode.com/problems/subsets-ii
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        HashSet<List<Integer>> set = new HashSet<>();
+        java.util.Arrays.sort(nums);
+        findSubsets(set, new ArrayList<>(), nums, 0);
+        return new ArrayList<>(set);
+    }
+
+    public void findSubsets(HashSet<List<Integer>> set, List<Integer> current, int[] nums, int start){
+        if(start == nums.length){
+            set.add(new ArrayList<Integer>(current));
+            return;
+        }
+        findSubsets(set, current, nums, start+1);
+        int num = nums[start];
+        current.add(num);
+        findSubsets(set, current, nums, start+1);
+        current.remove(current.size()-1);
+    }
+
+    //Used a hashset to store only unique subsets.
+    //We have to sort because order of elements in subset matters
+    //Time: O(nlogn) for sorting, O(2^n) subset generation, O(n) hashset insertion and copying hashset to list
+    //Time: O(nlogn) + O(n * 2^n)
+    //Space: O(n*2^n) hashset, O(n) recursion stack
 
 }
