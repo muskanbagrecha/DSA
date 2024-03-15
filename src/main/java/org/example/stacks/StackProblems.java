@@ -1,9 +1,6 @@
 package org.example.stacks;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class StackProblems {
 
@@ -125,6 +122,7 @@ public class StackProblems {
     }
 
     //https://www.geeksforgeeks.org/problems/next-larger-element-1587115620
+    //try front to back and back to front approach (stick to 1)
     public static long[] nextLargerElement(long[] arr, int n) {
         // Your code here
         Stack<Long> s = new Stack<>();
@@ -133,7 +131,7 @@ public class StackProblems {
             while (!s.empty() && s.peek() <= arr[i]) {
                 s.pop();
             }
-            ans[i] = s.empty()? -1 : s.peek();
+            ans[i] = s.empty() ? -1 : s.peek();
             s.push(arr[i]);
         }
         return ans;
@@ -150,16 +148,16 @@ public class StackProblems {
         Stack<Integer> d = new Stack<>();
         HashMap<Integer, Integer> map = new HashMap<>();
         int[] arr = new int[nums1.length];
-        for(int i = nums2.length-1; i>=0; i--){
-            while(!d.isEmpty() && d.peek()<nums2[i]){
+        for (int i = nums2.length - 1; i >= 0; i--) {
+            while (!d.isEmpty() && d.peek() < nums2[i]) {
                 d.pop();
             }
-            if(!d.isEmpty()){
+            if (!d.isEmpty()) {
                 map.put(nums2[i], d.peek());
             }
             d.push(nums2[i]);
         }
-        for(int i = 0; i<nums1.length; i++){
+        for (int i = 0; i < nums1.length; i++) {
             arr[i] = map.getOrDefault(nums1[i], -1);
         }
         return arr;
@@ -168,17 +166,16 @@ public class StackProblems {
     //Space: O(n) for stack and O(n) for map where n is length of nums2
 
     //Nearest Greater to the left
-    public static List<Integer> nearestGreaterToLeft(int[] nums){
+    public static List<Integer> nearestGreaterToLeft(int[] nums) {
         Stack<Integer> s = new Stack<>();
         List<Integer> list = new ArrayList<>();
-        for(int num: nums){
-            while (!s.isEmpty() && s.peek()<num){
+        for (int num : nums) {
+            while (!s.isEmpty() && s.peek() < num) {
                 s.pop();
             }
-            if(s.isEmpty()){
+            if (s.isEmpty()) {
                 list.add(-1);
-            }
-            else{
+            } else {
                 list.add(s.peek());
             }
             s.push(num);
@@ -190,19 +187,17 @@ public class StackProblems {
     //https://www.geeksforgeeks.org/problems/smallest-number-on-left3403/1
     //Smallest number on left
 
-    static List<Integer> leftSmaller(int n, int a[])
-    {
+    static List<Integer> leftSmaller(int n, int a[]) {
         //code here
         Stack<Integer> s = new Stack<>();
         List<Integer> list = new ArrayList<>();
-        for(int num : a){
-            while(!s.isEmpty() && s.peek()>=num){
+        for (int num : a) {
+            while (!s.isEmpty() && s.peek() >= num) {
                 s.pop();
             }
-            if(s.isEmpty()){
+            if (s.isEmpty()) {
                 list.add(-1);
-            }
-            else{
+            } else {
                 list.add(s.peek());
             }
             s.push(num);
@@ -217,21 +212,63 @@ public class StackProblems {
         Stack<Integer> s = new Stack<>();
         int n = nums.length;
         int[] ans = new int[n];
-        for(int i = 2*n-1; i>=n; i--){
-            s.push(nums[i%n]);
+        for (int i = 2 * n - 1; i >= n; i--) {
+            s.push(nums[i % n]);
         }
-        for(int i = n-1; i>=0; i--){
-            while(!s.isEmpty() && s.peek()<=nums[i%n]){
+        for (int i = n - 1; i >= 0; i--) {
+            while (!s.isEmpty() && s.peek() <= nums[i % n]) {
                 s.pop();
             }
-            ans[i%n] = s.isEmpty() ? -1 : s.peek();
-            s.push(nums[i%n]);
+            ans[i % n] = s.isEmpty() ? -1 : s.peek();
+            s.push(nums[i % n]);
         }
         return ans;
     }
 
+    //Back to front
     //Beats 65% in time, 70% in space - 15 ms runtime.
     //Time: O(2n) => O(n)
     //Space: O(n)
 
+    public int[] nextGreaterElements2(int[] nums) {
+        Stack<Integer> s = new Stack<>();
+        int n = nums.length;
+        int[] res = new int[n];
+        Arrays.fill(res, -1);
+        for (int i = 0; i < 2 * n; i++) {
+            while (!s.isEmpty() && nums[s.peek()] < nums[i % n]) {
+                res[s.pop()] = nums[i % n];//store it in res as current candidate is the greater element
+            }
+            if (i < n) { //this step improves time by 5ms
+                s.push(i % n);
+            }
+        }
+        return res;
+    }
+
+    //https://www.geeksforgeeks.org/the-stock-span-problem/
+    //Naive approach
+    public static int[] stockSpan(int[] arr) {
+        int ans[] = new int[arr.length];
+        ans[0] = 1;
+        for (int i = 1; i < arr.length; i++) {
+            int ctr = 0;
+            for (int j = 0; j <= i; j++) {
+                if (arr[j] <= arr[i]) {
+                    ctr++;
+                } else {
+                    ctr = 0;
+                }
+            }
+            ans[i] = ctr;
+        }
+        return ans;
+    }
+    //time: O(n^2)
+    //space: O(1) - no extra space
+
+    //Optimized:
+//    public static int[] stockSpanOptimized(int[] arr) {
+//
+//    }
 }
