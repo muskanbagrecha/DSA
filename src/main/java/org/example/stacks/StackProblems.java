@@ -268,7 +268,29 @@ public class StackProblems {
     //space: O(1) - no extra space
 
     //Optimized:
-//    public static int[] stockSpanOptimized(int[] arr) {
-//
-//    }
+   public static int[] stockSpanOptimized(int[] arr) {
+        int ans[] = new int[arr.length];
+        Stack<Integer> s = new Stack<>();
+        for(int i = 0; i<arr.length; i++){
+            while(!s.isEmpty() && arr[s.peek()]<=arr[i]){
+                s.pop();
+            }
+            if(s.isEmpty()){
+                ans[i] = i - (-1);
+            }
+            else{
+                ans[i] = i-s.peek();
+            }
+            s.push(i);
+        }
+        return ans;
+    }
+
+    //Algo:
+    //1. Reduce the problem to find next greater element on left
+    //2. Use stack to store the indices.
+    //3. We need to return the current index - index of next greater element -> this will give no of days stock was less than or equal to price as the given day.
+
+    //Time: O(n) amortized
+    //Space: O(n)
 }
