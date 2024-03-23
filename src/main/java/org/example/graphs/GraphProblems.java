@@ -51,4 +51,29 @@ public class GraphProblems {
     }
     //Space: O(V) worst case when we have a skewed tree like structure (recursion stack) + O(V) for visited graph + O(V) for output array => O(V)
     //Time: O(V) + O(2*E) => O(V+E)
+
+    public static int findNumOfProvinces(int[][] roads, int n) {
+        // Write your code here.
+        boolean[] vis = new boolean[n];
+        int provinces = 0;
+        for(int i = 0; i<n; i++){
+            if(!vis[i]){
+                dfsFindNumOfProvincesHelper(roads, i, vis);
+                provinces++;
+            }
+        }
+        return provinces;
+    }
+
+    public static void dfsFindNumOfProvincesHelper(int[][] roads, int city, boolean[] vis){
+        vis[city]=true;
+        for (int j = 0; j < roads[city].length; j++) {
+            if (roads[city][j] == 1 && !vis[j]) {
+                dfsFindNumOfProvincesHelper(roads, j, vis);
+            }
+        }
+    }
+
+    //Space: O(n) for visited array
+    //Time: O(V^2) coz we are checking each element in the 2d matrix
 }
