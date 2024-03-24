@@ -1,5 +1,7 @@
 package org.example.graphs;
 
+import org.example.pair.Pair;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -76,4 +78,50 @@ public class GraphProblems {
 
     //Space: O(n) for visited array
     //Time: O(V^2) coz we are checking each element in the 2d matrix
+
+    //https://www.geeksforgeeks.org/problems/find-the-number-of-islands/1
+
+    public static int numIslands(char[][] grid) {
+        // Code here
+        int n = grid.length;
+        int m = grid[0].length;
+        boolean vis[][] = new boolean[n][m];
+        int islands = 0;
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<m; j++){
+                if(grid[i][j]=='1' && !vis[i][j]){
+                    islands++;
+                    numIslandsBFSHelper(grid, vis, i, j);
+                }
+            }
+        }
+        return islands;
+    }
+
+    public static void numIslandsBFSHelper(char[][] grid, boolean[][] vis, int i, int j){
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(i, j));
+        while(!q.isEmpty()){
+            Pair current = q.remove();
+            for(int row = -1; row<=1; row++){
+                for(int col = -1; col<=1; col++){
+                    int nrow = row + current.first;
+                    int ncol = col + current.second;
+                    if(nrow>=0 && nrow<grid.length && ncol>=0 && ncol<grid[0].length && grid[nrow][ncol]=='1' && !vis[nrow][ncol]){
+                        vis[nrow][ncol]=true;
+                        q.add(new Pair(nrow, ncol));
+                    }
+                }
+            }
+        }
+    }
+
+    //Time:
+    // 1. O(m*n) for main two loops, in the worst case
+    // 2. O(m*n) in bfs in the worst case. When all cells are 1, all neighbours will be checked once.
+    //3. Inside bfs, check will we made for 8 neighbours but this will not increase the time complexity as it is a fixed set.
+    //time complexity: O(m*n)
+    //Space: O(m*n) for visited array and O(m*n) - worst case for queues when the entire matrix has 1. So total O(n^2).
+
+
 }
