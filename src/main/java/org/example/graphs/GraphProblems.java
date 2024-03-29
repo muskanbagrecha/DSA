@@ -1,6 +1,7 @@
 package org.example.graphs;
 
 import org.example.pair.Pair;
+import org.example.tri.Tri;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -174,4 +175,84 @@ public class GraphProblems {
 
     //Time: O(m*n) for recursion stack -> each cell is visited once
     //Space: O(m*n) worst case -> This is primarily due to the recursion stack. Although each call adds a frame to the stack, the depth of these calls—and therefore the maximum size of the stack—can in the worst case be proportional to the number of pixels in the image if the recursive filling process has to traverse a long path or cover a large area.
+
+    //https://leetcode.com/problems/rotting-oranges/
+    public int orangesRotting(int[][] grid) {
+        Queue<Tri> q = new LinkedList<>();
+        int m = grid.length;
+        int n = grid[0].length;
+        int minutes=0;
+        int fresh = 0;
+        int[] drow = {-1, 0, 1, 0};
+        int[] dcol = {0, 1, 0, -1};
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(grid[i][j]==2){
+                    q.add(new Tri(i, j, 0));
+                }
+                else if(grid[i][j]==1){
+                    fresh++;
+                }
+            }
+        }
+        while(!q.isEmpty() && fresh>0){
+            Tri current = q.remove();
+            minutes = Math.max(minutes, current.time);
+            for(int i = 0; i<4; i++){
+                int nrow = current.first + drow[i];
+                int ncol = current.second + dcol[i];
+                if(nrow>=0 && nrow<m && ncol>=0 && ncol<n && grid[nrow][ncol]==1){
+                    grid[nrow][ncol]=2;
+                    fresh--;
+                    q.add(new Tri(nrow, ncol, current.time+1));
+                }
+            }
+        }
+        return fresh == 0 ? minutes: -1;
+    }
+
+    //Time: O(m*n) for initial iteration and for BFS it will be O(m*n) as all cells can be processed once
+    //Space: O(m*n) worst case when all are rotten queue will have all elements
+
+    //Second approach: track time by incrementing minute at each level of BFS (for each rotten orange as starting point).
+    public int orangesRotting2(int[][] grid) {
+        Queue<Pair> q = new LinkedList<>();
+        int m = grid.length;
+        int n = grid[0].length;
+        int minutes = 0;
+        int fresh = 0;
+        int[] dRow = {-1, 0, 1, 0};
+        int[] dCol = {0, 1, 0, -1};
+
+        // Initialize the queue with all initially rotten oranges
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 2) {
+                    q.add(new Pair(i, j));
+                } else if (grid[i][j] == 1) {
+                    fresh++;
+                }
+            }
+        }
+
+        while (!q.isEmpty() && fresh > 0) {
+            int size = q.size(); // Oranges to rot this minute
+            for (int i = 0; i < size; i++) {
+                Pair current = q.poll();
+                for (int k = 0; k < 4; k++) {
+                    int newRow = current.first + dRow[k];
+                    int newCol = current.second + dCol[k];
+                    if (newRow >= 0 && newRow < m && newCol >= 0 && newCol < n && grid[newRow][newCol] == 1) {
+                        grid[newRow][newCol] = 2; // Rotten now
+                        fresh--; // Decrease the count of fresh oranges
+                        q.add(new Pair(newRow, newCol)); // Add newly rotten orange for next minute
+                    }
+                }
+            }
+            minutes++; // minutes is incremented after processing all oranges that can rot in a single minute.
+        }
+
+        return fresh == 0 ? minutes : -1;
+    }
+
 }
