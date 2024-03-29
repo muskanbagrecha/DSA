@@ -297,4 +297,27 @@ public class Recursion {
 
     //Time: O(n * 2^(n-1)) => O(n*2^n)
     //Space: O(n) - recursion stack
+
+    //Generate binary strings with no consecutive 1s.
+    public static List< String > generateBinaryString(int N) {
+        List<String> list = new ArrayList<>();
+        generateBinaryStringHelper("", list, N);
+        return list;
+    }
+    public static void generateBinaryStringHelper(String output, List<String> list, int n){
+        if(n==0){
+            list.add(output);
+            return;
+        }
+        generateBinaryStringHelper(output+"0", list, n-1);
+        if(output.length()==0 || output.charAt(output.length()-1)!='1'){
+            generateBinaryStringHelper(output+"1", list, n-1);
+        }
+    }
+
+    //Time:
+    //Space:
+
+    //Letter case permutation
+    //https://leetcode.com/problems/letter-case-permutation
 }
