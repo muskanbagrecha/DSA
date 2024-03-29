@@ -4,6 +4,25 @@ import java.util.*;
 
 public class StackProblems {
 
+    //Minimum element in a stack
+
+    //Approach one: O(n) space (using extra stack)
+
+    public int minStack(Stack<Integer> s) {
+        Stack<Integer> helper = new Stack<>();
+        int min = s.peek();
+        while (!s.isEmpty()) {
+            min = Math.min(s.peek(), min);
+            helper.push(s.pop());
+        }
+        while (!helper.empty()) {
+            s.push(helper.pop());
+        }
+        return min;
+    }
+    //Time: O(n)
+    //Space: O(n)
+
     //it's worth noting that for the stack, you could also use `Deque<Integer>` as a stack, with `LinkedList` implementation,
     //because the `Stack` class is considered somewhat outdated. `Deque` is a more complete and consistent set of LIFO stack operations
 
@@ -187,7 +206,7 @@ public class StackProblems {
     //https://www.geeksforgeeks.org/problems/smallest-number-on-left3403/1
     //Smallest number on left
 
-    static List<Integer> leftSmaller(int n, int a[]) {
+    public static List<Integer> leftSmaller(int n, int a[]) {
         //code here
         Stack<Integer> s = new Stack<>();
         List<Integer> list = new ArrayList<>();
@@ -268,18 +287,17 @@ public class StackProblems {
     //space: O(1) - no extra space
 
     //Optimized:
-   public static int[] stockSpanOptimized(int[] arr) {
+    public static int[] stockSpanOptimized(int[] arr) {
         int ans[] = new int[arr.length];
         Stack<Integer> s = new Stack<>();
-        for(int i = 0; i<arr.length; i++){
-            while(!s.isEmpty() && arr[s.peek()]<=arr[i]){
+        for (int i = 0; i < arr.length; i++) {
+            while (!s.isEmpty() && arr[s.peek()] <= arr[i]) {
                 s.pop();
             }
-            if(s.isEmpty()){
+            if (s.isEmpty()) {
                 ans[i] = i - (-1);
-            }
-            else{
-                ans[i] = i-s.peek();
+            } else {
+                ans[i] = i - s.peek();
             }
             s.push(i);
         }
@@ -293,4 +311,51 @@ public class StackProblems {
 
     //Time: O(n) amortized
     //Space: O(n)
+
+    //https://leetcode.com/problems/largest-rectangle-in-histogram/
+    public int largestRectangleArea(int[] hist) {
+        int n = hist.length;
+        int[] smallerOnLeft = nextSmallerOnLeftHelper(hist, n);
+        int[] smallerOnRight = nextSmallerOnRightHelper(hist, n);
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            int area = (smallerOnRight[i] - smallerOnLeft[i] - 1) * hist[i];
+            max = Math.max(max, area);
+        }
+        return max;
+    }
+
+    public static int[] nextSmallerOnLeftHelper(int hist[], int n) {
+        Stack<Integer> s = new Stack<>();
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            while (!s.empty() && hist[s.peek()] >= hist[i]) {
+                s.pop();
+            }
+            if (s.isEmpty()) {
+                ans[i] = -1;
+            } else {
+                ans[i] = s.peek();
+            }
+            s.push(i);
+        }
+        return ans;
+    }
+
+    public static int[] nextSmallerOnRightHelper(int hist[], int n) {
+        Stack<Integer> s = new Stack<>();
+        int[] ans = new int[n];
+        for (int i = n - 1; i >= 0; i--) {
+            while (!s.empty() && hist[s.peek()] >= hist[i]) {
+                s.pop();
+            }
+            if (s.isEmpty()) {
+                ans[i] = n;
+            } else {
+                ans[i] = s.peek();
+            }
+            s.push(i);
+        }
+        return ans;
+    }
 }
