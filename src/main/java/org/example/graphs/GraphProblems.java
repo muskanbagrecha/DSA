@@ -123,5 +123,55 @@ public class GraphProblems {
     //time complexity: O(m*n)
     //Space: O(m*n) for visited array and O(m*n) - worst case for queues when the entire matrix has 1. So total O(n^2).
 
+    public static int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        int m = image.length;
+        int n = image[0].length;
+        boolean[][] vis = new boolean[m][n];
+        int[][] result = new int[m][n];
+        for(int i = 0; i<m; i++){
+            for(int j=0; j<n; j++){
+                result[i][j]=image[i][j];
+            }
+        }
+        floodFillHelper(image, sr, sc, color, vis, result, image[sr][sc]);
+        return result;
+    }
 
+    public static void floodFillHelper(int[][] image, int sr, int sc, int color, boolean[][] vis, int[][] result, int startingColor){
+        vis[sr][sc] = true;
+        result[sr][sc] = color;
+        int[] dRow = {-1, 1, 0, 0};
+        int[] dCol = {0, 0, -1, 1};
+        for(int i = 0; i < 4; i++){
+            int nrow = sr + dRow[i];
+            int ncol = sc + dCol[i];
+            if(nrow>=0 && nrow<image.length && ncol>=0 && ncol<image[0].length && !vis[nrow][ncol] && image[nrow][ncol]==startingColor){
+                floodFillHelper(image, nrow, ncol, color, vis, result, startingColor);
+            }
+        }
+    }
+
+    // O(m*n) for initial copy, recursion worst case when all cells are initial color -> O(m*n) -> O(m*n)
+    //Space: O(m*n) for vis, O(m*n) for result array if we want to include output array, recursion stack -> O(m * n) -> O(m*n)
+
+    //Slightly faster but in this approach we are modifying input array which may not be recommended
+    public int[][] floodFill2(int[][] image, int sr, int sc, int newColor) {
+        int currentColor = image[sr][sc];
+        fill2(image, sr, sc, currentColor, newColor);
+        return image;
+    }
+
+    private void fill2(int[][] image, int sr, int sc, int color, int newColor) {
+        if (sr < 0 || sr >= image.length || sc < 0 || sc >= image[0].length || image[sr][sc] != color || image[sr][sc]==newColor) {
+            return; // Check bounds and if the current pixel is the color we're trying to change from
+        }
+        image[sr][sc] = newColor; // Change color
+        fill2(image, sr - 1, sc, color, newColor); // Up
+        fill2(image, sr + 1, sc, color, newColor); // Down
+        fill2(image, sr, sc - 1, color, newColor); // Left
+        fill2(image, sr, sc + 1, color, newColor); // Right
+    }
+
+    //Time: O(m*n) for recursion stack -> each cell is visited once
+    //Space: O(m*n) worst case -> This is primarily due to the recursion stack. Although each call adds a frame to the stack, the depth of these calls—and therefore the maximum size of the stack—can in the worst case be proportional to the number of pixels in the image if the recursive filling process has to traverse a long path or cover a large area.
 }
