@@ -318,6 +318,29 @@ public class Recursion {
     //Time: O(Fib(N)) - This is because for any string of length n, you can arrive there by adding a "0" to a string of length n-1 (no constraint here) or by adding "10" to a string of length n-2
     //Space: O(Fib(N)) - recursion stack
 
+    //https://leetcode.com/problems/generate-parentheses/
+    public static List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<String>();
+        generateParenthesisHelper(res, n, n, "");
+        return res;
+    }
+
+    public static void generateParenthesisHelper(List<String> res, int open, int close, String s) {
+        if (open==0 && close==0) {
+            res.add(s);
+            return;
+        }
+        if (open != 0) {
+            generateParenthesisHelper(res, open - 1, close, s + "(");
+        }
+        if (close > open) { //bracket has been opened previously so we can close it
+            generateParenthesisHelper(res, open, close - 1, s + ")");
+        }
+    }
+
+    //Time: O(2^n)
+    //Space: O(2^n) - recursion depth
+
     //Letter case permutation
     //https://leetcode.com/problems/letter-case-permutation
 }
