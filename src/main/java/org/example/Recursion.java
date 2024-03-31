@@ -315,8 +315,8 @@ public class Recursion {
         }
     }
 
-    //Time:
-    //Space:
+    //Time: O(Fib(N)) - This is because for any string of length n, you can arrive there by adding a "0" to a string of length n-1 (no constraint here) or by adding "10" to a string of length n-2
+    //Space: O(Fib(N)) - recursion stack
 
     //Letter case permutation
     //https://leetcode.com/problems/letter-case-permutation
