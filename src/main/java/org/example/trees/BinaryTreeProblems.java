@@ -27,8 +27,8 @@ public class BinaryTreeProblems {
 
     //Pre-Order Traversal
     //root-left-right
-    public void preOrderTraversal(TreeNode root){
-        if(root==null){
+    public void preOrderTraversal(TreeNode root) {
+        if (root == null) {
             System.out.println("END");
             return;
         }
@@ -64,12 +64,12 @@ public class BinaryTreeProblems {
         return list;
     }
 
-    public void traverse(NaryNode root, List<Integer> list){
-        if(root==null){
+    public void traverse(NaryNode root, List<Integer> list) {
+        if (root == null) {
             return;
         }
         list.add(root.data);
-        for(NaryNode child : root.children){
+        for (NaryNode child : root.children) {
             traverse(child, list);
         }
     }
@@ -77,22 +77,22 @@ public class BinaryTreeProblems {
     public List<Integer> preorderNaryIterative(NaryNode root) {
         List<Integer> list = new LinkedList<>();
         Stack<NaryNode> s = new Stack<>();
-        if(root==null){
+        if (root == null) {
             return list;
         }
         s.add(root);
-        while(!s.isEmpty()){
+        while (!s.isEmpty()) {
             NaryNode node = s.pop();
             list.add(node.data);
-            for(int i = node.children.size()-1; i>=0; i--){
+            for (int i = node.children.size() - 1; i >= 0; i--) {
                 s.push(node.children.get(i));
             }
         }
         return list;
     }
 
-    public void inOrderTraversal(TreeNode root){
-        if(root==null){
+    public void inOrderTraversal(TreeNode root) {
+        if (root == null) {
             System.out.println("END");
             return;
         }
@@ -112,23 +112,22 @@ public class BinaryTreeProblems {
     public List<Integer> inorderTraversalIterative(TreeNode root) {
         List<Integer> list = new ArrayList<>();
         Stack<TreeNode> s = new Stack<>();
-        if(root==null){
+        if (root == null) {
             return list;
         }
         s.push(root.right);
         s.push(root);
         s.push(root.left);
-        while(!s.isEmpty()){
+        while (!s.isEmpty()) {
             TreeNode top = s.peek();
-            if(top!=null){
+            if (top != null) {
                 s.pop();
                 s.push(top.right);
                 s.push(top);
                 s.push(top.left);
-            }
-            else{
+            } else {
                 s.pop();
-                if(s.isEmpty()){
+                if (s.isEmpty()) {
                     return list;
                 }
                 list.add(s.pop().data);
@@ -148,12 +147,12 @@ public class BinaryTreeProblems {
 //    Continue this pattern until you have processed all nodes. The stack's nature ensures that nodes are processed in the correct order (left, root, right).
 //    Finish when the stack is empty, indicating that all nodes have been visited in the correct order.
 
-    public List<Integer> inorderTraversal(TreeNode root) {
+    public static List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> list = new ArrayList<>();
         Stack<TreeNode> s = new Stack<>();
         TreeNode current = root;
-        while(current!=null || !s.isEmpty()){
-            while(current!=null){
+        while (current != null || !s.isEmpty()) {
+            while (current != null) {
                 s.push(current);
                 current = current.left;
             }
@@ -166,8 +165,8 @@ public class BinaryTreeProblems {
 
     //Time & space: same as above but stack does not need to store unnecessary null entries so there is a slight optimization.
 
-    public void postOrderTraversal(TreeNode root){
-        if(root==null){
+    public void postOrderTraversal(TreeNode root) {
+        if (root == null) {
             System.out.println("END");
             return;
         }
@@ -184,7 +183,7 @@ public class BinaryTreeProblems {
     public List<List<Integer>> levelOrderRecursion(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
         int ht = heightHelper(root);
-        for(int i = 1; i<=ht; i++){
+        for (int i = 1; i <= ht; i++) {
             List<Integer> current = new ArrayList<>();
             traverse(current, root, i);
             ans.add(current);
@@ -192,23 +191,23 @@ public class BinaryTreeProblems {
         return ans;
     }
 
-    static int heightHelper(TreeNode root){
-        if(root==null){
+    static int heightHelper(TreeNode root) {
+        if (root == null) {
             return 0;
         }
-        return 1+Math.max(heightHelper(root.left), heightHelper(root.right));
+        return 1 + Math.max(heightHelper(root.left), heightHelper(root.right));
     }
 
-    static void traverse(List<Integer> current, TreeNode node, int level){ //In this problem we have a requirement to store output in list of list so we are passing a new current object for every level to store elements in that level.
-        if(node==null){
+    static void traverse(List<Integer> current, TreeNode node, int level) { //In this problem we have a requirement to store output in list of list so we are passing a new current object for every level to store elements in that level.
+        if (node == null) {
             return;
         }
-        if(level==1){
+        if (level == 1) {
             current.add(node.data);
             return;
         }
-        traverse(current, node.left, level-1);
-        traverse(current, node.right, level-1);
+        traverse(current, node.left, level - 1);
+        traverse(current, node.right, level - 1);
 
     }
 
@@ -222,7 +221,7 @@ public class BinaryTreeProblems {
     //n operations for the nth leve
     // Summing these up, you get a total of 1 + 2 + ... + n operations, which equals n(n+1)/2, simplifying to O(n^2) in terms of time complexity.
 
-     //Think of it as doing DFS for each level but unlike standard DFS that explores all nodes in a go,this approach starts anew from root for each level.
+    //Think of it as doing DFS for each level but unlike standard DFS that explores all nodes in a go,this approach starts anew from root for each level.
 
     // For a balanced tree, while the height is log(n) and the number of nodes at each level doubles, the traversal from the root to each level still involves visiting all nodes on the path to nodes at that level.
     // The method used here does not take advantage of the balanced structure to reduce the complexity to O(n log n) because it unnecessarily traverses the upper levels for each node in the lower levels.
@@ -236,19 +235,19 @@ public class BinaryTreeProblems {
     //When we want to store output in list of lists
 
     public List<List<Integer>> levelOrder2(TreeNode root) {
-        List<List<Integer> > ans = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
         Queue<TreeNode> q = new LinkedList<>();
-        if(root==null){
+        if (root == null) {
             return ans;
         }
         q.add(root);
         q.add(null);
         List<Integer> current = new ArrayList<>();
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
             TreeNode element = q.remove();
-            if(element==null){
+            if (element == null) {
                 ans.add(current);
-                if(q.isEmpty()){
+                if (q.isEmpty()) {
                     return ans;
                 }
                 current = new ArrayList<>();
@@ -256,10 +255,10 @@ public class BinaryTreeProblems {
                 continue;
             }
             current.add(element.data);
-            if(element.left!=null){
+            if (element.left != null) {
                 q.add(element.left);
             }
-            if(element.right!=null){
+            if (element.right != null) {
                 q.add(element.right);
             }
         }
@@ -270,22 +269,22 @@ public class BinaryTreeProblems {
 
     //Without null:
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer> > ans = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
         Queue<TreeNode> q = new LinkedList<>();
-        if(root==null){
+        if (root == null) {
             return ans;
         }
         q.add(root);
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
             List<Integer> current = new ArrayList<>();
             int count = q.size();
-            for(int i = 0; i<count; i++){
+            for (int i = 0; i < count; i++) {
                 TreeNode element = q.remove();
                 current.add(element.data);
-                if(element.left!=null){
+                if (element.left != null) {
                     q.add(element.left);
                 }
-                if(element.right!=null){
+                if (element.right != null) {
                     q.add(element.right);
                 }
             }
@@ -302,49 +301,47 @@ public class BinaryTreeProblems {
     //Space: O(n) -> queue
 
     //When we only want to print the data (https://www.geeksforgeeks.org/problems/level-order-traversal)
-    static ArrayList <Integer> levelOrder3(TreeNode root)
-    {
+    static ArrayList<Integer> levelOrder3(TreeNode root) {
         // Your code here
         ArrayList<Integer> list = new ArrayList<>();
 
-        if(root==null){
+        if (root == null) {
             return list;
         }
 
         Queue<TreeNode> q = new LinkedList<>();
 
         q.add(root);
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
             TreeNode node = q.remove();
             list.add(node.data);
-            if(node.left!=null){
+            if (node.left != null) {
                 q.add(node.left);
             }
-            if(node.right!=null){
+            if (node.right != null) {
                 q.add(node.right);
             }
         }
         return list;
     }
 
-    public void Helper(TreeNode node, int level, List<List<Integer>> result)
-    {
-        if(result.size()==level)
+    public void Helper(TreeNode node, int level, List<List<Integer>> result) {
+        if (result.size() == level)
             result.add(new ArrayList<Integer>());
 
         result.get(level).add(node.data);
 
-        if(node.left!=null)
-            Helper(node.left, level+1, result);
-        if(node.right!=null)
-            Helper(node.right, level+1, result);
+        if (node.left != null)
+            Helper(node.left, level + 1, result);
+        if (node.right != null)
+            Helper(node.right, level + 1, result);
     }
 
     public List<List<Integer>> levelOrder4(TreeNode root) {
         List<List<Integer>> result = new ArrayList<List<Integer>>();
-        if(root == null)
+        if (root == null)
             return result;
-        Helper(root,0, result);
+        Helper(root, 0, result);
         return result;
     }
 
@@ -357,7 +354,7 @@ public class BinaryTreeProblems {
         }
         int left = helperHeight(root.left);
         int right = helperHeight(root.right);
-        return Math.abs(left - right)<=1 && isBalanced(root.left) && isBalanced(root.right);
+        return Math.abs(left - right) <= 1 && isBalanced(root.left) && isBalanced(root.right);
     }
 
     public int helperHeight(TreeNode root) {
@@ -378,15 +375,15 @@ public class BinaryTreeProblems {
         }
         int left = helperHeight2(root.left, map);
         int right = helperHeight2(root.right, map);
-        return Math.abs(left - right)<=1 && isBalanced(root.left) && isBalanced(root.right);
+        return Math.abs(left - right) <= 1 && isBalanced(root.left) && isBalanced(root.right);
     }
 
     public int helperHeight2(TreeNode root, HashMap<TreeNode, Integer> map) {
         if (root == null) {
             return 0;
         }
-        if(!map.containsKey(root)){
-            map.put(root, 1+ Math.max(height(root.left), height(root.right)));
+        if (!map.containsKey(root)) {
+            map.put(root, 1 + Math.max(helperHeight2(root.left, map), helperHeight2(root.right, map)));
         }
         return map.get(root);
     }
@@ -394,7 +391,7 @@ public class BinaryTreeProblems {
     //DFS approach
 
     public boolean isBalanced3(TreeNode root) {
-        return depth3(root)!=-1;
+        return depth3(root) != -1;
     }
 
     public int depth3(TreeNode root) {
@@ -415,13 +412,13 @@ public class BinaryTreeProblems {
 
     //Are two binary trees identical?
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        if(p==null){
-            return q==null;
+        if (p == null) {
+            return q == null;
         }
-        if(q==null){
-            return p==null;
+        if (q == null) {
+            return p == null;
         }
-        if(p.data!=q.data){
+        if (p.data != q.data) {
             return false;
         }
         return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
@@ -429,4 +426,29 @@ public class BinaryTreeProblems {
     //Time: O(N) where N is the number of nodes in the smaller tree if they're different, or simply the number of nodes in the trees if they're the same size.
     //Space: O(min(H1, H2)), in best case, trees are balanced so it will be O(logn) but worst case both trees are identical and skewed O(n)
     //The recursion depth is determined by the height of the shorter tree in the worst case (since the algorithm would stop upon finding the first difference).
+
+    public static TreeNode levelOrderSuccessor(TreeNode root, int val) {
+        if (root == null) return null;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode curr = q.poll();
+                if (curr.left != null) {
+                    q.offer(curr.left);
+                }
+                if (curr.right != null) {
+                    q.offer(curr.right);
+                }
+                if (curr.data == val) {
+                    if (!q.isEmpty()) {
+                        return q.poll();
+                    }
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
 }
