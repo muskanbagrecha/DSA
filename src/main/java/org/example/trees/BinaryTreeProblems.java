@@ -432,23 +432,93 @@ public class BinaryTreeProblems {
         Queue<TreeNode> q = new LinkedList<>();
         q.offer(root);
         while (!q.isEmpty()) {
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode curr = q.poll();
-                if (curr.left != null) {
-                    q.offer(curr.left);
+            TreeNode curr = q.poll();
+            if (curr.left != null) {
+                q.offer(curr.left);
+            }
+            if (curr.right != null) {
+                q.offer(curr.right);
+            }
+            if (curr.data == val) {
+                if (!q.isEmpty()) {
+                    return q.poll();
                 }
-                if (curr.right != null) {
-                    q.offer(curr.right);
-                }
-                if (curr.data == val) {
-                    if (!q.isEmpty()) {
-                        return q.poll();
-                    }
-                    return null;
-                }
+                return null;
             }
         }
+
         return null;
+    }
+    //Time: O(n)
+    //Space: O(w) - max width of the tree => O(n/2) for perfect binary tree no of lead nodes will be n/2 => O(n)
+
+    //https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        if (root == null)
+            return list;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            boolean even = list.size()%2==0;
+            List<Integer> currentList = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode curr = q.poll();
+                if (even) {
+                    currentList.add(curr.data);
+                }
+                else{
+                    currentList.add(0, curr.data);
+                }
+                if (curr.left != null) {
+                    q.add(curr.left);
+                }
+                if (curr.right != null) {
+                    q.add(curr.right);
+                }
+            }
+            list.add(currentList);
+        }
+        return list;
+    }
+
+    //Approach 2: actual zigzag traversal
+    public List<List<Integer>> zigzagLevelOrder2(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        if (root == null)
+            return list;
+        Deque<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        boolean reverse=true;;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            reverse = !reverse;
+            List<Integer> currentList = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                if (!reverse) {
+                    TreeNode curr = q.pollFirst();
+                    if (curr.left != null) {
+                        q.addLast(curr.left);
+                    }
+                    if (curr.right != null) {
+                        q.addLast(curr.right);
+                    }
+                    currentList.add(curr.data);
+                }
+                else{
+                    TreeNode curr = q.pollLast();
+                    if(curr.right!=null){
+                        q.offerFirst(curr.right);
+                    }
+                    if(curr.left!=null){
+                        q.offerFirst(curr.left);
+                    }
+                    currentList.add(curr.data);
+                }
+            }
+            list.add(currentList);
+        }
+        return list;
     }
 }
