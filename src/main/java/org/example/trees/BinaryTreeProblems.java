@@ -298,7 +298,7 @@ public class BinaryTreeProblems {
     //Both the above methods are same in terms of complexity.
 
     //Time: O(n) -> visiting each node once.
-    //Space: O(n) -> queue
+    //Space: O(n) -> queue - max width of the tree (O(n/2) for perfect binary tree)
 
     //When we only want to print the data (https://www.geeksforgeeks.org/problems/level-order-traversal)
     static ArrayList<Integer> levelOrder3(TreeNode root) {
@@ -345,6 +345,45 @@ public class BinaryTreeProblems {
         return result;
     }
 
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer> > ans = new LinkedList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        if(root==null){
+            return ans;
+        }
+        q.add(root);
+        List<Integer> current;
+        while(!q.isEmpty()){
+            current = new ArrayList<>();
+            int size = q.size();
+            for(int i = 0; i<size; i++){
+                TreeNode curr = q.poll();
+                if(curr.left!=null){
+                    q.offer(curr.left);
+                }
+                if(curr.right!=null){
+                    q.offer(curr.right);
+                }
+                current.add(curr.data);
+            }
+            ans.add(0, current);
+        }
+        return ans;
+    }
+
+    public List<List<Integer>> levelOrderBottom2(TreeNode root) {
+        LinkedList<List<Integer>> list = new LinkedList<List<Integer>>();
+        addLevel(list, 0, root);
+        return list;
+    }
+
+    private void addLevel(LinkedList<List<Integer>> list, int level, TreeNode node) {
+        if (node == null) return;
+        if (list.size()-1 < level) list.addFirst(new LinkedList<>());
+        list.get(list.size()-1-level).add(node.data);
+        addLevel(list, level+1, node.left);
+        addLevel(list, level+1, node.right);
+    }
     //Height balanced tree
 
     //Approach 1: Brute force
@@ -521,4 +560,102 @@ public class BinaryTreeProblems {
         }
         return list;
     }
+
+    //Populating Next Right Pointers in Each Node - https://leetcode.com/problems/populating-next-right-pointers-in-each-node/description/
+    //BFS
+
+    public Node connect(Node root) {
+        if(root==null) return root;
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i<size; i++){
+                Node curr = q.poll();
+                if(i!=size-1){
+                    curr.next = q.peek();
+                }
+                if(curr.left!=null){
+                    q.offer(curr.left);
+                }
+                if(curr.right!=null){
+                    q.offer(curr.right);
+                }
+            }
+        }
+        return root;
+    }
+
+    //Follow up:
+    //Do it without using a queue
+
+    public List<Integer> rightSideViewBFS(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        if (root == null) {
+            return ans;
+        }
+        q.add(root);
+        int i;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (i = 0; i < size; i++) {
+                TreeNode curr = q.remove();
+                if (curr.left != null) {
+                    q.add(curr.left);
+                }
+                if (curr.right != null) {
+                    q.add(curr.right);
+                }
+                if(i==size-1){
+                    ans.add(curr.data);
+                }
+            }
+        }
+        return ans;
+    }
+    //Time: O(n)
+    //Space: O(n) for queue
+
+    public List<Integer> rightSideViewDFS(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        rightSideViewDFSHelper(root, list, 0);
+        return list;
+    }
+
+    public void rightSideViewDFSHelper(TreeNode root, List<Integer> list, int depth){
+        if(root==null){
+            return;
+        }
+        if(depth<list.size()){
+            list.set(depth, root.data);
+        }
+        else{
+            list.add(root.data);
+        }
+        rightSideViewDFSHelper(root.left, list, depth+1);
+        rightSideViewDFSHelper(root.right, list, depth+1);
+    }
+    //Time: O(n) all nodes will be traversed once.
+    //Space: O(n) for a skewed tree (O(n) for recursion stack and O(n) for list for skewed tree if we are considering output storage.)
 }
+
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
