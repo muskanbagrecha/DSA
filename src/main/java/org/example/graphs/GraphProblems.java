@@ -122,8 +122,41 @@ public class GraphProblems {
     // 2. O(m*n) in bfs in the worst case. When all cells are 1, all neighbours will be checked once.
     //3. Inside bfs, check will we made for 8 neighbours but this will not increase the time complexity as it is a fixed set.
     //time complexity: O(m*n)
-    //Space: O(m*n) for visited array and O(m*n) - worst case for queues when the entire matrix has 1. So total O(n^2).
+    //Space: O(m*n) for visited array and O(m*n) - worst case for queues when the entire matrix has 1. So total O(m*n).
 
+    //Using DFS
+
+    int[] drow = {-1, -1, -1, 0, 1, 1, 1, 0};
+    int[] dcol = {-1, 0, 1, 1, 1, 0, -1, -1};
+    public int numIslandsdfs(char[][] grid) {
+        // Code here
+        int m = grid.length;
+        int n = grid[0].length;
+        boolean[][] vis = new boolean[m][n];
+        int ctr = 0;
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(grid[i][j]=='1' && !vis[i][j]){
+                    numIslandsDfsHelper(grid, i, j, vis);
+                    ctr++;
+                }
+            }
+        }
+        return ctr;
+    }
+
+    public void numIslandsDfsHelper(char[][] grid, int i, int j, boolean[][] vis){
+        vis[i][j] = true;
+        for(int k = 0; k<8; k++){
+            int nrow = i + drow[k];
+            int ncol = j + dcol[k];
+            if(nrow >= 0 && nrow<grid.length && ncol>=0 && ncol<grid[0].length){
+                if(grid[nrow][ncol]=='1'  && !vis[nrow][ncol]){
+                    numIslandsDfsHelper(grid, nrow, ncol, vis);
+                }
+            }
+        }
+    }
     public static int[][] floodFill(int[][] image, int sr, int sc, int color) {
         int m = image.length;
         int n = image[0].length;
@@ -255,4 +288,73 @@ public class GraphProblems {
         return fresh == 0 ? minutes : -1;
     }
 
+    //
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        boolean[] vis = new boolean[V];
+        for(int i = 0; i<V; i++){
+            if(!vis[i]){
+                boolean hasCycle = isCycleBfs(adj, i, vis);
+                if(hasCycle){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isCycleBfs(ArrayList<ArrayList<Integer>> adj, int node, boolean[] vis){
+        Queue<Integer> q = new LinkedList<>();
+        q.add(node);
+        vis[node] = true;
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            int ctr = 0;
+            for(Integer neighbour : adj.get(curr)){
+                if(!vis[neighbour]){
+                    vis[neighbour] = true;
+                    q.add(neighbour);
+                }
+                else{
+                    ctr++;
+                }
+            }
+            if(ctr>1) return true;
+        }
+        return false;
+    }
+    //Approach 2
+    public boolean isCycle2(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        boolean[] vis = new boolean[V];
+        for(int i = 0; i<V; i++){
+            if(!vis[i]){
+                if(isCycle2Bfs(adj, i, vis))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCycle2Bfs(ArrayList<ArrayList<Integer>> adj, int node, boolean[] vis){
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(node, -1));
+        vis[node] = true;
+        while(!q.isEmpty()){
+            int curr = q.peek().first;
+            int parent = q.poll().second;
+            for(Integer neighbour : adj.get(curr)){
+                if(!vis[neighbour]){
+                    q.add(new Pair(neighbour, curr));
+                    vis[neighbour] = true;
+                }
+                else if(neighbour != parent){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //Time complexity: same as bfs -> O(V + 2E) -> O(V + E) where E is no of edges
 }
