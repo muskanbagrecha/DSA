@@ -357,4 +357,31 @@ public class GraphProblems {
     }
 
     //Time complexity: same as bfs -> O(V + 2E) -> O(V + E) where E is no of edges
+
+    public boolean isCycleDFS(int V, ArrayList<ArrayList<Integer>> adj) {
+        boolean vis[] = new boolean[V];
+        for(int i = 0; i<V; i++){
+            if(!vis[i]){
+                if(isCycleDFSHelper(adj, vis, i, -1)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isCycleDFSHelper(ArrayList<ArrayList<Integer>> adj, boolean[] vis, int node, int parent){
+        vis[node] = true;
+        for(int neighbour : adj.get(node)){
+            if(!vis[neighbour]){
+                if(isCycleDFSHelper(adj, vis, neighbour, node)){
+                    return true;
+                }
+                else if(neighbour!=parent){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
