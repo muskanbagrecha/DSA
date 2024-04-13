@@ -147,4 +147,44 @@ public class DynamicProgramming {
         return t[N][sum];
     }
     //Time and space same as memo
+
+    //https://leetcode.com/problems/partition-equal-subset-sum
+    private Boolean[][] dp;
+
+    public boolean canPartition(int[] nums) {
+        int sum = computeSum(nums);
+        if (sum % 2 != 0) {
+            return false;
+        }
+        dp = new Boolean[nums.length + 1][sum / 2 + 1];
+        return subsetSum(nums, nums.length, sum / 2);
+    }
+
+    private int computeSum(int[] nums) {
+        int total = 0;
+        for (int num : nums) {
+            total += num;
+        }
+        return total;
+    }
+
+    private boolean subsetSum(int[] nums, int itemCount, int targetSum) {
+        if (dp[itemCount][targetSum] != null) {
+            return dp[itemCount][targetSum];
+        }
+        if (targetSum == 0) {
+            return dp[itemCount][targetSum] = true;
+        }
+        if (itemCount == 0) {
+            return dp[itemCount][targetSum] = false;
+        }
+        if (nums[itemCount - 1] > targetSum) {
+            return dp[itemCount][targetSum] = subsetSum(nums, itemCount - 1, targetSum);
+        }
+        return dp[itemCount][targetSum] = subsetSum(nums, itemCount - 1, targetSum) ||
+                subsetSum(nums, itemCount - 1, targetSum - nums[itemCount - 1]);
+    }
+
+    //Time: O(n) + O(n/2 * sum) => O(n * sum)
+    //Space: O(n/2 * sum) => O(n * sum)
 }
