@@ -638,6 +638,87 @@ public class BinaryTreeProblems {
     }
     //Time: O(n) all nodes will be traversed once.
     //Space: O(n) for a skewed tree (O(n) for recursion stack and O(n) for list for skewed tree if we are considering output storage.)
+
+    //Approach 2: root -> right -> left traversal
+
+    public void rightSideViewDFSHelper2(TreeNode root, List<Integer> list, int depth){
+        if(root==null){
+            return;
+        }
+        if(depth==list.size()){
+            list.add(root.data);
+        }
+        rightSideViewDFSHelper2(root.right, list, depth+1); //right first as we want right side view
+        rightSideViewDFSHelper2(root.left, list, depth+1);
+    }
+
+    //print left view
+    static int maxLevel;
+
+    public static void printLeftView(TreeNode root) {
+        view(root, 0);
+    }
+
+    public static void view(TreeNode root, int currDepth ){
+        if(root==null){
+            return;
+        }
+        if(currDepth==maxLevel){
+            maxLevel++;
+            System.out.print(root.data + " ");
+        }
+        view(root.left, currDepth+1);
+        view(root.right, currDepth+1);
+    }
+
+    static int max = 0;
+
+    public static int  diameterOfBinaryTree(TreeNode root) {
+        diameterOfBinaryTreeDepth(root);
+        return max;
+    }
+
+    private static int diameterOfBinaryTreeDepth(TreeNode root) {
+        if (root == null)
+            return 0;
+
+        int left = diameterOfBinaryTreeDepth(root.left);
+        int right = diameterOfBinaryTreeDepth(root.right);
+
+        max = Math.max(max, left + right);
+
+        return 1 + Math.max(left, right);
+    }
+    public TreeNode invertTree1(TreeNode root) {
+        invert1(root);
+        return root;
+    }
+
+    public void invert1(TreeNode root){
+        if(root==null){
+            return;
+        }
+        invert1(root.left);
+        invert1(root.right);
+        TreeNode tempLeft = root.left;
+        TreeNode tempRight = root.right;
+        root.left = tempRight;
+        root.right = tempLeft;
+        return;
+    }
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+        root.left = right;
+        root.right = left;
+        return root;
+    }
+
+    //Time & Space: O(n)
 }
 
 class Node {
