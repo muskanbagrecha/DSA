@@ -4,6 +4,7 @@ import org.example.pair.Pair;
 import org.example.tri.Tri;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -384,4 +385,52 @@ public class GraphProblems {
         }
         return false;
     }
+
+    //01 MATRIX
+    //this solution involves doing a BFS for each cell at 1 so we can find the min distance but it is EXTREMELY SLOW
+    public int[][] updateMatrix(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int[][] output = new int[m][n];
+        boolean[][] visited = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 1) {
+                    output[i][j] = distance(mat, i, j, visited);
+                }
+            }
+        }
+        return output;
+    }
+
+    public int distance(int[][] grid, int i, int j, boolean[][] vis) {
+        // do bfs till we find 0
+        for (int a = 0; a < grid.length; a++) {
+            Arrays.fill(vis[a], false); // Reset visited before each BFS
+        }
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(i, j));
+        int distance = 1;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int t = 0; t < size; t++) {
+                Pair curr = q.poll();
+                for (int k = 0; k < 4; k++) {
+                    int nrow = curr.first + drow[k];
+                    int ncol = curr.second + dcol[k];
+                    if (nrow >= 0 && nrow < grid.length && ncol >= 0 && ncol < grid[0].length && !vis[nrow][ncol]) {
+                        vis[nrow][ncol] = true;
+                        if (grid[nrow][ncol] == 0) {
+                            return distance;
+                        }
+                        q.add(new Pair(nrow, ncol));
+                    }
+                }
+            }
+            distance++;
+        }
+        return distance;
+    }
+
+    //Approach 2
 }
