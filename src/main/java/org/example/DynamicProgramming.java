@@ -124,6 +124,7 @@ public class DynamicProgramming {
     static Boolean isSubsetSumTabulation(int N, int arr[], int sum){
         // code here
         boolean[][] t = new boolean[N+1][sum+1];
+
         for(int i = 0; i<=N; i++){
             for(int j = 0; j<=sum; j++){
                 if(i==0 || j==0){
@@ -187,4 +188,31 @@ public class DynamicProgramming {
 
     //Time: O(n) + O(n/2 * sum) => O(n * sum)
     //Space: O(n/2 * sum) => O(n * sum)
+
+    public boolean canPartition2(int[] nums) {
+        int total = 0;
+        for (int num : nums) {
+            total += num;
+        }
+        if (total % 2 != 0) {
+            return false;
+        }
+        boolean[][] dp = new boolean[nums.length + 1][total / 2 + 1];
+        for (int i = 0; i <= nums.length; i++) {
+            for (int j = 0; j <= total / 2; j++) {
+                if (i == 0) {
+                    dp[i][j] = false;
+                } else if (j == 0) {
+                    dp[i][j] = true;
+                } else if (nums[i - 1] <= j) {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        return dp[nums.length][total / 2];
+    }
+
+    //this sol was slightly slower than memo one.
 }
