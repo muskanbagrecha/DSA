@@ -433,4 +433,40 @@ public class GraphProblems {
     }
 
     //Approach 2
+    //Floodfill from 0s (similar to rotten oranges algo. Multi source BFS approach)
+    public int[][] updateMatrix2(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int[][] distance = new int[m][n];
+        int sum = m + n;
+        Queue<Pair> q = new LinkedList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 0) {
+                    q.add(new Pair(i, j));
+                }
+                else{
+                    distance[i][j] = sum;
+                }
+            }
+        }
+        int level = 1;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                Pair curr = q.poll();
+                for (int k = 0; k < 4; k++) {
+                    int nrow = curr.first + drow[k];
+                    int ncol = curr.second + dcol[k];
+                    if (nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && mat[nrow][ncol] == 1
+                            && distance[nrow][ncol] == sum) {
+                        distance[nrow][ncol] = level;
+                        q.add(new Pair(nrow, ncol));
+                    }
+                }
+            }
+            level++;
+        }
+        return distance;
+    }
 }
