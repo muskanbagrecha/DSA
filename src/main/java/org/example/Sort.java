@@ -27,7 +27,7 @@ public class Sort {
     // Inner loop -> n-1 => n-2 => n-3 => 0 iterations
     // Sum = n*(n-1)/2 => O(n**2)
     // So worst complexity is O(n**2)
-    // Best time complexity : O(n) // due to early return
+    // Best time complexity : O(n)  when array is sorted // due to early return
     //Space: O(1)
 
     //Recursive:
@@ -96,7 +96,14 @@ public class Sort {
     }
 
     //Time: O(n**2) - one loop for finding the max, one for making recursive calls for n times
+    //Time complexity is O(n**2) for best, avg and worst.
     //Space: O(n)
+
+    //Insertion sort
+
+    //Iterative
+
+    //Recursive
 
     public static void swap(int[] arr, int a, int b) {
         int temp = arr[a];

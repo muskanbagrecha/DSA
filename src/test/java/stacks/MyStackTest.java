@@ -1,4 +1,6 @@
-import org.example.MyStack;
+package stacks;
+
+import org.example.stacks.MyStack;
 import org.junit.Assert;
 import org.junit.Test;
 import java.util.EmptyStackException;

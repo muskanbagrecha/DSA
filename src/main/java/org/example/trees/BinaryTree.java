@@ -47,9 +47,9 @@ public class BinaryTree {
 //        }
 //    }
 
-    public static TreeNode insertLevelOrder(Integer[] array){
+    public TreeNode insertLevelOrder(Integer[] array){
         if (array == null || array.length == 0) return null;
-        TreeNode root = new TreeNode(array[0]);
+        this.root = new TreeNode(array[0]);
         Queue<TreeNode> q = new LinkedList<>();
         q.offer(root);
         int i = 1;
@@ -86,7 +86,8 @@ public class BinaryTree {
     }
 
     public void levelOrderTraversal(TreeNode root, List<Integer> list){
-
+        Queue<TreeNode> q = new LinkedList<>();
+        
     }
 }
 

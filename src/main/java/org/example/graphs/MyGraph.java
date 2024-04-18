@@ -1,2 +1,9 @@
-package org.example.graphs;public class MyGraph {
+package org.example.graphs;
+
+public class MyGraph {
+
+    public MyGraph(int[] array){
+
+    }
+
 }

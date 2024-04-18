@@ -1,23 +1,28 @@
 package org.example.stacks;
 
-public class StackUsingQueues {
-    public MyStack() {
+import java.util.Queue;
 
-    }
+public class StackUsingTwoQueues {
 
-    public void push(int x) {
+    private Queue<Integer> q;
 
-    }
-
-    public int pop() {
-
-    }
-
-    public int top() {
-
-    }
-
-    public boolean empty() {
-
-    }
+//    public StackUsingTwoQueues() {
+//        q = new LinkedList<>();
+//    }
+//
+//    public void push(int x) {
+//
+//    }
+//
+//    public int pop() {
+//
+//    }
+//
+//    public int top() {
+//
+//    }
+//
+//    public boolean empty() {
+//
+//    }
 }

@@ -16,11 +16,11 @@ public class GraphProblems {
         Queue<Integer> q = new LinkedList<>();
         q.add(0);
         vis[0] = true;
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
             int element = q.remove();
             ans.add(element);
-            for(int neighbour : adj.get(element)){
-                if(vis[neighbour]!=true){
+            for (int neighbour : adj.get(element)) {
+                if (vis[neighbour] != true) {
                     vis[neighbour] = true;
                     q.add(neighbour);
                 }
@@ -44,11 +44,11 @@ public class GraphProblems {
         return ans;
     }
 
-    public void dfsRecursionHelper(int node, ArrayList<ArrayList<Integer>> adj, boolean[] vis, ArrayList<Integer> ans){
+    public void dfsRecursionHelper(int node, ArrayList<ArrayList<Integer>> adj, boolean[] vis, ArrayList<Integer> ans) {
         vis[node] = true;
         ans.add(node);
-        for(int neighbour : adj.get(node)){
-            if(!vis[neighbour]){
+        for (int neighbour : adj.get(node)) {
+            if (!vis[neighbour]) {
                 dfsRecursionHelper(neighbour, adj, vis, ans);
             }
         }
@@ -60,8 +60,8 @@ public class GraphProblems {
         // Write your code here.
         boolean[] vis = new boolean[n];
         int provinces = 0;
-        for(int i = 0; i<n; i++){
-            if(!vis[i]){
+        for (int i = 0; i < n; i++) {
+            if (!vis[i]) {
                 dfsFindNumOfProvincesHelper(roads, i, vis);
                 provinces++;
             }
@@ -69,8 +69,8 @@ public class GraphProblems {
         return provinces;
     }
 
-    public static void dfsFindNumOfProvincesHelper(int[][] roads, int city, boolean[] vis){
-        vis[city]=true;
+    public static void dfsFindNumOfProvincesHelper(int[][] roads, int city, boolean[] vis) {
+        vis[city] = true;
         for (int j = 0; j < roads[city].length; j++) {
             if (roads[city][j] == 1 && !vis[j]) {
                 dfsFindNumOfProvincesHelper(roads, j, vis);
@@ -89,9 +89,9 @@ public class GraphProblems {
         int m = grid[0].length;
         boolean vis[][] = new boolean[n][m];
         int islands = 0;
-        for(int i = 0; i<n; i++){
-            for(int j = 0; j<m; j++){
-                if(grid[i][j]=='1' && !vis[i][j]){
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '1' && !vis[i][j]) {
                     islands++;
                     numIslandsBFSHelper(grid, vis, i, j);
                 }
@@ -100,17 +100,17 @@ public class GraphProblems {
         return islands;
     }
 
-    public static void numIslandsBFSHelper(char[][] grid, boolean[][] vis, int i, int j){
+    public static void numIslandsBFSHelper(char[][] grid, boolean[][] vis, int i, int j) {
         Queue<Pair> q = new LinkedList<>();
         q.add(new Pair(i, j));
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
             Pair current = q.remove();
-            for(int row = -1; row<=1; row++){
-                for(int col = -1; col<=1; col++){
+            for (int row = -1; row <= 1; row++) {
+                for (int col = -1; col <= 1; col++) {
                     int nrow = row + current.first;
                     int ncol = col + current.second;
-                    if(nrow>=0 && nrow<grid.length && ncol>=0 && ncol<grid[0].length && grid[nrow][ncol]=='1' && !vis[nrow][ncol]){
-                        vis[nrow][ncol]=true;
+                    if (nrow >= 0 && nrow < grid.length && ncol >= 0 && ncol < grid[0].length && grid[nrow][ncol] == '1' && !vis[nrow][ncol]) {
+                        vis[nrow][ncol] = true;
                         q.add(new Pair(nrow, ncol));
                     }
                 }
@@ -129,15 +129,16 @@ public class GraphProblems {
 
     int[] drow = {-1, -1, -1, 0, 1, 1, 1, 0};
     int[] dcol = {-1, 0, 1, 1, 1, 0, -1, -1};
+
     public int numIslandsdfs(char[][] grid) {
         // Code here
         int m = grid.length;
         int n = grid[0].length;
         boolean[][] vis = new boolean[m][n];
         int ctr = 0;
-        for(int i = 0; i<m; i++){
-            for(int j = 0; j<n; j++){
-                if(grid[i][j]=='1' && !vis[i][j]){
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1' && !vis[i][j]) {
                     numIslandsDfsHelper(grid, i, j, vis);
                     ctr++;
                 }
@@ -146,41 +147,42 @@ public class GraphProblems {
         return ctr;
     }
 
-    public void numIslandsDfsHelper(char[][] grid, int i, int j, boolean[][] vis){
+    public void numIslandsDfsHelper(char[][] grid, int i, int j, boolean[][] vis) {
         vis[i][j] = true;
-        for(int k = 0; k<8; k++){
+        for (int k = 0; k < 8; k++) {
             int nrow = i + drow[k];
             int ncol = j + dcol[k];
-            if(nrow >= 0 && nrow<grid.length && ncol>=0 && ncol<grid[0].length){
-                if(grid[nrow][ncol]=='1'  && !vis[nrow][ncol]){
+            if (nrow >= 0 && nrow < grid.length && ncol >= 0 && ncol < grid[0].length) {
+                if (grid[nrow][ncol] == '1' && !vis[nrow][ncol]) {
                     numIslandsDfsHelper(grid, nrow, ncol, vis);
                 }
             }
         }
     }
+
     public static int[][] floodFill(int[][] image, int sr, int sc, int color) {
         int m = image.length;
         int n = image[0].length;
         boolean[][] vis = new boolean[m][n];
         int[][] result = new int[m][n];
-        for(int i = 0; i<m; i++){
-            for(int j=0; j<n; j++){
-                result[i][j]=image[i][j];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                result[i][j] = image[i][j];
             }
         }
         floodFillHelper(image, sr, sc, color, vis, result, image[sr][sc]);
         return result;
     }
 
-    public static void floodFillHelper(int[][] image, int sr, int sc, int color, boolean[][] vis, int[][] result, int startingColor){
+    public static void floodFillHelper(int[][] image, int sr, int sc, int color, boolean[][] vis, int[][] result, int startingColor) {
         vis[sr][sc] = true;
         result[sr][sc] = color;
         int[] dRow = {-1, 1, 0, 0};
         int[] dCol = {0, 0, -1, 1};
-        for(int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             int nrow = sr + dRow[i];
             int ncol = sc + dCol[i];
-            if(nrow>=0 && nrow<image.length && ncol>=0 && ncol<image[0].length && !vis[nrow][ncol] && image[nrow][ncol]==startingColor){
+            if (nrow >= 0 && nrow < image.length && ncol >= 0 && ncol < image[0].length && !vis[nrow][ncol] && image[nrow][ncol] == startingColor) {
                 floodFillHelper(image, nrow, ncol, color, vis, result, startingColor);
             }
         }
@@ -197,7 +199,7 @@ public class GraphProblems {
     }
 
     private void fill2(int[][] image, int sr, int sc, int color, int newColor) {
-        if (sr < 0 || sr >= image.length || sc < 0 || sc >= image[0].length || image[sr][sc] != color || image[sr][sc]==newColor) {
+        if (sr < 0 || sr >= image.length || sc < 0 || sc >= image[0].length || image[sr][sc] != color || image[sr][sc] == newColor) {
             return; // Check bounds and if the current pixel is the color we're trying to change from
         }
         image[sr][sc] = newColor; // Change color
@@ -215,34 +217,33 @@ public class GraphProblems {
         Queue<Tri> q = new LinkedList<>();
         int m = grid.length;
         int n = grid[0].length;
-        int minutes=0;
+        int minutes = 0;
         int fresh = 0;
         int[] drow = {-1, 0, 1, 0};
         int[] dcol = {0, 1, 0, -1};
-        for(int i = 0; i<m; i++){
-            for(int j = 0; j<n; j++){
-                if(grid[i][j]==2){
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 2) {
                     q.add(new Tri(i, j, 0));
-                }
-                else if(grid[i][j]==1){
+                } else if (grid[i][j] == 1) {
                     fresh++;
                 }
             }
         }
-        while(!q.isEmpty() && fresh>0){
+        while (!q.isEmpty() && fresh > 0) {
             Tri current = q.remove();
             minutes = Math.max(minutes, current.time);
-            for(int i = 0; i<4; i++){
+            for (int i = 0; i < 4; i++) {
                 int nrow = current.first + drow[i];
                 int ncol = current.second + dcol[i];
-                if(nrow>=0 && nrow<m && ncol>=0 && ncol<n && grid[nrow][ncol]==1){
-                    grid[nrow][ncol]=2;
+                if (nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && grid[nrow][ncol] == 1) {
+                    grid[nrow][ncol] = 2;
                     fresh--;
-                    q.add(new Tri(nrow, ncol, current.time+1));
+                    q.add(new Tri(nrow, ncol, current.time + 1));
                 }
             }
         }
-        return fresh == 0 ? minutes: -1;
+        return fresh == 0 ? minutes : -1;
     }
 
     //Time: O(m*n) for initial iteration and for BFS it will be O(m*n) as all cells can be processed once
@@ -293,10 +294,10 @@ public class GraphProblems {
     public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
         // Code here
         boolean[] vis = new boolean[V];
-        for(int i = 0; i<V; i++){
-            if(!vis[i]){
+        for (int i = 0; i < V; i++) {
+            if (!vis[i]) {
                 boolean hasCycle = isCycleBfs(adj, i, vis);
-                if(hasCycle){
+                if (hasCycle) {
                     return true;
                 }
             }
@@ -304,52 +305,51 @@ public class GraphProblems {
         return false;
     }
 
-    public boolean isCycleBfs(ArrayList<ArrayList<Integer>> adj, int node, boolean[] vis){
+    public boolean isCycleBfs(ArrayList<ArrayList<Integer>> adj, int node, boolean[] vis) {
         Queue<Integer> q = new LinkedList<>();
         q.add(node);
         vis[node] = true;
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
             int curr = q.poll();
             int ctr = 0;
-            for(Integer neighbour : adj.get(curr)){
-                if(!vis[neighbour]){
+            for (Integer neighbour : adj.get(curr)) {
+                if (!vis[neighbour]) {
                     vis[neighbour] = true;
                     q.add(neighbour);
-                }
-                else{
+                } else {
                     ctr++;
                 }
             }
-            if(ctr>1) return true;
+            if (ctr > 1) return true;
         }
         return false;
     }
+
     //Approach 2
     public boolean isCycle2(int V, ArrayList<ArrayList<Integer>> adj) {
         // Code here
         boolean[] vis = new boolean[V];
-        for(int i = 0; i<V; i++){
-            if(!vis[i]){
-                if(isCycle2Bfs(adj, i, vis))
+        for (int i = 0; i < V; i++) {
+            if (!vis[i]) {
+                if (isCycle2Bfs(adj, i, vis))
                     return true;
             }
         }
         return false;
     }
 
-    public boolean isCycle2Bfs(ArrayList<ArrayList<Integer>> adj, int node, boolean[] vis){
+    public boolean isCycle2Bfs(ArrayList<ArrayList<Integer>> adj, int node, boolean[] vis) {
         Queue<Pair> q = new LinkedList<>();
         q.add(new Pair(node, -1));
         vis[node] = true;
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
             int curr = q.peek().first;
             int parent = q.poll().second;
-            for(Integer neighbour : adj.get(curr)){
-                if(!vis[neighbour]){
+            for (Integer neighbour : adj.get(curr)) {
+                if (!vis[neighbour]) {
                     q.add(new Pair(neighbour, curr));
                     vis[neighbour] = true;
-                }
-                else if(neighbour != parent){
+                } else if (neighbour != parent) {
                     return true;
                 }
             }
@@ -361,9 +361,9 @@ public class GraphProblems {
 
     public boolean isCycleDFS(int V, ArrayList<ArrayList<Integer>> adj) {
         boolean vis[] = new boolean[V];
-        for(int i = 0; i<V; i++){
-            if(!vis[i]){
-                if(isCycleDFSHelper(adj, vis, i, -1)){
+        for (int i = 0; i < V; i++) {
+            if (!vis[i]) {
+                if (isCycleDFSHelper(adj, vis, i, -1)) {
                     return true;
                 }
             }
@@ -371,14 +371,13 @@ public class GraphProblems {
         return false;
     }
 
-    public boolean isCycleDFSHelper(ArrayList<ArrayList<Integer>> adj, boolean[] vis, int node, int parent){
+    public boolean isCycleDFSHelper(ArrayList<ArrayList<Integer>> adj, boolean[] vis, int node, int parent) {
         vis[node] = true;
-        for(int neighbour : adj.get(node)){
-            if(!vis[neighbour]){
-                if(isCycleDFSHelper(adj, vis, neighbour, node)){
+        for (int neighbour : adj.get(node)) {
+            if (!vis[neighbour]) {
+                if (isCycleDFSHelper(adj, vis, neighbour, node)) {
                     return true;
-                }
-                else if(neighbour!=parent){
+                } else if (neighbour != parent) {
                     return true;
                 }
             }
@@ -444,8 +443,7 @@ public class GraphProblems {
             for (int j = 0; j < n; j++) {
                 if (mat[i][j] == 0) {
                     q.add(new Pair(i, j));
-                }
-                else{
+                } else {
                     distance[i][j] = sum;
                 }
             }
@@ -459,7 +457,7 @@ public class GraphProblems {
                     int nrow = curr.first + drow[k];
                     int ncol = curr.second + dcol[k];
                     if (nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && mat[nrow][ncol] == 1
-                            && distance[nrow][ncol] == sum) {
+                            && distance[nrow][ncol] == sum) { //equivalent to not visited
                         distance[nrow][ncol] = level;
                         q.add(new Pair(nrow, ncol));
                     }

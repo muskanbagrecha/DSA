@@ -157,7 +157,7 @@ public class StringProblems {
 //        return c == 0 ? "" : first.substring(0, c);
 //    }
 
-//    https://leetcode.com/problems/largest-3-same-digit-number-in-string/
+    //    https://leetcode.com/problems/largest-3-same-digit-number-in-string/
     public static String largestGoodInteger(String num) {
         int n = num.length();
         char[] charArray = num.toCharArray();
@@ -186,8 +186,8 @@ public class StringProblems {
         char[] charArray = num.toCharArray();
         String ans = "";
         for (int i = 2; i < n; i++) {
-            if (charArray[i] == charArray[i-1] && charArray[i]==charArray[i-2]) {
-                String sub = num.substring(i-2, i+1);
+            if (charArray[i] == charArray[i - 1] && charArray[i] == charArray[i - 2]) {
+                String sub = num.substring(i - 2, i + 1);
                 if (ans.compareTo(sub) < 0) {
                     ans = sub;
                 }
@@ -199,19 +199,27 @@ public class StringProblems {
     //Unique solution:
     public String largestGoodInteger3(String num) {
         int max = 999;
-        while(max>0){
-            if(num.contains(Integer.toString(max))){
+        while (max > 0) {
+            if (num.contains(Integer.toString(max))) {
                 return Integer.toString(max);
             }
-            max-=111;
+            max -= 111;
         }
-        if(num.contains("000")){
+        if (num.contains("000")) {
             return "000";
         }
         return "";
     }
 
-
+    //    https://leetcode.com/problems/rotate-string/description/
+    public boolean rotateString(String s, String goal) {
+        if (s.length() != goal.length()) return false;
+        String combines = s + s;
+        if (combines.contains(goal)) {
+            return true;
+        }
+        return false;
+    }
 
 }
 

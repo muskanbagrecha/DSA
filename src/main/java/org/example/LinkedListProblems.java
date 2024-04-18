@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Stack;
+import java.util.*;
 
 public class LinkedListProblems {
 
@@ -119,6 +116,34 @@ public class LinkedListProblems {
     }
     //    Time: O(n)
     //    Space: O(n) - stack
+
+    public static Node reverseBetween(Node head, int left, int right) {
+        List<Node> list = new ArrayList<>();
+        int ctr = 1;
+        Node temp = head;
+        while (ctr <= right) {
+            if (ctr >= left) {
+                list.add(temp);
+            }
+            temp = temp.next;
+            ctr++;
+        }
+
+        ctr = 1;
+        temp = head;
+        while (ctr <= right) {
+            if (ctr >= left) {
+                temp.data = list.get(list.size()-1).data;
+                list.remove(list.size()-1);
+            }
+            temp = temp.next;
+            ctr++;
+        }
+        return head;
+    }
+
+    //Time: O(n) - two passes
+    //Space: O(n) - at max when whole list needs to be reversed
 
 //    https://leetcode.com/problems/linked-list-cycle/
 

@@ -12,6 +12,30 @@ public class MathematicalOperations {
         return true;
     }
 
+    /* Return number of digits in number 'n' */
+    // Input: 123
+    // Output: 3
+
+    public static int findNumberOfDigits(int n){
+        int ctr = 0;
+        while(n>0){
+            ctr+=1;
+            n/=10;
+        }
+        return ctr;
+    }
+
+    public static boolean palindromeNumber(int n){
+        String s = n + "";
+        for(int i = 0; i<s.length();i++){
+            int j = s.length()-i-1;
+            if(s.charAt(i)!=s.charAt(j)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     /*
     Find all prime numbers within a range
     Brute force:

@@ -21,10 +21,10 @@ public class MyQueue<T> {
 
     public void enqueue(T e) {
         // Write your code here.
-        if(size==capacity){
+        if (size == capacity) {
             throw new RuntimeException("Queue is full");
         }
-        int nextIndex = (rear+1)%capacity;
+        int nextIndex = (rear + 1) % capacity;
         rear = nextIndex;
         this.array[rear] = e;
         size++;
@@ -33,24 +33,41 @@ public class MyQueue<T> {
     // Dequeue (retrieve) the element from the front of the queue.
     public T dequeue() {
         // Write your code here.
-        if(isEmpty()){
+        if (isEmpty()) {
             throw new NoSuchElementException();
         }
         size--;
         int temp = front;
-        front = front+1%capacity;
+        front = (front + 1) % capacity;
         return array[temp];
     }
 
-    public T peek(){
-        if(isEmpty()){
+    public T peek() {
+        if (isEmpty()) {
             throw new NoSuchElementException();
         }
         return array[front];
     }
 
-    public boolean isEmpty(){
-        return size==0;
+    public boolean isEmpty() {
+        return size == 0;
     }
 
+    //TODO: print
+    public void print() {
+        if (front <= rear) {
+            for (int i = front; i <= rear; i++) {
+                System.out.print(array[i] + "->");
+            }
+        }
+        else{
+            for(int i = front; i<size; i++){
+                System.out.print(array[i] + "->");
+            }
+            for(int i = 0; i<=rear; i++){
+                System.out.print(array[i] + "->");
+            }
+        }
+        System.out.print("END");
+    }
 }
