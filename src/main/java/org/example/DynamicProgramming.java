@@ -215,4 +215,37 @@ public class DynamicProgramming {
     }
 
     //this sol was slightly slower than memo one.
+
+    //https://www.geeksforgeeks.org/problems/minimum-sum-partition3317/1
+    //For positive numbers
+    public int minDifference(int nums[], int n)
+    {
+        // Your code goes here
+        int range = 0;
+        for (int i = 0; i < n; i++) {
+            range += Math.abs(nums[i]);
+        }
+        int halfRange = range / 2;
+        boolean[][] dp = new boolean[n + 1][halfRange + 1];
+        for(int i = 0; i<=n; i++){
+            dp[i][0] = true;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= halfRange; j++) {
+                if (nums[i - 1] <= j) {
+                    dp[i][j] = dp[i - 1][j - nums[i - 1]] || dp[i - 1][j];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        for (int i = halfRange; i >= 0; i--) {
+            if (dp[n][i]) {
+                return range - 2 * i;
+            }
+        }
+        return 0;
+    }
+    //this soln wont work for arrays with negative nos.
 }
