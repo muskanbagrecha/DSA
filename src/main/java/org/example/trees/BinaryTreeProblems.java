@@ -678,17 +678,26 @@ public class BinaryTreeProblems {
         return max;
     }
 
-    private static int diameterOfBinaryTreeDepth(TreeNode root) {
-        if (root == null)
-            return 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+        depth(root);
+        return max-1 // The maximum length is number of nodes - 1 (edges), hence subtract 1
 
-        int left = diameterOfBinaryTreeDepth(root.left);
-        int right = diameterOfBinaryTreeDepth(root.right);
-
-        max = Math.max(max, left + right);
-
-        return 1 + Math.max(left, right);
     }
+
+    public int depth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftDepth = depth(root.left);
+        int rightDepth = depth(root.right);
+
+        max = Math.max(max, 1 + leftDepth + rightDepth); // consider diameter through current node and update max if it
+        // happens to exceed max
+
+        return 1 + Math.max(leftDepth, rightDepth); // max of left or right as we need to consider the current node for
+        // height
+    }
+
     public TreeNode invertTree1(TreeNode root) {
         invert1(root);
         return root;
