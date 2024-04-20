@@ -12,7 +12,13 @@ import java.util.Stack;
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
-        minimumDifference(new int[]{2, -1, 0, 4, -2, -9});
+        solve(new char[][]{
+                {'X', 'X', 'X', 'X'},
+                {'X', 'O', 'O', 'X'},
+                {'X', 'X', 'O', 'X'},
+                {'X', 'O', 'X', 'X'}
+        });
+//        minimumDifference(new int[]{2, -1, 0, 4, -2, -9});
         BinaryTree bt = new BinaryTree();
         numEnclaves(new int[][]{
                 {0, 1, 1, 0},
@@ -268,6 +274,46 @@ public class Main {
         }
         return touchesBoundary == true ? 0 : count;
     }
+
+    public static void solve(char[][] board) {
+        int m = board.length;
+        int n = board[0].length;
+        Queue<Pair> q = new LinkedList<>();
+        int[] drow = { -1, 0, 1, 0 };
+        int[] dcol = { 0, 1, 0, -1 };
+        char[][] op = new char[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if ((i == 0 || j == 0 || i==m-1 || j==n-1) && board[i][j]=='O') {
+                    q.offer(new Pair(i, j));
+                    op[i][j] = '#';
+                }
+                op[i][j] = board[i][j];
+            }
+        }
+        while (!q.isEmpty()) {
+            Pair curr = q.poll();
+            for (int k = 0; k < 4; k++) {
+                int nrow = curr.first + drow[k];
+                int ncol = curr.second + dcol[k];
+                if (nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && board[nrow][ncol] == 'O'
+                        && op[nrow][ncol] != '#') {
+                    op[nrow][ncol] = '#';
+                    q.offer(new Pair(nrow, ncol));
+                }
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (op[i][j]!='#') { //NOT LYING ON BOUNDARY
+                    board[i][j] = 'X';
+                }
+            }
+        }
+    }
+
+
+
 
 }
 
