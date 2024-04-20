@@ -673,18 +673,12 @@ public class BinaryTreeProblems {
 
     static int max = 0;
 
-    public static int  diameterOfBinaryTree(TreeNode root) {
-        diameterOfBinaryTreeDepth(root);
-        return max;
-    }
-
-    public int diameterOfBinaryTree(TreeNode root) {
+    public static int diameterOfBinaryTree(TreeNode root) {
         depth(root);
-        return max-1 // The maximum length is number of nodes - 1 (edges), hence subtract 1
-
+        return max-1; // The maximum length is number of nodes - 1 (edges), hence subtract 1
     }
 
-    public int depth(TreeNode root) {
+    public static int depth(TreeNode root) {
         if (root == null) {
             return 0;
         }
@@ -696,6 +690,25 @@ public class BinaryTreeProblems {
 
         return 1 + Math.max(leftDepth, rightDepth); // max of left or right as we need to consider the current node for
         // height
+    }
+
+    int maxSumVal = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        maxSum(root);
+        return max;
+    }
+
+    public int maxSum(TreeNode root){
+        if(root==null){
+            return 0;
+        }
+
+        int leftSum = Math.max(0, maxSum(root.left));
+        int rightSum = Math.max(0, maxSum(root.right));
+
+        maxSumVal = Math.max(maxSumVal, root.data + leftSum + rightSum);
+
+        return root.data + Math.max(leftSum, rightSum);
     }
 
     public TreeNode invertTree1(TreeNode root) {
