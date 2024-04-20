@@ -467,4 +467,86 @@ public class GraphProblems {
         }
         return distance;
     }
+
+    public void surroundedRegions(char[][] board){
+        int m = board.length;
+        int n = board[0].length;
+        for (int i = 0; i < m; i++) {
+            if (board[i][0] == 'O')
+                surroundedRegionsDfs(board, i, 0);
+            if (board[i][n - 1] == 'O')
+                surroundedRegionsDfs(board, i, n - 1);
+        }
+        for (int j = 0; j < n; j++) {
+            if (board[0][j] == 'O')
+                surroundedRegionsDfs(board, 0, j);
+            if (board[m - 1][j] == 'O')
+                surroundedRegionsDfs(board, m - 1, j);
+        }
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(board[i][j]=='#'){
+                    board[i][j] = 'O';
+                }
+                else if(board[i][j]=='O'){
+                    board[i][j] = 'X';
+                }
+            }
+        }
+    }
+    public void surroundedRegionsDfs(char[][] board, int i, int j){
+        if(i<0 || i>=board.length || j<0 || j>=board[0].length || board[i][j]!='O'){
+            return;
+        }
+        board[i][j] = '#';
+        surroundedRegionsDfs(board, i-1, j);
+        surroundedRegionsDfs(board, i, j+1);
+        surroundedRegionsDfs(board, i+1, j);
+        surroundedRegionsDfs(board, i, j-1);
+    }
+
+    //Time: O(m*n) - worst case all elements are O
+    //Space: O(m*n)
+
+    public int numEnclaves(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        for(int i = 0; i<m; i++){
+            if(grid[i][0]==1){
+                numEnclavesDfs(grid, i, 0);
+            }
+            if(grid[i][n-1]==1){
+                numEnclavesDfs(grid, i, n-1);
+            }
+        }
+
+        for(int j = 0; j<n; j++){
+            if(grid[0][j]==1){
+                numEnclavesDfs(grid, 0, j);
+            }
+            if(grid[m-1][j]==1){
+                numEnclavesDfs(grid, m-1, j);
+            }
+        }
+        int ctr = 0;
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(grid[i][j]==1){
+                    ctr++;
+                }
+            }
+        }
+        return ctr;
+    }
+
+    public void numEnclavesDfs(int[][] grid, int i, int j){
+        if(i<0 || i>=grid.length || j<0 || j>=grid[0].length || grid[i][j]!=1){
+            return;
+        }
+        grid[i][j]=0;
+        numEnclavesDfs(grid, i-1, j);
+        numEnclavesDfs(grid, i, j+1);
+        numEnclavesDfs(grid, i+1, j);
+        numEnclavesDfs(grid, i, j-1);
+    }
 }
