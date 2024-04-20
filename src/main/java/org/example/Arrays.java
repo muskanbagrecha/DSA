@@ -312,23 +312,28 @@ public class Arrays {
     //Space: O(n) //worst case
 
     //Optimal
-    public static void moveZeroes2(int[] arr) {
-        int n = arr.length;
-        int j = -1;
-        for (int i = 0; i < n; i++) {
-            if (arr[i] == 0) {
-                j = i;
-                break;
+    public void moveZeroes2(int[] nums) {
+        int j = 0;
+        for(int i = 0; i<nums.length; i++){
+            if(nums[i]!=0){
+                nums[j] = nums[i];
+                j++;
             }
         }
-        if (j == -1) {
-            return;
+        for(int i=j; i<nums.length;i++){
+            nums[i] = 0;
         }
-        for (int i = j + 1; i < n; i++) {
-            if (arr[i] != 0) {
-                int temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
+    }
+    //similar to remove duplicates in sorted array problem: LC - 26
+
+    //Another approach - same as above but swaps immediately
+    public void moveZeroes3(int[] nums) {
+        int j = 0;
+        for(int i = 0; i<nums.length; i++){
+            if(nums[i]!=0){
+                int temp = nums[j];
+                nums[j] = nums[i];
+                nums[i] = temp;
                 j++;
             }
         }
