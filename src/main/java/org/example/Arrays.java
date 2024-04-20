@@ -817,4 +817,30 @@ public class Arrays {
         }
         return num;
     }
+
+    //https://leetcode.com/problems/missing-number/
+    public int missingNumber(int[] nums) {
+        java.util.Arrays.sort(nums);
+        for(int i = 0; i<nums.length; i++){
+            if(nums[i]!=i){
+                return i;
+            }
+        }
+        return nums.length;
+    }
+    //Time: O(logn) to sort + O(n)
+    //Space: O(1)
+
+    //Approach 2:
+    public int missingNumber2(int[] nums) {
+        int n = nums.length;
+        int sum = 0;
+        for(int i = 0; i<n; i++){
+            sum+=nums[i];
+        }
+        int actualSum = (n*(n+1))/2;
+        return actualSum-sum;
+    }
+    //Time: O(n)
+    //Space: O(1)
 }
