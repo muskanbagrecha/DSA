@@ -120,12 +120,12 @@ public class Arrays {
 
     public int removeDuplicates2(int[] nums) {
         int j = 0;
-        for(int i = 1; i<nums.length; i++){
-            if(nums[j]<nums[i]){
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[j] < nums[i]) {
                 nums[++j] = nums[i];
             }
         }
-        return j+1;
+        return j + 1;
     }
 
     //    https://leetcode.com/problems/remove-element/
@@ -314,13 +314,13 @@ public class Arrays {
     //Optimal
     public void moveZeroes2(int[] nums) {
         int j = 0;
-        for(int i = 0; i<nums.length; i++){
-            if(nums[i]!=0){
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
                 nums[j] = nums[i];
                 j++;
             }
         }
-        for(int i=j; i<nums.length;i++){
+        for (int i = j; i < nums.length; i++) {
             nums[i] = 0;
         }
     }
@@ -329,8 +329,8 @@ public class Arrays {
     //Another approach - same as above but swaps immediately
     public void moveZeroes3(int[] nums) {
         int j = 0;
-        for(int i = 0; i<nums.length; i++){
-            if(nums[i]!=0){
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
                 int temp = nums[j];
                 nums[j] = nums[i];
                 nums[i] = temp;
@@ -397,6 +397,45 @@ public class Arrays {
         }
         return list;
     }
+    //time: O((m+n)log(m+n)) as inserting one node takes O(logn) and we need to insert m+n nodes.
+    //space: O(m+n) worst case
+
+    //If you were to avoid using sets.
+    public static List< Integer > sortedArrayWithoutSet(int []a, int []b) {
+        // Write your code here
+        int i = 0, j = 0;
+        List<Integer> list = new ArrayList<>();
+        while(i<a.length && j<b.length){
+            if(a[i]<=b[j]){
+                if(list.size() == 0 || list.get(list.size()-1)!=a[i]){
+                    list.add(a[i]);
+                }
+                i++;
+            }
+            else if(a[i]>b[j]){
+                if(list.size() == 0 || list.get(list.size()-1)!=b[j]){
+                    list.add(b[j]);
+                }
+                j++;
+            }
+        }
+        while (i < a.length) {
+            if(list.size() == 0 || list.get(list.size()-1)!=a[i]){
+                list.add(a[i]);
+            }
+            i++;
+        }
+        while (j < b.length) {
+            if(list.size() == 0 || list.get(list.size()-1)!=b[j]){
+                list.add(b[j]);
+            }
+            j++;
+        }
+        return list;
+    }
+
+    //Time: O(m+n)
+    //Space: O(m+n)
 //    Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
 //    You must implement a solution with a linear runtime complexity and use only constant extra space.
 
@@ -809,8 +848,8 @@ public class Arrays {
                 if (grid[i][j] == 1) {
                     if (i == 0 || grid[i - 1][j] == 0) num++; // UP
                     if (j == 0 || grid[i][j - 1] == 0) num++; // LEFT
-                    if (i == rows -1 || grid[i + 1][j] == 0) num++; // DOWN
-                    if (j == cols -1 || grid[i][j + 1] == 0) num++; // RIGHT
+                    if (i == rows - 1 || grid[i + 1][j] == 0) num++; // DOWN
+                    if (j == cols - 1 || grid[i][j + 1] == 0) num++; // RIGHT
                 }
             }
         }
@@ -820,8 +859,8 @@ public class Arrays {
     //https://leetcode.com/problems/missing-number/
     public int missingNumber(int[] nums) {
         java.util.Arrays.sort(nums);
-        for(int i = 0; i<nums.length; i++){
-            if(nums[i]!=i){
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != i) {
                 return i;
             }
         }
@@ -834,12 +873,13 @@ public class Arrays {
     public int missingNumber2(int[] nums) {
         int n = nums.length;
         int sum = 0;
-        for(int i = 0; i<n; i++){
-            sum+=nums[i];
+        for (int i = 0; i < n; i++) {
+            sum += nums[i];
         }
-        int actualSum = (n*(n+1))/2;
-        return actualSum-sum;
+        int actualSum = (n * (n + 1)) / 2;
+        return actualSum - sum;
     }
     //Time: O(n)
     //Space: O(1)
+
 }
