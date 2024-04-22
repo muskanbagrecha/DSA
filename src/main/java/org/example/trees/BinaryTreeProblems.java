@@ -652,6 +652,8 @@ public class BinaryTreeProblems {
         rightSideViewDFSHelper2(root.left, list, depth+1);
     }
 
+    //DFS is faster than bfs although bfs is more intuitive.
+
     //print left view
     static int maxLevel;
 
@@ -741,6 +743,22 @@ public class BinaryTreeProblems {
     }
 
     //Time & Space: O(n)
+
+    public boolean isSymmetric(TreeNode root) {
+        if(root==null) return true;
+        return symmetric(root.left, root.right);
+    }
+
+    public boolean symmetric(TreeNode p, TreeNode q){
+        if(p==null && q==null){
+            return true;
+        }
+        if(p==null || q==null || p.data != q.data){
+            return false;
+        }
+        return symmetric(p.left, q.right) && symmetric(p.right, q.left);
+    }
+    //Time: O(n), space: O(n)
 }
 
 class Node {
