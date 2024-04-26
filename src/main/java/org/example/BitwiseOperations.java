@@ -2,6 +2,24 @@ package org.example;
 
 public class BitwiseOperations {
 
+    public static void swap(int a, int b){
+        //ideally input would be two single element arrays as test cases will validate whether actual swapping has occured or not.
+        a = a ^ b;
+        b = a ^ b;
+        a = a ^ b;
+        System.out.println(a);
+        System.out.println(b);
+    }
+
+    //https://www.naukri.com/code360/problems/check-whether-k-th-bit-is-set-or-not_5026446
+    static boolean isKthBitSet(int n, int k) {
+        // Write your code here.
+        int mask = 1 << k-1;
+        if((n & mask) != 0){
+            return true;
+        }
+        return false;
+    }
     /*
     1. If last bit is odd => num is odd and vice versa
     2. & with 1 will return the last bit as it is
