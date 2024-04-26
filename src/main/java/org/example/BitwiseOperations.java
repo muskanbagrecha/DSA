@@ -20,6 +20,9 @@ public class BitwiseOperations {
         }
         return false;
     }
+
+    //Time & space: O(1) - in other words time to compute does not depend on N or k. Also, & and << are O(1) ops.
+    //https://www.naukri.com/code360/problems/odd-even_7993579
     /*
     1. If last bit is odd => num is odd and vice versa
     2. & with 1 will return the last bit as it is
