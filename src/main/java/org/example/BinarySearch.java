@@ -391,6 +391,26 @@ public class BinarySearch {
         return ceil;
     }
 
+    //without any ans var, refer notes for analysis
+        public int searchInsert2(int[] arr, int target) {
+            if (arr.length == 0)
+                return 0;
+            int start = 0;
+            int end = arr.length - 1;
+            while (start < end) {
+                int mid = start + ((end - start) / 2);
+                if (arr[mid] == target) {
+                    return mid;
+                }
+                if (arr[mid] > target) {
+                    end = mid;
+                } else {
+                    start = mid + 1;
+                }
+            }
+            return arr[end] < target ? end + 1 : end;
+        }
+
     //    https://www.geeksforgeeks.org/find-position-element-sorted-array-infinite-numbers/
     public static int binarySearchInInfiniteSortedArray(int[] arr, int target) {
         int low = 0, high = 1;
