@@ -759,8 +759,48 @@ public class BinaryTreeProblems {
         return symmetric(p.left, q.right) && symmetric(p.right, q.left);
     }
     //Time: O(n), space: O(n)
+
+    //https://www.geeksforgeeks.org/problems/print-a-binary-tree-in-vertical-order/1
+    static ArrayList <Integer> verticalOrder(Node root)
+    {
+        // add your code here
+        int startCol = 0;
+        int endCol = 0;
+        Queue<NodeColumnPair> q = new LinkedList<>();
+        HashMap<Integer, ArrayList> map = new HashMap<>();
+        q.add(new NodeColumnPair(root, 0));
+        while(!q.isEmpty()){
+            NodeColumnPair curr = q.poll();
+            int col = curr.column;
+            Node currNode = curr.node;
+            startCol = Math.min(startCol, col);
+            endCol = Math.max(endCol, col);
+            map.putIfAbsent(col, new ArrayList<>());
+            map.get(col).add(currNode.val);
+            if(currNode.left != null){
+                q.add(new NodeColumnPair(currNode.left, col-1));
+            }
+            if(currNode.right != null){
+                q.add(new NodeColumnPair(currNode.right, col+1));
+            }
+        }
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i = startCol; i<=endCol; i++){
+            list.addAll(map.get(i));
+        }
+        return list;
+    }
 }
 
+class NodeColumnPair{
+    Node node;
+    int column;
+
+    public NodeColumnPair(Node node, int column) {
+        this.node = node;
+        this.column = column;
+    }
+}
 class Node {
     public int val;
     public Node left;
