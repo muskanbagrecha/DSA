@@ -790,6 +790,51 @@ public class BinaryTreeProblems {
         }
         return list;
     }
+
+    //Time: O(n) for queue ops, map operations O(n) so O(n)
+    //space: O(w) for queue where w is max width of the tree and O(n) for the hashmap for storing all nodes
+
+    //Sort nodes at same row and col
+    public List<List<Integer>> verticalTraversal2(Node root) {
+        int startCol = 0;
+        int endCol = 0;
+        List<List<Integer>> res = new ArrayList<>();
+        if(root==null) return res;
+        Queue<NodeColumnPair> q = new LinkedList<>();
+        Map<Integer,List<Integer>> map= new HashMap<>();
+        q.add(new NodeColumnPair(root, 0));
+        while(!q.isEmpty()){
+            int size = q.size();
+            Map<Integer,List<Integer>> tmp = new HashMap();
+            for(int i = 0; i<size; i++){
+                NodeColumnPair curr = q.poll();
+                int col = curr.column;
+                Node currNode = curr.node;
+                startCol = Math.min(startCol, col);
+                endCol = Math.max(endCol, col);
+                tmp.putIfAbsent(col, new ArrayList<>());
+                tmp.get(col).add(currNode.val);
+                if(currNode.left != null){
+                    q.add(new NodeColumnPair(currNode.left, col-1));
+                }
+                if(currNode.right != null){
+                    q.add(new NodeColumnPair(currNode.right, col+1));
+                }
+            }
+            for(int key : tmp.keySet()){
+                map.putIfAbsent(key, new ArrayList<>());
+                List<Integer> curr = tmp.get(key);
+                Collections.sort(curr);
+                map.get(key).addAll(curr);
+            }
+        }
+        for(int i = startCol; i<=endCol; i++){
+            res.add(map.get(i));
+        }
+        return res;
+    }
+    //Time: O(n) for queue ops, map operations O(n) so O(n), klogk for sorting assuming K is the max nodes at any coordinate which can be O(nlogn) in worst case.
+    //space: O(w) for queue where w is max width of the tree and O(n) for the hashmap for storing all nodes
 }
 
 class NodeColumnPair{
