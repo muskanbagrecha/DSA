@@ -248,4 +248,21 @@ public class DynamicProgramming {
         return 0;
     }
     //this soln wont work for arrays with negative nos.
+
+    //https://leetcode.com/problems/climbing-stairs
+    public int climbStairs(int n) {
+        int dp[] = new int[n+1];
+        java.util.Arrays.fill(dp, -1);
+        return climb(n, dp);
+    }
+
+    public int climb(int n, int[] dp){
+        if(n <= 0) return 0;
+        if(n == 1) return 1;
+        if(n == 2) return 2;
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+        return dp[n] = climb(n-1, dp) + climb(n-2, dp);
+    }
 }
