@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.HashMap;
+import java.util.List;
 
 //Tabulation is also known as bottom up
 //Memoization is also know as top down
@@ -148,6 +149,27 @@ public class DynamicProgramming {
         return t[N][sum];
     }
     //Time and space same as memo
+
+    //If we have to print the subsets as well: https://www.hackerearth.com/problem/algorithm/print-subset-sum-to-k
+    public static void generateSubsets(int n, int[] a, int k, List<Integer> list){
+        if(n==a.length){
+            if(k==0){
+                for(int data : list){
+                    System.out.print(data + " ");
+                }
+                System.out.println();
+            }
+            return;
+        }
+        if(a[n]>k){
+            generateSubsets(n+1, a, k, list);
+            return;
+        }
+        generateSubsets(n+1, a, k, list);
+        list.add(a[n]);
+        generateSubsets(n+1, a, k-a[n], list);
+        list.remove(list.size()-1);
+    }
 
     //https://leetcode.com/problems/partition-equal-subset-sum
     private Boolean[][] dp;
