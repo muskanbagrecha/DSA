@@ -287,4 +287,21 @@ public class DynamicProgramming {
         }
         return dp[n] = climb(n-1, dp) + climb(n-2, dp);
     }
+
+    //unboundedknapsack
+    public static int unboundedknapsack(int n, int w, int[] profit, int[] weight, int[][]dp){
+        if(w==0 || n==0){
+            return 0;
+        }
+        if(dp[n][w]!=-1){ //we will assume dp is initialized by -1 in initial method
+            return dp[n][w];
+        }
+        if(weight[n-1]<=w){
+            return dp[n][w] = Math.max(profit[n-1] + unboundedknapsack(n, w-weight[n-1], profit, weight, dp), unboundedknapsack(n-1, w, profit, weight, dp));
+        }
+        else{
+            return dp[n][w] = unboundedknapsack(n-1, w, profit, weight, dp);
+        }
+    }
+    //time: O(n*w)
 }
