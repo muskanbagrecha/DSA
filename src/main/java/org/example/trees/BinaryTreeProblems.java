@@ -835,6 +835,41 @@ public class BinaryTreeProblems {
     }
     //Time: O(n) for queue ops, map operations O(n) so O(n), klogk for sorting assuming K is the max nodes at any coordinate which can be O(nlogn) in worst case.
     //space: O(w) for queue where w is max width of the tree and O(n) for the hashmap for storing all nodes
+
+    static ArrayList<Integer> topView(Node root) {
+        if (root == null) return new ArrayList<>();
+
+        Map<Integer, Integer> columnTable = new HashMap<>();
+        Queue<NodeColumnPair> queue = new LinkedList<>();
+        queue.offer(new NodeColumnPair(root, 0));
+        int minColumn = 0, maxColumn = 0;
+
+        while (!queue.isEmpty()) {
+            NodeColumnPair curr = queue.poll();
+            int column = curr.column;
+            if (!columnTable.containsKey(column)) {
+                columnTable.put(column, curr.node.val);
+            }
+            minColumn = Math.min(minColumn, column);
+            maxColumn = Math.max(maxColumn, column);
+
+            if (curr.node.left != null) {
+                queue.offer(new NodeColumnPair(curr.node.left, column - 1));
+            }
+            if (curr.node.right != null) {
+                queue.offer(new NodeColumnPair(curr.node.right, column + 1));
+            }
+        }
+
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int i = minColumn; i <= maxColumn; i++) {
+            res.add(columnTable.get(i));
+        }
+        return res;
+    }
+
+    //After the BFS completes, you iterate over the range of columns from minColumn to maxColumn to construct the final result list. Let K be the number of distinct columns that have at least one node visible from the top view (K could theoretically be as small as 1 or as large as N, but typically K will be much less than N for most trees except in cases like a perfectly straight line).
+    //Time: O(n) + O(k) => O(n)
 }
 
 class NodeColumnPair{
