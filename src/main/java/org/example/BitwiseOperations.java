@@ -22,6 +22,11 @@ public class BitwiseOperations {
     }
 
     //Time & space: O(1) - in other words time to compute does not depend on N or k. Also, & and << are O(1) ops.
+
+    static boolean isKthBitSetRightShift(int n, int k) {
+        return ((n>>(k-1))&1)!=0;
+    }
+
     //https://www.naukri.com/code360/problems/odd-even_7993579
     /*
     1. If last bit is odd => num is odd and vice versa
@@ -84,6 +89,30 @@ public class BitwiseOperations {
     public static int resetIthBit(int num, int i) {
         int mask = ~(1 << i);
         return (num & mask);
+    }
+
+    //Check if it is set and then perform operation
+    public static int toggleIthBit(int num, int i){
+        int mask = 1 << i;
+        boolean set = (num & mask) != 0;
+        if(set){
+            return num & ~mask;
+        }
+        return num | mask;
+    }
+
+    //Approach 2: perform XOR
+    public  static int toggleIthBitXor(int num, int i){
+        int mask = 1<<i;
+        return num^mask;
+    }
+
+    //Set The Rightmost Unset Bit
+    public static int setBits(int N){
+        // Write your code here.
+        int next = N+1;
+        if((next & N) == 0) return N;
+        return N | next;
     }
 
     //TODO
