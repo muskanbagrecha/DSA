@@ -749,21 +749,24 @@ public class Arrays {
 
     //Optimal - single pass
     //Dutch national flag algo
-    public static void sortColors(int[] arr) {
-        int low = 0, mid = 0, high = arr.length - 1;
-        while (mid <= high) {
-            if (arr[mid] == 0) {
-                swap(arr, low, mid);
+    public void sortColors(int[] nums) {
+        int low = 0; int high = nums.length-1; int mid = 0;
+        while(mid<=high){
+            if(nums[mid]==0){
+                swap(nums, low, mid); //low points to the first sorted 1. So we are replacing that with 0 and mid points to first unsorted element after one so it can be replaced by 1.
                 low++;
                 mid++;
-            } else if (arr[mid] == 2) {
-                swap(arr, mid, high);
+            }
+            else if(nums[mid]==1){
+                mid++; //mid is the first unsorted element and mid-1 points to last sorted 1 element
+            }
+            else if(nums[mid]==2){
+                swap(nums, mid, high); //high+1 points to first sorted 2 and high ponts to last unsorted element. Here we dont know what is the swapped value of mid so we cannot increment mid.
                 high--;
-            } else if (arr[mid] == 1) {
-                mid++;
             }
         }
     }
+
     //Time complexity: O(n)
     //Space: O(1)
     // Check course sheet notes for intuition.
