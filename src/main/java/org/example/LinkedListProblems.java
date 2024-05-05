@@ -65,9 +65,15 @@ public class LinkedListProblems {
         return slow;
     }
 
+    //https://leetcode.com/problems/delete-node-in-a-linked-list
+    public void deleteNode(ListNode node) {
+        node.data = node.next.data;
+        node.next = node.next.next;
+    }
+
     //Important to practice
 
-    //Reverse a singly listed list which has only head
+    //Reverse a singly linked list which has only head
 
     //Solution 1: Using extra space (arr) to store the elements, we then iterate through the LL again and copy the elements from the end of the array.
     //Use stack instead of arraylist so we pop elements in reversed order by default
