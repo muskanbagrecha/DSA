@@ -2,7 +2,7 @@ package org.example;
 
 public class BitwiseOperations {
 
-    public static void swap(int a, int b){
+    public static void swap(int a, int b) {
         //ideally input would be two single element arrays as test cases will validate whether actual swapping has occured or not.
         a = a ^ b;
         b = a ^ b;
@@ -14,8 +14,8 @@ public class BitwiseOperations {
     //https://www.naukri.com/code360/problems/check-whether-k-th-bit-is-set-or-not_5026446
     static boolean isKthBitSet(int n, int k) {
         // Write your code here.
-        int mask = 1 << k-1;
-        if((n & mask) != 0){
+        int mask = 1 << k - 1;
+        if ((n & mask) != 0) {
             return true;
         }
         return false;
@@ -24,7 +24,7 @@ public class BitwiseOperations {
     //Time & space: O(1) - in other words time to compute does not depend on N or k. Also, & and << are O(1) ops.
 
     static boolean isKthBitSetRightShift(int n, int k) {
-        return ((n>>(k-1))&1)!=0;
+        return ((n >> (k - 1)) & 1) != 0;
     }
 
     //https://www.naukri.com/code360/problems/odd-even_7993579
@@ -92,28 +92,66 @@ public class BitwiseOperations {
     }
 
     //Check if it is set and then perform operation
-    public static int toggleIthBit(int num, int i){
+    public static int toggleIthBit(int num, int i) {
         int mask = 1 << i;
         boolean set = (num & mask) != 0;
-        if(set){
+        if (set) {
             return num & ~mask;
         }
         return num | mask;
     }
 
     //Approach 2: perform XOR
-    public  static int toggleIthBitXor(int num, int i){
-        int mask = 1<<i;
-        return num^mask;
+    public static int toggleIthBitXor(int num, int i) {
+        int mask = 1 << i;
+        return num ^ mask;
     }
 
     //Set The Rightmost Unset Bit
-    public static int setBits(int N){
+    public static int setBits(int N) {
         // Write your code here.
-        int next = N+1;
-        if((next & N) == 0) return N;
+        int next = N + 1;
+        if ((next & N) == 0) return N;
         return N | next;
     }
+
+    //Count the number of bits
+    static int countBits(int N) {
+        // code here
+        int count = 0;
+        while(N>=1){
+            if(N%2==1){
+                count++;
+            }
+            N/=2;
+        }
+        return count;
+    }
+
+    static int countBitsWithoutModuloAndDivide(int N) {
+        // code here
+        int count = 0;
+        while(N>=1){
+            if((N&1)==1){
+                count++;
+            }
+            N = N>>1;
+        }
+        return count;
+    }
+
+    //TC: O(Logn) => Since n can be 2^31 so it will be around O(31)
+
+    static int CountSetBits2(int N) {
+        // code here
+        int count = 0;
+        while(N!=0){
+            N=N&(N-1); //flip one set bit at a time.
+            count++;
+        }
+        return count;
+    }
+    //TC: O(no of set bits) => can be all bits are set so max would be O(31).
 
     //TODO
     /*Find the position of the right most set bit*/
@@ -129,15 +167,15 @@ public class BitwiseOperations {
     Input: [1,4,1,2,1,2,2]
     Output: 4
     */
-    public static int findUnique(int[] arr){
+    public static int findUnique(int[] arr) {
         int sum = 0;
-        for(int i = 0; i<arr.length;i++){
+        for (int i = 0; i < arr.length; i++) {
             sum += arr[i];
         }
-        int n = (int)(Math.log(sum)/Math.log(2)) + 1;
-        int mask = ~(1>>n+1);
-        System.out.println(sum%mask);
-        return sum%mask;
+        int n = (int) (Math.log(sum) / Math.log(2)) + 1;
+        int mask = ~(1 >> n + 1);
+        System.out.println(sum % mask);
+        return sum % mask;
     }
 
     /*
@@ -148,35 +186,39 @@ public class BitwiseOperations {
     4: 1 0 0 => 1 * 5**3
     5: 1 0 1 => 1 * 5**3 + 1 * 5**1
     */
-    public static double magicNumber(int n){
+    public static double magicNumber(int n) {
         double sum = 0;
         int i = 1;
-        while(n>0){
-            int lastBit = n&1;
-            sum+=(lastBit * Math.pow(5, i));
+        while (n > 0) {
+            int lastBit = n & 1;
+            sum += (lastBit * Math.pow(5, i));
             i++;
-            n=n>>1;
-         }
+            n = n >> 1;
+        }
         return sum;
     }
 
-    public static int numberOfDigits(int num, int base){
-        return (int)Math.floor(Math.log(num)/Math.log(base)) + 1; //no need to add math.floor()
+    public static int numberOfDigits(int num, int base) {
+        return (int) Math.floor(Math.log(num) / Math.log(base)) + 1; //no need to add math.floor()
     }
 
     /*
     Number is a power of two if in binary rep it is 1 followed by all 0s
     Ex: 100, 10, 10000
     */
-//    public static boolean powerOfTwo(int num){
-//        int mask = ~(1 << (int)Math.floor(Math.log(num)/Math.log(2)));
-//        return (num & mask) == 0 ? true: false;
+//    public static boolean powerOfTwo(int n) {
+//        double val = Math.log(n) / Math.log(2);
+//        if (val % 1 == 0) { //way to find if value has decimal part or not but it can result in inaccuracies in large nos.
+//            return true;
+//        }
+//        return false;
 //    }
-        public static boolean powerOfTwo(int num){
-            if(num==0){
-                return false;
-            }
-            return (num & num-1) == 0 ? true : false;
+
+    public static boolean powerOfTwo(int num) {
+        if (num == 0) {
+            return false;
+        }
+        return (num & num - 1) == 0 ? true : false;
             /*
             100 = 11 + 1
             n = (n-1) + 1
@@ -184,6 +226,15 @@ public class BitwiseOperations {
             & 0 1 1 --> n-1
             = 0 0 0
              */
+    }
+
+    public boolean isPowerOfTwo2(int n) {
+        if (n <= 0)
+            return false;
+        if ((n & (n - 1)) == 0) {
+            return true;
+        }
+        return false;
     }
 
 }
