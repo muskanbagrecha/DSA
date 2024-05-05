@@ -1,9 +1,12 @@
 package org.example;
 
 import org.example.pair.Pair;
+import org.example.tri.Tri;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class GreedyProblems {
     public static int maxMeetings(int start[], int end[], int n)
@@ -27,6 +30,27 @@ public class GreedyProblems {
 
     //TC: O(nlogn)
     //Space: O(n)
+
+    //Problem to print maximum meetings in one room
+    public static ArrayList<Integer> maxMeetings(int n, int[] start, int[] end) {
+        // code here
+        Tri[] pairs = new Tri[n];
+        // add your code here
+        for(int i = 0; i<start.length; i++){
+            pairs[i] = new Tri(start[i], end[i], i+1);
+        }
+        ArrayList<Integer> res = new ArrayList<>();
+//        Arrays.sort(pairs, new sortByEnd()); //uncomment this
+        int time = -1;
+        for(int i = 0; i<n; i++){
+            if(pairs[i].first>time){
+//                res.add(pairs[i].index); //uncomment this
+                time = pairs[i].second;
+            }
+        }
+        Collections.sort(res);
+        return res;
+    }
 }
 
 
