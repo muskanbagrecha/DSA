@@ -904,6 +904,48 @@ public class BinaryTreeProblems {
         return res;
     }
     //Time: O(n) + O(k) where k is distinct columns => simplifies to O(n)
+
+    //https://www.naukri.com/code360/problems/children-sum-property_8357239
+    public static boolean isParentSum(Node root) {
+        // Write your code here.
+        if(root==null || (root.left==null && root.right==null)){
+            return true;
+        }
+        int sum = 0;
+        if(root.left!=null){
+            sum+=root.left.val;
+        }
+        if(root.right!=null){
+            sum+=root.right.val;
+        }
+        if(sum==root.val){
+            return isParentSum(root.left) && isParentSum(root.right);
+        }
+        return false;
+    }
+
+    public static List<String> allRootToLeaf(TreeNode root) {
+        // Write your code here.
+        List<String> list = new ArrayList<>();
+        findPath(list, root, "");
+        return list;
+    }
+
+    public static void findPath(List<String> list, TreeNode root, String path){
+        path = path + " " + root.data;
+        if(root.left==null && root.right==null){
+            list.add(path.trim());
+            return;
+        }
+        if(root.left!=null){
+            findPath(list, root.left, path);
+        }
+        if(root.right!=null){
+            findPath(list, root.right, path);
+        }
+    }
+    //TC: O(N)
+    //Space: O(N)
 }
 
 class NodeColumnPair{
