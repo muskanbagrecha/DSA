@@ -145,7 +145,7 @@ public class SlidingWindow {
         }
         while(r<txt.length()){
             char currentChar= txt.charAt(r);
-            if(map.containsKey(currentChar)){
+            if(map.containsKey(currentChar)){ //check if it is a candidate
                 int updatedFreq = map.get(currentChar)-1;
                 map.put(currentChar, updatedFreq);
                 if(updatedFreq==0){
@@ -153,7 +153,7 @@ public class SlidingWindow {
                 }
             }
 
-            if(r-l+1==k){
+            if(r-l+1==k){ //slide
                 if(count==0) res++;
                 char prevChar = txt.charAt(l);
                 if(map.containsKey(prevChar)){
