@@ -32,12 +32,12 @@ public class LinkedListProblems {
 
     //Solution 2
     public Node deleteMiddle2(Node head) {
-        if(head==null || head.next == null){ //0 or 1 elements, we need to return null
+        if (head == null || head.next == null) { //0 or 1 elements, we need to return null
             return null;
         }
         Node slow = head;
         Node fast = head.next.next;
-        while(fast!=null && fast.next!=null){
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
@@ -58,7 +58,7 @@ public class LinkedListProblems {
     public static Node middleNode(Node head) {
         Node slow = head;
         Node fast = head;
-        while (fast != null && fast.next!=null) {
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
@@ -80,14 +80,14 @@ public class LinkedListProblems {
     public static Node reverseList(Node head) {
         ArrayList arr = new ArrayList();
         Node temp = head;
-        while(temp!=null){
+        while (temp != null) {
             arr.add(temp.data);
-            temp=temp.next;
+            temp = temp.next;
         }
         System.out.println(arr);
         temp = head;
-        while(temp!=null && arr.size()>0){
-            int index = arr.size()-1;
+        while (temp != null && arr.size() > 0) {
+            int index = arr.size() - 1;
             temp.data = arr.get(index);
             arr.remove(index);
         }
@@ -100,7 +100,7 @@ public class LinkedListProblems {
         Node temp = head;
         Node prev = null;
         Node front;
-        while(temp!=null){
+        while (temp != null) {
             front = temp.next;
             temp.next = prev;
             prev = temp;
@@ -112,8 +112,8 @@ public class LinkedListProblems {
 //    Space: O(1)
 
     //Recursion
-    public Node reverseRecursion(Node head, Node prev){
-        if(head==null){
+    public Node reverseRecursion(Node head, Node prev) {
+        if (head == null) {
             return prev;
         }
         Node front = head.next;
@@ -139,8 +139,8 @@ public class LinkedListProblems {
         temp = head;
         while (ctr <= right) {
             if (ctr >= left) {
-                temp.data = list.get(list.size()-1).data;
-                list.remove(list.size()-1);
+                temp.data = list.get(list.size() - 1).data;
+                list.remove(list.size() - 1);
             }
             temp = temp.next;
             ctr++;
@@ -155,13 +155,13 @@ public class LinkedListProblems {
 
     //Brute force
     public static boolean hasCycle1(Node head) {
-        if(head==null){
+        if (head == null) {
             return false;
         }
         HashSet<Node> mySet = new HashSet<>();
         Node temp = head;
-        while(temp!=null){
-            if(mySet.contains(temp)){
+        while (temp != null) {
+            if (mySet.contains(temp)) {
                 return true;
             }
             mySet.add(temp);
@@ -176,10 +176,10 @@ public class LinkedListProblems {
     public boolean hasCycle2(Node head) {
         Node slow = head;
         Node fast = head;
-        while(fast!=null && fast.next!=null){
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
-            if(slow==fast){
+            if (slow == fast) {
                 return true;
             }
         }
@@ -201,8 +201,8 @@ public class LinkedListProblems {
 
         Node temp = head;
         HashSet<Node> set = new HashSet<>();
-        while(temp!=null){
-            if(set.contains(temp)){
+        while (temp != null) {
+            if (set.contains(temp)) {
                 return temp;
             }
             set.add(temp);
@@ -217,7 +217,6 @@ public class LinkedListProblems {
     //Optimal
 
 
-
     //https://www.codingninjas.com/studio/problems/find-length-of-loop_8160455
 
     //Naive:
@@ -227,8 +226,8 @@ public class LinkedListProblems {
         Node temp = head;
         HashMap<Node, Integer> map = new HashMap<>();
         int ctr = 0;
-        while(temp!=null){
-            if(map.containsKey(temp)){
+        while (temp != null) {
+            if (map.containsKey(temp)) {
                 return ctr - map.get(temp);
             }
             map.put(temp, ctr);
@@ -245,24 +244,24 @@ public class LinkedListProblems {
     public static int lengthOfLoop2(Node head) {
         // Write your code here
 
-        if(head==null || head.next==null){
+        if (head == null || head.next == null) {
             return 0;
         }
         Node slow = head;
         Node fast = head;
-        while(fast!=null && fast.next!=null){
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
-            if(slow==fast){
+            if (slow == fast) {
                 break;
             }
         }
-        if(fast==null || fast.next==null){
+        if (fast == null || fast.next == null) {
             return 0;
         }
         slow = slow.next;
         int ctr = 1;
-        while(slow!=fast){
+        while (slow != fast) {
             slow = slow.next;
             ctr++;
         }
@@ -275,26 +274,26 @@ public class LinkedListProblems {
 
     //Brute force
     public static boolean isPalindrome(Node head) {
-        if(head==null || head.next==null){
+        if (head == null || head.next == null) {
             return true;
         }
         Node slow = head;
         Node fast = head;
-        while(fast!=null && fast.next!=null){
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
         Node temp = head;
         Stack<Integer> stack = new Stack<>();
-        while(temp!=slow){
+        while (temp != slow) {
             stack.push((Integer) temp.data);
             temp = temp.next;
         }
-        if(fast!=null){ // If odd, skip the middle element
+        if (fast != null) { // If odd, skip the middle element
             temp = slow.next;
         }
-        while(temp!=null){
-            if(temp.data != stack.pop()){
+        while (temp != null) {
+            if (temp.data != stack.pop()) {
                 return false;
             }
             temp = temp.next;
@@ -318,13 +317,13 @@ public class LinkedListProblems {
     public boolean isPalindrome2(Node head) {
         Node temp = head;
         Stack<Integer> stack = new Stack<>();
-        while(temp!=null){
+        while (temp != null) {
             stack.push((Integer) temp.data);
             temp = temp.next;
         }
         temp = head;
-        while(temp!=null){
-            if(stack.pop() != temp.data){
+        while (temp != null) {
+            if (stack.pop() != temp.data) {
                 return false;
             }
             temp = temp.next;
@@ -340,12 +339,12 @@ public class LinkedListProblems {
     //Space: O(n)
 
     public static boolean isPalindrome3(Node head) {
-        if(head==null || head.next==null){
+        if (head == null || head.next == null) {
             return true;
         }
         Node slow = head;
         Node fast = head;
-        while(fast!=null && fast.next!=null){
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
@@ -353,14 +352,14 @@ public class LinkedListProblems {
         Node temp = slow.next;
         Node front;
         slow = head;
-        while(temp!=null){
+        while (temp != null) {
             front = temp.next;
             temp.next = prev;
             prev = temp;
             temp = front;
         }
-        while(slow!=prev && slow.next!=prev){
-            if(slow.data != prev.data || slow.next == prev){
+        while (slow != prev && slow.next != prev) {
+            if (slow.data != prev.data || slow.next == prev) {
                 return false;
             }
             slow = slow.next;
@@ -368,4 +367,31 @@ public class LinkedListProblems {
         }
         return true;
     }
+
+    //Remove nodes from LL
+    //https://leetcode.com/problems/remove-nodes-from-linked-list
+    public Node removeNodes(Node head) {
+        Node<Integer> temp = head;
+        Stack<Node<Integer>> s = new Stack<>();
+        while (temp != null) {
+            while (!s.isEmpty() && s.peek().data < temp.data) {
+                s.pop();
+            }
+            s.push(temp);
+            temp = temp.next;
+        }
+        if (s.isEmpty()) return null;
+
+        temp = null;
+        while (!s.isEmpty()) {
+            Node node = s.pop();
+            node.next = temp;
+            temp = node;
+        }
+        return temp;
+    }
+    //TC: O(n) for stack pushing and popping. Then O(k) for constructing new Ll where K is total elements which do not have a greater element after it.
+    //Space: O(n) worst case all elements need to be stored in stack.
+    //Above approach is slightly slow.
+
 }
