@@ -599,4 +599,41 @@ public class GraphProblems {
         }
         return ctr;
     }
+
+    //Function to return list containing vertices in Topological order.
+    static int[] topoSortKahn(int V, ArrayList<ArrayList<Integer>> adj)
+    {
+        // add your code here
+        int[] indegree = new int[V];
+        Queue<Integer> q = new LinkedList<>();
+        int resultIndex = 0;
+        int[] res = new int[V];
+        for(int i = 0; i<V; i++){
+            for(int j : adj.get(i)){
+                indegree[j] = indegree[j] + 1;
+            }
+        }
+        for(int i = 0; i<indegree.length; i++){
+            if(indegree[i]==0){
+                q.add(i);
+            }
+        }
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            res[resultIndex++] = curr;
+            for(int j : adj.get(curr)){
+                indegree[j]--;
+                if(indegree[j]==0){
+                    q.add(j);
+                }
+            }
+        }
+
+        if (resultIndex != V) {
+            throw new RuntimeException("Cycle detected in the graph");
+        }
+        return res;
+    }
+    //tc: O(V+E)
+    //SC: O(V)
 }
