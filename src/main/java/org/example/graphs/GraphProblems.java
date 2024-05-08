@@ -3,10 +3,7 @@ package org.example.graphs;
 import org.example.pair.Pair;
 import org.example.tri.Tri;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class GraphProblems {
     public static ArrayList<Integer> bfsOfDirectedGraph(int V, ArrayList<ArrayList<Integer>> adj) {
@@ -636,4 +633,38 @@ public class GraphProblems {
     }
     //tc: O(V+E)
     //SC: O(V)
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        boolean[] visited = new boolean[numCourses];
+        boolean[] onPath = new boolean[numCourses];
+        List<List<Integer>> graph = new ArrayList<>(numCourses);
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int[] prerequisite : prerequisites) {
+            graph.get(prerequisite[0]).add(prerequisite[1]);
+        }
+        for (int i = 0; i < numCourses; i++) {
+            if (!visited[i]) {
+                if (!dfs(i, graph, visited, onPath)) return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean dfs(int node, List<List<Integer>> graph, boolean[] visited, boolean[] onPath) {
+        visited[node] = true;
+        onPath[node] = true;
+        for (int neighbor : graph.get(node)) {
+            if (!visited[neighbor]) {
+                if (!dfs(neighbor, graph, visited, onPath)) {
+                    return false;
+                }
+            } else if (onPath[neighbor]) {
+                return false;
+            }
+        }
+        onPath[node] = false;
+        return true;
+    }
 }
