@@ -273,19 +273,31 @@ public class DynamicProgramming {
 
     //https://leetcode.com/problems/climbing-stairs
     public int climbStairs(int n) {
-        int dp[] = new int[n+1];
+        int[] dp = new int[n+1];
         java.util.Arrays.fill(dp, -1);
-        return climb(n, dp);
+        return compute(n, dp);
     }
 
-    public int climb(int n, int[] dp){
-        if(n <= 0) return 0;
-        if(n == 1) return 1;
-        if(n == 2) return 2;
+    public int compute(int n, int[] dp){
+        if(n==0 || n==1){
+            return 1;
+        }
         if(dp[n]!=-1){
             return dp[n];
         }
-        return dp[n] = climb(n-1, dp) + climb(n-2, dp);
+        return dp[n] = compute(n-1, dp) + compute(n-2, dp);
+    }
+
+    //Space optimized:
+    public int climbStair2(int n) {
+        int prev = 1; //for n=0, there is exactly one way to do NOTHING.
+        int prev2 = 1;//for n=1, there is exactly one way that is to climb stairs.
+        for(int i = 2; i<=n; i++){
+            int curr = prev + prev2;
+            prev2 = prev;
+            prev = curr;
+        }
+        return prev;
     }
 
     //unboundedknapsack
@@ -304,4 +316,28 @@ public class DynamicProgramming {
         }
     }
     //time: O(n*w)
+
+    public int cutRod(int price[], int n) {
+        //code here
+        int[][] dp = new int[n+1][n+1];
+        for(int i = 0; i<=n; i++){
+            for(int j = 0; j<=n; j++){
+                dp[i][j] = -1;
+            }
+        }
+        return dpHelper(price, n, n, dp);
+    }
+
+    public int dpHelper(int price[], int total, int n, int[][] dp){
+        if(n==0 || total==0){
+            return 0;
+        }
+        if(dp[n][total]!=-1){
+            return dp[n][total];
+        }
+        if(n<=total){
+            return dp[n][total] = Math.max((price[n-1] + dpHelper(price, total-n, n, dp)), dpHelper(price, total, n-1, dp));
+        }
+        return dp[n][total] = dpHelper(price, total, n-1, dp);
+    }
 }
