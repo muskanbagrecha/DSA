@@ -667,4 +667,35 @@ public class GraphProblems {
         onPath[node] = false;
         return true;
     }
+
+    static boolean detectCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        int[] state = new int[V];  // 0 = unvisited, 1 = visiting, 2 = visited
+        for (int i = 0; i < V; i++) {
+            if (state[i] == 0) {  // If unvisited
+                if (dfsCycle(i, adj, state)) {
+                    return true;  // Cycle detected
+                }
+            }
+        }
+        return false;  // No cycle detected
+    }
+
+    static boolean dfsCycle(int node, ArrayList<ArrayList<Integer>> adj, int[] state) {
+        if (state[node] == 1) {  // Currently visiting, found a cycle
+            return true;
+        }
+        if (state[node] == 2) {  // Already visited, no need to explore
+            return false;
+        }
+
+        state[node] = 1;  // Mark the node as visiting
+        for (int neighbor : adj.get(node)) {
+            if (dfsCycle(neighbor, adj, state)) {
+                return true;
+            }
+        }
+        state[node] = 2;  // Mark the node as visited
+        return false;
+    }
+
 }
