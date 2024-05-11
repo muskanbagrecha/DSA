@@ -396,6 +396,37 @@ public class LinkedListProblems {
     //TC: O(3N)
     //SC: O(1)
 
+    public static Node addOneRecursive(Node<Integer> head)
+    {
+        //code here.
+        int[] carryWrapper = {1};
+        add(head, carryWrapper);
+        if(carryWrapper[0]==1){
+            Node temp = new Node(1);
+            temp.next = head;
+            head = temp;
+        }
+        return head;
+    }
+
+    public static void add(Node<Integer> head, int[] carryWrapper){
+        if(head.next!=null){
+            add(head.next, carryWrapper);
+        }
+        if(carryWrapper[0]==0){
+            return;
+        }
+        head.data+=1;
+        if(head.data>=10){
+            head.data = 0;
+        }
+        else{
+            carryWrapper[0] = 0;
+        }
+    }
+    //TC: O(N)
+    //Space: O(N)
+
     //Remove nodes from LL
     //https://leetcode.com/problems/remove-nodes-from-linked-list
     public Node removeNodes(Node head) {
