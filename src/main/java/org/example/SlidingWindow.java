@@ -51,34 +51,53 @@ public class SlidingWindow {
     //Time: O(N*K)
 
     //Optimal using sliding window
-    public static long[] printFirstNegativeIntegerSW(long A[], int N, int K) {
-        long[] ans = new long[N - K + 1];
+    public long[] printFirstNegativeInteger2(long A[], int N, int k) {
+        Queue<Long> q = new LinkedList<>();
         int l = 0;
         int r = 0;
-        Queue<Long> q = new LinkedList<>();
+        long[] ans = new long[N - k + 1];
         while (r < N) {
             if (A[r] < 0) {
                 q.offer(A[r]);
             }
-            if (r - l + 1 < K) {
-                r++;
-            } else {
-                if (q.isEmpty()) {
-                    ans[l] = 0;
-                } else {
-                    ans[l] = q.peek();
-                    if (A[l] == q.peek()) {
-                        q.remove();
-                    }
+            if (r - l + 1 == k) {
+                ans[l] = q.isEmpty() ? 0 : q.peek();
+                if (A[l] < 0) {
+                    q.remove();
                 }
                 l++;
-                r++;
             }
+            r++;
         }
         return ans;
     }
     //Time: O(N)
     //Space: O(k)
+
+    ArrayList<Integer> countDistinct(int A[], int n, int k)
+    {
+        // code here
+        ArrayList<Integer> ans = new ArrayList<>();
+        int l = 0;
+        int r = 0;
+        int count = 0;
+        HashMap<Integer,Integer> map = new HashMap<>();
+        while(r<n){
+            map.put(A[r], map.getOrDefault(A[r], 0) + 1);
+            if(map.get(A[r])==1) count++;
+            if(r-l+1==k){
+                ans.add(count);
+                map.put(A[l], map.get(A[l]) - 1);
+                // If the frequency becomes zero, reduce the distinct count
+                if (map.get(A[l]) == 0) {
+                    count--;
+                }
+                l++;
+            }
+            r++;
+        }
+        return ans;
+    }
 
     //https://www.naukri.com/code360/problems/longest-subarray-with-sum-k_6682399
     public static int longestSubarrayWithSumK(int[] a, long k) {
@@ -100,6 +119,7 @@ public class SlidingWindow {
         }
         return max;
     }
+
 
     //Time: O(2N) => O(N), space O(1)
 
@@ -134,32 +154,31 @@ public class SlidingWindow {
         int k = pat.length();
         int res = 0;
         HashMap<Character, Integer> map = new HashMap<>();
-        for(char c:pat.toCharArray()){
-            if(map.containsKey(c)){
-                map.put(c, map.get(c)+1);
-            }
-            else{
+        for (char c : pat.toCharArray()) {
+            if (map.containsKey(c)) {
+                map.put(c, map.get(c) + 1);
+            } else {
                 count++;
                 map.put(c, 1);
             }
         }
-        while(r<txt.length()){
-            char currentChar= txt.charAt(r);
-            if(map.containsKey(currentChar)){ //check if it is a candidate
-                int updatedFreq = map.get(currentChar)-1;
+        while (r < txt.length()) {
+            char currentChar = txt.charAt(r);
+            if (map.containsKey(currentChar)) { //check if it is a candidate
+                int updatedFreq = map.get(currentChar) - 1;
                 map.put(currentChar, updatedFreq);
-                if(updatedFreq==0){
+                if (updatedFreq == 0) {
                     count--;
                 }
             }
 
-            if(r-l+1==k){ //slide
-                if(count==0) res++;
+            if (r - l + 1 == k) { //slide
+                if (count == 0) res++;
                 char prevChar = txt.charAt(l);
-                if(map.containsKey(prevChar)){
-                    int updatedFreq = map.get(prevChar)+1;
+                if (map.containsKey(prevChar)) {
+                    int updatedFreq = map.get(prevChar) + 1;
                     map.put(prevChar, updatedFreq);
-                    if(updatedFreq==1){
+                    if (updatedFreq == 1) {
                         count++;
                     }
                 }
