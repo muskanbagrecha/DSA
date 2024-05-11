@@ -368,6 +368,34 @@ public class LinkedListProblems {
         return true;
     }
 
+    public static Node addOne(Node head)
+    {
+        //code here.
+        head = reverseList2(head);
+        int carry = 1;
+        Node<Integer> temp = head;
+        while(carry!=0 && temp!=null){
+            temp.data+=carry;
+            if(temp.data<10){
+                carry = 0;
+            }
+            else{
+                temp.data=0;
+                carry = 1;
+                temp = temp.next;
+            }
+        }
+        head = reverseList2(head);
+        if(carry==0) return head;
+        Node newNode = new Node(1);
+        newNode.next = head;
+        head = newNode;
+        return head;
+    }
+
+    //TC: O(3N)
+    //SC: O(1)
+
     //Remove nodes from LL
     //https://leetcode.com/problems/remove-nodes-from-linked-list
     public Node removeNodes(Node head) {
