@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class SlidingWindow {
 
@@ -189,4 +186,27 @@ public class SlidingWindow {
         return res;
     }
     //Time: O(k+n) where k is length of pattern and n is length of txt.
+
+    static ArrayList<Integer> max_of_subarrays(int arr[], int n, int k) {
+        // Your code here
+        Deque<Integer> q = new LinkedList<>();
+        int l = 0;
+        int r = 0;
+        ArrayList<Integer> res = new ArrayList<>();
+        while(r<n){
+            while(!q.isEmpty() && q.peekLast()<arr[r]){
+                q.removeLast();
+            }
+            q.add(arr[r]);
+            if(r-l+1==k){
+                res.add(q.peek());
+                if(q.peek()==arr[l]){
+                    q.removeFirst();
+                }
+                l++;
+            }
+            r++;
+        }
+        return res;
+    }
 }
