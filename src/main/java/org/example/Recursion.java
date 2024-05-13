@@ -341,6 +341,81 @@ public class Recursion {
     //Time: O(2^n)
     //Space: O(2^n) - recursion depth
 
+    //If we have to print the subsets: https://www.hackerearth.com/problem/algorithm/print-subset-sum-to-k
+    public static void generateSubsets(int n, int[] a, int k, List<Integer> list){
+        if(n==a.length){
+            if(k==0){
+                for(int data : list){
+                    System.out.print(data + " ");
+                }
+                System.out.println();
+            }
+            return;
+        }
+        if(a[n]>k){
+            generateSubsets(n+1, a, k, list);
+            return;
+        }
+        generateSubsets(n+1, a, k, list);
+        list.add(a[n]);
+        generateSubsets(n+1, a, k-a[n], list);
+        list.remove(list.size()-1);
+    }
+
+    //https://leetcode.com/problems/combination-sum
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> current = new ArrayList<>();
+        generate(candidates, target, res, current, 0);
+        return res;
+    }
+
+    public void generate(int[] candidates, int target, List<List<Integer>> res, List<Integer> current, int index){
+        if(index==candidates.length){
+            if(target==0){
+                res.add(new ArrayList<>(current));
+            }
+            return;
+        }
+        if(candidates[index]<=target){
+            current.add(candidates[index]);
+            generate(candidates, target-candidates[index], res, current, index);
+            current.remove(current.size()-1);
+        }
+        generate(candidates, target, res, current, index+1);
+    }
+    //TC: exponential -> 2^t where t is target (t coz we can pick same element multiple times so perhaps even t times.
+    //SC: k * x where k is the length of the combination and x is no of combination
+
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> list = new ArrayList<>();
+        List<Integer> current = new ArrayList<>();
+        java.util.Arrays.sort(candidates); //we have to sort it so we can skip duplicates based on next index.
+        generate(list, current, candidates, target, 0);
+        return list;
+    }
+
+    public void generate(List<List<Integer>> list, List<Integer> current, int[] candidates, int target, int index){
+        if(target==0){ //valid combination
+            list.add(new ArrayList<>(current));
+            return;
+        }
+        if(index==candidates.length || index<0){
+            return;
+        }
+        if(index<candidates.length && candidates[index]<=target){
+            current.add(candidates[index]);
+            generate(list, current, candidates, target-candidates[index], index+1);
+            current.remove(current.size()-1);
+        }
+        int nextIndex = index+1;
+        while(nextIndex<candidates.length && candidates[nextIndex]==candidates[index]){
+            nextIndex++;
+        }
+        generate(list, current, candidates, target, nextIndex);
+    }
+    //TC: O(2^n) worst case when all elements are unique. With duplicates, some recursive calls are pruned (not explored), which reduces the number of combinations
+
     //Letter case permutation
     //https://leetcode.com/problems/letter-case-permutation
 }
