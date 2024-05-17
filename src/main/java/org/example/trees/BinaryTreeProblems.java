@@ -946,6 +946,32 @@ public class BinaryTreeProblems {
     }
     //TC: O(N)
     //Space: O(N)
+
+    //https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+    public void flatten(TreeNode root) {
+        flat(root);
+    }
+    public TreeNode flat(TreeNode root){
+        if(root==null){
+            return null;
+        }
+        TreeNode lastNode = root;
+        TreeNode leftChild = root.left;
+        TreeNode rightChild = root.right;
+        if(leftChild!=null){
+            root.right = leftChild;
+            lastNode = flat(root.right);
+        }
+        if(rightChild!=null){
+            lastNode.right = rightChild;
+            lastNode = flat(lastNode.right);
+        }
+        root.left = null;
+        return lastNode;
+    }
+
+    //TC: O(N)
+    //SPACE: O(N)
 }
 
 class NodeColumnPair{
