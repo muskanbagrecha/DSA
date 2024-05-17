@@ -16,4 +16,16 @@ public class BinarySearchTreeProblems {
         return searchBST(root.right, val);
     }
     //TC: O(logn) for most cases but O(n) in worst case when tree is skewed.
+
+    //https://www.geeksforgeeks.org/problems/minimum-element-in-bst/1
+    int minValue(Node root) {
+        // code here
+        if(root==null){
+            return -1;
+        }
+        if(root.left!=null){
+            return minValue(root.left);
+        }
+        return root.val;
+    }
 }
