@@ -972,6 +972,19 @@ public class BinaryTreeProblems {
 
     //TC: O(N)
     //SPACE: O(N)
+
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        if(root==null){
+            return null;
+        }
+        root.left = removeLeafNodes(root.left, target);
+        root.right = removeLeafNodes(root.right, target);
+
+        if(root.left == null && root.right==null && root.data==target){
+            return null;
+        }
+        return root;
+    }
 }
 
 class NodeColumnPair{
