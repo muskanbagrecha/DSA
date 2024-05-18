@@ -270,36 +270,7 @@ public class LinkedListProblems {
     //Time: O(n)
     //Space: O(1)
 
-    //https://leetcode.com/problems/palindrome-linked-list/description/
-
-    //Brute force
-    public static boolean isPalindrome(Node head) {
-        if (head == null || head.next == null) {
-            return true;
-        }
-        Node slow = head;
-        Node fast = head;
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        Node temp = head;
-        Stack<Integer> stack = new Stack<>();
-        while (temp != slow) {
-            stack.push((Integer) temp.data);
-            temp = temp.next;
-        }
-        if (fast != null) { // If odd, skip the middle element
-            temp = slow.next;
-        }
-        while (temp != null) {
-            if (temp.data != stack.pop()) {
-                return false;
-            }
-            temp = temp.next;
-        }
-        return true;
-    }
+    //https://leetcode.com/problems/palindrome-linked-list/
 
     //Idea:
     //1. Traverse to the middle of the list. Using hare and turtle approach.
@@ -368,25 +339,77 @@ public class LinkedListProblems {
         return true;
     }
 
-    public static Node addOne(Node head)
-    {
+    //Without using extra space.
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     * int val;
+     * ListNode next;
+     * ListNode() {}
+     * ListNode(int val) { this.val = val; }
+     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    public boolean isPalindrome(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        fast = reverse(slow);
+        slow = head;
+        while (fast != null) { //we can just check fast as for odd no of elements reversed list (Second half) will have one less element than first half of the list as mid is second element in even no of elements.
+            if (slow.data != fast.data) {
+                return false;
+            }
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return true;
+    }
+
+    public ListNode reverse(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
+    }
+//In interview suggesting reversing second half again to restore the LL.
+
+    public ListNode reverse(ListNode head, ListNode prev) {
+        if (head == null) {
+            return prev;
+        }
+        ListNode temp = head.next;
+        head.next = prev;
+        prev = head;
+        return reverse(temp, prev);
+    }
+
+    public static Node addOne2(Node head) {
         //code here.
         head = reverseList2(head);
         int carry = 1;
         Node<Integer> temp = head;
-        while(carry!=0 && temp!=null){
-            temp.data+=carry;
-            if(temp.data<10){
+        while (carry != 0 && temp != null) {
+            temp.data += carry;
+            if (temp.data < 10) {
                 carry = 0;
-            }
-            else{
-                temp.data=0;
+            } else {
+                temp.data = 0;
                 carry = 1;
                 temp = temp.next;
             }
         }
         head = reverseList2(head);
-        if(carry==0) return head;
+        if (carry == 0) return head;
         Node newNode = new Node(1);
         newNode.next = head;
         head = newNode;
@@ -396,12 +419,11 @@ public class LinkedListProblems {
     //TC: O(3N)
     //SC: O(1)
 
-    public static Node addOneRecursive(Node<Integer> head)
-    {
+    public static Node addOneRecursive(Node<Integer> head) {
         //code here.
         int[] carryWrapper = {1};
         add(head, carryWrapper);
-        if(carryWrapper[0]==1){
+        if (carryWrapper[0] == 1) {
             Node temp = new Node(1);
             temp.next = head;
             head = temp;
@@ -409,23 +431,46 @@ public class LinkedListProblems {
         return head;
     }
 
-    public static void add(Node<Integer> head, int[] carryWrapper){
-        if(head.next!=null){
+    public static void add(Node<Integer> head, int[] carryWrapper) {
+        if (head.next != null) {
             add(head.next, carryWrapper);
         }
-        if(carryWrapper[0]==0){
+        if (carryWrapper[0] == 0) {
             return;
         }
-        head.data+=1;
-        if(head.data>=10){
+        head.data += 1;
+        if (head.data >= 10) {
             head.data = 0;
-        }
-        else{
+        } else {
             carryWrapper[0] = 0;
         }
     }
     //TC: O(N)
     //Space: O(N)
+
+    public static Node addOne(Node<Integer> head) {
+        //code here.
+        int carry = add(head);
+        if (carry == 1) {
+            Node temp = new Node(1);
+            temp.next = head;
+            head = temp;
+        }
+        return head;
+    }
+
+    public static int add(Node<Integer> head) {
+        if (head == null) {
+            return 1;
+        }
+        int carry = add(head.next);
+        head.data += carry;
+        if (head.data >= 10) {
+            head.data = 0;
+            return 1;
+        }
+        return 0;
+    }
 
     //Remove nodes from LL
     //https://leetcode.com/problems/remove-nodes-from-linked-list
