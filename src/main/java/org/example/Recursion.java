@@ -416,6 +416,24 @@ public class Recursion {
     }
     //TC: O(2^n) worst case when all elements are unique. With duplicates, some recursive calls are pruned (not explored), which reduces the number of combinations
 
-    //Letter case permutation
-    //https://leetcode.com/problems/letter-case-permutation
+    //https://leetcode.com/problems/letter-combinations-of-a-phone-number
+    public List<String> letterCombinations(String digits) {
+        List<String> res = new ArrayList<>();
+        String[] letters = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        generate(res, letters, digits, 0, "");
+        return res;
+    }
+
+    public void generate(List<String> res, String[] letters, String digits, int index, String output){
+        if(index==digits.length()){
+            if(output.length()>0){
+                res.add(output);
+            }
+            return;
+        }
+        char currentDigit = digits.charAt(index);
+        for(char c : letters[currentDigit - '0'].toCharArray()){
+            generate(res, letters, digits, index+1, output+c);
+        }
+    }
 }
