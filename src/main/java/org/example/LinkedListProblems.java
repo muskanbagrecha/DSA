@@ -498,4 +498,40 @@ public class LinkedListProblems {
     //Space: O(n) worst case all elements need to be stored in stack.
     //Above approach is slightly slow.
 
+    //https://leetcode.com/problems/intersection-of-two-linked-lists/
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        int lenA = 0, lenB = 0;
+        ListNode tempA = headA;
+        while (tempA != null) {
+            lenA++;
+            tempA = tempA.next;
+        }
+        ListNode tempB = headB;
+        while (tempB != null) {
+            lenB++;
+            tempB = tempB.next;
+        }
+        tempA = headA;
+        tempB = headB;
+        while (lenA > lenB) {
+            tempA = tempA.next;
+            lenA--;
+        }
+        while (lenB > lenA) {
+            tempB = tempB.next;
+            lenB--;
+        }
+        while (tempA != null) { // at this point length from start of temp to end is equal
+            if (tempA == tempB) {
+                return tempA;
+            }
+            tempA = tempA.next;
+            tempB = tempB.next;
+        }
+        return null;
+    }
+    //assume, N1 is length of list A, N2 is length of list B
+    //TC: O(N1) + O(N2) + O(N1-N2) + O(N2) => O(2N1 + N2)
+    //SC: O(N)
+
 }
