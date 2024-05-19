@@ -532,6 +532,20 @@ public class LinkedListProblems {
     }
     //assume, N1 is length of list A, N2 is length of list B
     //TC: O(N1) + O(N2) + O(N1-N2) + O(N2) => O(2N1 + N2)
-    //SC: O(N)
+    //SC: O(1)
+    //Optimized:
+    public ListNode getIntersectionNode2(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null)
+            return null;
 
+        ListNode tempA = headA;
+        ListNode tempB = headB;
+        while (tempA != tempB) { //no need to check both tempA and tempB are null then return no intersection and if they are both null it is going to terminate the while loop and a will be null
+            tempA = tempA == null ? headB : tempA.next;
+            tempB = tempB == null ? headA : tempB.next;
+        }
+        return tempA;
+    }
+    //TC: O(N1+N2)
+    //sc: O(1)
 }
