@@ -340,4 +340,34 @@ public class DynamicProgramming {
         }
         return dp[n][total] = dpHelper(price, total, n-1, dp);
     }
+
+
+    //https://www.geeksforgeeks.org/problems/coin-change2448/1
+    public long noOfWaysCoinChange(int coins[], int N, int sum) {
+        // code here.
+        long dp[][] = new long[N+1][sum+1];
+        for(int i = 0; i<=N; i++){
+            for(int j = 0; j<=sum; j++){
+                dp[i][j] = -1;
+            }
+        }
+        return noOfWays(coins, dp, N, sum);
+    }
+
+    public long noOfWays(int[] coins, long[][] dp, int N, int sum){
+        if(N==0){
+            if(sum==0){
+                return 1;
+            }
+            return 0;
+        }
+        if(dp[N][sum]!=-1){
+            return dp[N][sum];
+        }
+        if(coins[N-1]<=sum){
+            return dp[N][sum] = noOfWays(coins, dp, N, sum-coins[N-1]) + noOfWays(coins, dp, N-1, sum);
+        }
+        return dp[N][sum] = noOfWays(coins, dp, N-1, sum);
+    }
+    //TC: O(N*sum)
 }
