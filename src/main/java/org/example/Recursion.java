@@ -436,4 +436,16 @@ public class Recursion {
             generate(res, letters, digits, index+1, output+c);
         }
     }
+
+    public int subsetXORSum(int[] nums) {
+        return sum(nums, 0, 0);
+    }
+    public int sum(int[] nums, int start, int currSum){
+        if(start==nums.length){
+            return currSum;
+        }
+        int ans1 = sum(nums, start+1, currSum);
+        int ans2 = sum(nums, start+1, currSum^nums[start]);
+        return ans1+ans2;
+    }
 }
