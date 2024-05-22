@@ -102,7 +102,6 @@ public class GreedyProblems {
     //https://www.geeksforgeeks.org/problems/chocolate-distribution-problem3825/1
     public long findMinDiff (ArrayList<Integer> a, int n, int m)
     {
-        // your code here
         Collections.sort(a);
         int l = 0;
         int r = m-1;
