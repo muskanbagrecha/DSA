@@ -51,6 +51,69 @@ public class GreedyProblems {
         Collections.sort(res);
         return res;
     }
+
+    //https://www.geeksforgeeks.org/problems/shop-in-candy-store1145/1
+    static ArrayList<Integer> candyStore(int candies[],int N,int K){
+        // code here
+        ArrayList<Integer> list = new ArrayList<>(2);
+        Arrays.sort(candies);
+        int min = 0;
+        for(int i = 0; i<N; i++){
+            min+=candies[i];
+            N-=K;
+        }
+        int max = 0;
+        N = candies.length;
+        int i = 0;
+        while(i<N){
+            max+=candies[N-1];
+            i+=K;
+            N--;
+        }
+        list.add(min);
+        list.add(max);
+        return list;
+    }
+    //O(nlogn) - TC
+    static ArrayList<Integer> candyStore2(int candies[],int N,int K){
+        // code here
+        ArrayList<Integer> list = new ArrayList<>(2);
+        Arrays.sort(candies);
+        int min = 0;
+        int buy = 0;
+        int free = N-1;
+        while(buy<=free){
+            min += candies[buy];
+            buy++;
+            free-=K;
+        }
+        int max = 0;
+        buy = N-1;
+        free = 0;
+        while(free<=buy){
+            max+=candies[buy];
+            buy--;
+            free+=K;
+        }
+        list.add(min);
+        list.add(max);
+        return list;
+    }
+    //https://www.geeksforgeeks.org/problems/chocolate-distribution-problem3825/1
+    public long findMinDiff (ArrayList<Integer> a, int n, int m)
+    {
+        // your code here
+        Collections.sort(a);
+        int l = 0;
+        int r = m-1;
+        long min = Long.MAX_VALUE;
+        while(r<n && r-l+1==m){
+            min = Math.min(min, a.get(r)-a.get(l));
+            l++;
+            r++;
+        }
+        return min;
+    }
 }
 
 
