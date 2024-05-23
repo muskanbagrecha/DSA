@@ -113,6 +113,21 @@ public class GreedyProblems {
         }
         return min;
     }
+
+    //https://leetcode.com/problems/assign-cookies/
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int childCounter = 0;
+        int sizeCounter = 0;
+        while(childCounter<g.length && sizeCounter<s.length){
+            if(g[childCounter]<=s[sizeCounter]){
+                childCounter++;
+            }
+            sizeCounter++;
+        }
+        return childCounter;
+    }
 }
 
 
