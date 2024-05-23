@@ -347,18 +347,15 @@ public class StackProblems {
     //space: O(1) - no extra space
 
     //Optimized:
-    public static int[] stockSpanOptimized(int[] arr) {
-        int ans[] = new int[arr.length];
+    public static int[] calculateSpan(int price[], int n) {
+        // Your code here
         Stack<Integer> s = new Stack<>();
-        for (int i = 0; i < arr.length; i++) {
-            while (!s.isEmpty() && arr[s.peek()] <= arr[i]) {
+        int ans[] = new int[n];
+        for(int i = 0; i<n; i++){
+            while(!s.isEmpty() && price[s.peek()]<=price[i]){
                 s.pop();
             }
-            if (s.isEmpty()) {
-                ans[i] = i - (-1);
-            } else {
-                ans[i] = i - s.peek();
-            }
+            ans[i] = s.isEmpty() ? i+1 : i - s.peek();
             s.push(i);
         }
         return ans;
