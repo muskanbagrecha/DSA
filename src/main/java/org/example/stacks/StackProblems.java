@@ -299,6 +299,32 @@ public class StackProblems {
         return res;
     }
 
+    //Number of NGEs to the right
+    //https://www.geeksforgeeks.org/problems/number-of-nges-to-the-right/1
+
+    //Brute force:
+    public static int[] count_NGEs(int N, int arr[], int queries, int indices[]) {
+        // code here
+        int[] ans = new int[indices.length];
+        for(int i = 0; i<indices.length; i++){
+            int count = findNges(arr, indices[i]);
+            ans[i] = count;
+        }
+        return ans;
+    }
+
+    public static int findNges(int[] arr, int index){
+        int count = 0;
+        for(int i = index + 1; i<arr.length; i++){
+            if(arr[i]>arr[index]){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    //TC: O(Q×N)
+
     //https://www.geeksforgeeks.org/the-stock-span-problem/
     //Naive approach
     public static int[] stockSpan(int[] arr) {
