@@ -228,7 +228,40 @@ public class StackProblems {
 
     // https://leetcode.com/problems/next-greater-element-ii/
     // Concept of circular array
-    public static int[] nextGreaterElements(int[] nums) {
+
+    public int[] nextGreaterElements(int[] nums) {
+        int ans[] = new int[nums.length];
+        Stack<Integer> s = new Stack<>();
+        for(int i = nums.length-1; i>=0; i--){
+            s.push(nums[i]);
+        }
+        for(int i = nums.length-1; i>=0; i--){
+            while(!s.isEmpty() && s.peek()<=nums[i]){
+                s.pop();
+            }
+            ans[i] = s.isEmpty() ? -1 : s.peek();
+            s.push(nums[i]);
+        }
+        return ans;
+    }
+
+    public int[] nextGreaterElements1(int[] nums) {
+        Stack<Integer> s = new Stack<>();
+        int[] res = new int[nums.length];
+        int n = nums.length;
+        for (int i = 2 * n - 1; i >= 0; i--) {
+            if (i < n) {
+                while (!s.isEmpty() && s.peek() <= nums[i % n]) {
+                    s.pop();
+                }
+                res[i] = s.isEmpty() ? -1 : s.peek();
+            }
+            s.push(nums[i % n]);
+        }
+        return res;
+    }
+    //Time: 17ms
+    public static int[] nextGreaterElements2(int[] nums) {
         Stack<Integer> s = new Stack<>();
         int n = nums.length;
         int[] ans = new int[n];
@@ -250,7 +283,7 @@ public class StackProblems {
     //Time: O(2n) => O(n)
     //Space: O(n)
 
-    public int[] nextGreaterElements2(int[] nums) {
+    public int[] nextGreaterElements3(int[] nums) {
         Stack<Integer> s = new Stack<>();
         int n = nums.length;
         int[] res = new int[n];
