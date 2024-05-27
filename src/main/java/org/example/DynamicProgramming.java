@@ -425,4 +425,39 @@ public class DynamicProgramming {
     }
     //TC: O(M*N)
     //SC: O(M*N)
+
+    public static String printLcs(int n, int m, String text1, String text2){
+        // Write your code here.
+        StringBuffer sb = new StringBuffer();
+        int dp[][] = new int[n+1][m+1];
+        for(int i = 0; i<=n; i++){
+            for(int j = 0; j<=m; j++){
+                if(i==0 || j==0){
+                    dp[i][j] = 0;
+                }
+                else if(text1.charAt(i-1)==text2.charAt(j-1)){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        int i = n;
+        int j = m;
+        while(i>0 && j>0){
+            if(text1.charAt(i)==text2.charAt(j)){
+                sb.append(text1.charAt(i));
+                i--;
+                j--;
+            }
+            else if(dp[i-1][j]>dp[i][j-1]){
+                i--;
+            }
+            else{
+                j--;
+            }
+        }
+        return sb.reverse().toString();
+    }
 }
