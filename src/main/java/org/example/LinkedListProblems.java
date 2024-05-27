@@ -548,4 +548,28 @@ public class LinkedListProblems {
     }
     //TC: O(N1+N2)
     //sc: O(1)
+
+    //https://leetcode.com/problems/remove-nth-node-from-end-of-list
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        int ctr = 0;
+        ListNode temp = head;
+        ArrayList<ListNode> list = new ArrayList<>();
+        while(temp!=null){
+            list.add(temp);
+            temp = temp.next;
+        }
+        int removeIndex = list.size()-n;
+        if(removeIndex == 0){
+            head = head.next;
+        }
+        else if(removeIndex==list.size()-1){
+            list.get(removeIndex-1).next = null;
+        }
+        else{
+            list.get(removeIndex-1).next = list.get(removeIndex+1);
+        }
+        return head;
+    }
+    //TC: O(N)
+    //SC: O(N)
 }
