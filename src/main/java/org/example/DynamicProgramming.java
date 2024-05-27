@@ -393,4 +393,34 @@ public class DynamicProgramming {
         }
         return dp[n][amount];
     }
+
+    //LCS top down
+    public int longestCommonSubsequence(String text1, String text2) {
+        int dp[][] = new int[text1.length()+1][text2.length()+1];
+        for(int i = 0; i<=text1.length(); i++){
+            for(int j = 0; j<=text2.length(); j++){
+                dp[i][j] = -1;
+            }
+        }
+        return lcs(text1.toCharArray(), text2.toCharArray(), text1.length(), text2.length(), dp);
+    }
+
+    public int lcs(char[] text1, char[] text2, int m, int n, int[][] dp) {
+        if (m == 0 || n == 0) {
+            return 0;
+        }
+        if(dp[m][n]!=-1){
+            return dp[m][n];
+        }
+        if(text1[m-1]==text2[n-1]){
+            return dp[m][n] = 1 + lcs(text1, text2, m-1, n-1, dp);
+        }
+        if(dp[m-1][n]==-1){
+            dp[m-1][n] = lcs(text1, text2, m-1, n, dp);
+        }
+        if(dp[m][n-1]==-1){
+            dp[m][n-1] = lcs(text1, text2, m, n-1, dp);
+        }
+        return dp[m][n] = Math.max(dp[m-1][n], dp[m][n-1]);
+    }
 }
