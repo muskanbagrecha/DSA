@@ -895,4 +895,21 @@ public class Arrays {
     //Time: O(n)
     //Space: O(1)
 
+    //generate subarrays
+    public static void generateSubarrays(int[] arr, int start, int end){
+        if(end==arr.length){
+            return;
+        }
+        else if(start>end){
+            generateSubarrays(arr, 0, end + 1 );
+        }
+        else{
+            for(int i = start; i<=end; i++){
+                System.out.print(arr[i] + " ");
+            }
+            System.out.println();
+            generateSubarrays(arr, start + 1, end);
+        }
+    }
+
 }
