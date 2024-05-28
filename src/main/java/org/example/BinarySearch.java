@@ -745,8 +745,8 @@ public class BinarySearch {
     }
 
     //    Koko eating bananas: https://leetcode.com/problems/koko-eating-bananas/
-//    Brute force: Start from 1 banana to max of the array. Return as soon as h is satisfied.
-    // Optimal: Binary search
+    //    Brute force: Start from 1 banana to max of the array. Return as soon as h is satisfied.
+    //    Optimal: Binary search
     public static int minEatingSpeed(int[] piles, int h) {
         int n = piles.length;
         int low = 1, high = piles[0]; //Initially, low points to min impossible value and high points to max possible value.
