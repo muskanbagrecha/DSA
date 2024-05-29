@@ -140,6 +140,26 @@ public class SlidingWindow {
         return max;
     }
 
+    //https://www.geeksforgeeks.org/problems/max-sum-in-sub-arrays0824/0
+    public static long pairWithMaxSum(long arr[], long N)
+    {
+        long max = Integer.MIN_VALUE;
+        int l = 0;
+        int r = 0;
+        long sum = 0;
+        while(r<N){
+            sum+=arr[r];
+            if(r-l+1==2){
+                max = Math.max(max, sum);
+                sum-=arr[l];
+                l++;
+            }
+            r++;
+        }
+        return max;
+        // Your code goes here
+    }
+
     //Time: O(2N) => O(N), space O(1)
 
     //Count occurences of anagrams
