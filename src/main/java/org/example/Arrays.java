@@ -796,7 +796,7 @@ public class Arrays {
         return maxSum;
     }
 
-    //Recursion
+    //Recursion (TLE)
     static int MAX;
     public int maxSubArray(int[] a) {
         MAX = Integer.MIN_VALUE;
@@ -841,6 +841,70 @@ public class Arrays {
             max = Math.max(max, sum);
         }
         return max;
+    }
+
+    //print max subarray: https://www.geeksforgeeks.org/problems/save-your-life4601/1
+    static String maxSum(String w,char x[],int b[], int n){
+        //code here
+        HashMap<Character, Integer> map = new HashMap<>();
+        for(int i = 0; i<n; i++){
+            map.put(x[i], b[i]);
+        }
+        int maxAsciiSum = Integer.MIN_VALUE;
+        int currSum = 0;
+        int start = 0;
+        int end = 0;
+        for(int i = 0; i<w.length(); i++){
+            char c = w.charAt(i);
+            if(currSum<0){
+                currSum = 0;
+            }
+            int ascii = map.containsKey(c) ? map.get(c) : (int)c;
+            currSum+=ascii;
+            if(maxAsciiSum<currSum){
+                maxAsciiSum = currSum;
+                end = i;
+            }
+        }
+        start=end; //in order to find start index bactrack from end till we find maxsum = 0
+        while(maxAsciiSum!=0){
+            char c = w.charAt(start);
+            int ascii = map.getOrDefault(c, (int) w.charAt(start));
+            maxAsciiSum-=ascii;
+            start--;
+        }
+        String op = w.substring(start+1, end+1);
+        return op;
+    }
+
+    //Approach 2:
+    static String maxSum2(String w,char x[],int b[], int n) {
+        //code here
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(x[i], b[i]);
+        }
+        int maxAsciiSum = Integer.MIN_VALUE;
+        int currSum = 0;
+        int start = 0;
+        int tempStart = 0;
+        int end = 0;
+        for (int i = 0; i < w.length(); i++) {
+            char c = w.charAt(i);
+            int ascii = map.containsKey(c) ? map.get(c) : (int) c;
+            currSum += ascii;
+            if (maxAsciiSum < currSum) {
+                maxAsciiSum = currSum;
+                start = tempStart;
+                end = i + 1;
+            }
+            if (currSum < 0) {
+                currSum = 0;
+                tempStart = i + 1;
+            }
+        }
+        String op = w.substring(start, end);
+        return op;
     }
 
     //    Given an ascending sorted rotated array Arr of distinct integers of size N. The array is right rotated K times. Find the value of K.
