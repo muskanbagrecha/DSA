@@ -772,7 +772,7 @@ public class Arrays {
     // Check course sheet notes for intuition.
 
 
-//    Given an integer array nums, find the subarray with the largest sum, and return its sum.
+//    Given an integer array nums, find the subarray with the largest sum, and return its sum. (kadane)
 
 //    Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
 //    Output: 6
@@ -796,15 +796,49 @@ public class Arrays {
         return maxSum;
     }
 
+    //Recursion
+    static int MAX;
+    public int maxSubArray(int[] a) {
+        MAX = Integer.MIN_VALUE;
+        for (int i = 0; i < a.length; i++) {
+            maxSubArrayHelper(a, i, i);
+        }
+        return MAX;
+    }
+
+    public static void maxSubArrayHelper(int[] a, int start, int end) {
+        if (end == a.length) {
+            return;
+        }
+        int sum = 0;
+        for (int i = start; i <= end; i++) {
+            sum += a[i];
+        }
+        MAX = Math.max(MAX, sum);
+        maxSubArrayHelper(a, start, end + 1);
+    }
+
+    //DP
+    public int maxSubArrayDP(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int max = nums[0];
+        for(int i = 1; i<nums.length; i++){
+            dp[i] = nums[i] + (dp[i-1]>0?dp[i-1]: 0);
+            max = Math.max(dp[i], max);
+        }
+        return max;
+    }
+
     //Optimal
     //Kadane's algorithm
-    public static long maxSubarraySum2(int[] arr, int n) {
-        // write your code here
-        int max = arr[0], sum = arr[0];
-        for (int i = 1; i < arr.length; i++) {
-            sum += arr[i];
+    public int maxSubArrayKadane(int[] nums) {
+        int sum = nums[0];
+        int max = nums[0];
+        for(int i = 1; i<nums.length; i++){
+            sum = sum<0 ? 0 : sum;
+            sum+=nums[i];
             max = Math.max(max, sum);
-            sum = sum >= 0 ? sum : 0;
         }
         return max;
     }
@@ -896,20 +930,21 @@ public class Arrays {
     //Space: O(1)
 
     //generate subarrays
-    public static void generateSubarrays(int[] arr, int start, int end){
-        if(end==arr.length){
+    public static void subarray(int a[]){
+        for(int i = 0; i<a.length; i++){
+            gen(a, i, i);
+        }
+    }
+
+    public static void gen(int[] a, int start, int end){
+        if(end==a.length){
             return;
         }
-        else if(start>end){
-            generateSubarrays(arr, 0, end + 1 );
+        for(int i = start; i<=end; i++){
+            System.out.print(a[i] + " ");
         }
-        else{
-            for(int i = start; i<=end; i++){
-                System.out.print(arr[i] + " ");
-            }
-            System.out.println();
-            generateSubarrays(arr, start + 1, end);
-        }
+        System.out.println();
+        gen(a, start, end+1);
     }
 
 }
