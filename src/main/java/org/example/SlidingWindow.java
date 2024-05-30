@@ -228,4 +228,36 @@ public class SlidingWindow {
         }
         return res;
     }
+
+    //https://www.geeksforgeeks.org/problems/longest-k-unique-characters-substring0853/1
+    public int longestkSubstr(String s, int k) {
+        // code here
+        int max = -1;
+        int l = 0;
+        int r = 0;
+        int unique = 0;
+        HashMap<Character, Integer> map = new HashMap<>();
+        while(r<s.length()){
+            char c = s.charAt(r);
+            map.put(c, map.getOrDefault(c, 0)+1);
+            if(map.get(c)==1){
+                unique++;
+            }
+            if(unique>k){
+                while(unique>k){
+                    char start = s.charAt(l);
+                    map.put(start, map.get(start)-1);
+                    if(map.get(start)==0){
+                        unique--;
+                    }
+                    l++;
+                }
+            }
+            if(unique==k){
+                max = Math.max(max, r-l+1);
+            }
+            r++;
+        }
+        return max;
+    }
 }
