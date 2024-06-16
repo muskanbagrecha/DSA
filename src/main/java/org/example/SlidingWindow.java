@@ -71,18 +71,17 @@ public class SlidingWindow {
     //Time: O(N)
     //Space: O(k)
 
-    ArrayList<Integer> countDistinct(int A[], int n, int k)
-    {
+    ArrayList<Integer> countDistinct(int A[], int n, int k) {
         // code here
         ArrayList<Integer> ans = new ArrayList<>();
         int l = 0;
         int r = 0;
         int count = 0;
-        HashMap<Integer,Integer> map = new HashMap<>();
-        while(r<n){
+        HashMap<Integer, Integer> map = new HashMap<>();
+        while (r < n) {
             map.put(A[r], map.getOrDefault(A[r], 0) + 1);
-            if(map.get(A[r])==1) count++;
-            if(r-l+1==k){
+            if (map.get(A[r]) == 1) count++;
+            if (r - l + 1 == k) {
                 ans.add(count);
                 map.put(A[l], map.get(A[l]) - 1);
                 // If the frequency becomes zero, reduce the distinct count
@@ -141,17 +140,16 @@ public class SlidingWindow {
     }
 
     //https://www.geeksforgeeks.org/problems/max-sum-in-sub-arrays0824/0
-    public static long pairWithMaxSum(long arr[], long N)
-    {
+    public static long pairWithMaxSum(long arr[], long N) {
         long max = Integer.MIN_VALUE;
         int l = 0;
         int r = 0;
         long sum = 0;
-        while(r<N){
-            sum+=arr[r];
-            if(r-l+1==2){
+        while (r < N) {
+            sum += arr[r];
+            if (r - l + 1 == 2) {
                 max = Math.max(max, sum);
-                sum-=arr[l];
+                sum -= arr[l];
                 l++;
             }
             r++;
@@ -212,14 +210,14 @@ public class SlidingWindow {
         int l = 0;
         int r = 0;
         ArrayList<Integer> res = new ArrayList<>();
-        while(r<n){
-            while(!q.isEmpty() && q.peekLast()<arr[r]){
+        while (r < n) {
+            while (!q.isEmpty() && q.peekLast() < arr[r]) {
                 q.removeLast();
             }
             q.add(arr[r]);
-            if(r-l+1==k){
+            if (r - l + 1 == k) {
                 res.add(q.peek());
-                if(q.peek()==arr[l]){
+                if (q.peek() == arr[l]) {
                     q.removeFirst();
                 }
                 l++;
@@ -237,25 +235,44 @@ public class SlidingWindow {
         int r = 0;
         int unique = 0;
         HashMap<Character, Integer> map = new HashMap<>();
-        while(r<s.length()){
+        while (r < s.length()) {
             char c = s.charAt(r);
-            map.put(c, map.getOrDefault(c, 0)+1);
-            if(map.get(c)==1){
+            map.put(c, map.getOrDefault(c, 0) + 1);
+            if (map.get(c) == 1) {
                 unique++;
             }
-            if(unique>k){
-                while(unique>k){
-                    char start = s.charAt(l);
-                    map.put(start, map.get(start)-1);
-                    if(map.get(start)==0){
-                        unique--;
-                    }
-                    l++;
+            while (unique > k) {
+                char start = s.charAt(l);
+                map.put(start, map.get(start) - 1);
+                if (map.get(start) == 0) {
+                    unique--;
                 }
+                l++;
             }
-            if(unique==k){
-                max = Math.max(max, r-l+1);
+            if (unique == k) {
+                max = Math.max(max, r - l + 1);
             }
+            r++;
+        }
+        return max;
+    }
+
+    //https://leetcode.com/problems/longest-substring-without-repeating-characters/
+    public int lengthOfLongestSubstring(String s) {
+        HashSet<Character> set = new HashSet<>();
+        int l = 0;
+        int r = 0;
+        int n = s.length();
+        int max = 0;
+        while (r < n) {
+            char c = s.charAt(r);
+            while (set.contains(c)) {
+                char firstChar = s.charAt(l);
+                set.remove(firstChar);
+                l++;
+            }
+            set.add(c);
+            max = Math.max(max, set.size());
             r++;
         }
         return max;
