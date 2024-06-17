@@ -277,4 +277,25 @@ public class SlidingWindow {
         }
         return max;
     }
+
+    public int longestOnes(int[] nums, int k) {
+        int flipped = 0;
+        int l = 0;
+        int r = 0;
+        int maxLen = 0;
+        while(r<nums.length){
+            if(nums[r]==0){
+                flipped++;
+            }
+            while(flipped>k){
+                if(nums[l]==0){
+                    flipped--;
+                }
+                l++;
+            }
+            maxLen = Math.max(maxLen, r-l+1);
+            r++;
+        }
+        return maxLen;
+    }
 }
