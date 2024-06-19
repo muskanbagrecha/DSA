@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -461,5 +462,29 @@ public class DynamicProgramming {
         return sb.reverse().toString();
         //TC: O(M*N) for dp + O(N+M) for backtracking - we have to use 2d array for printing.
         //SC: O(M*N)
+    }
+
+    //https://www.geeksforgeeks.org/problems/geek-jump/1
+    public int minimumEnergy(int arr[],int n){
+        //code here
+        int[] dp = new int[n+1];
+        Arrays.fill(dp, -1);
+        return energy(arr, n-1, dp);
+    }
+
+    public int energy(int[] arr, int n, int[] dp){
+        if(n==0){
+            return 0;
+        }
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+
+        int oneStepHeight = Math.abs(arr[n]-arr[n-1]) + energy(arr, n-1, dp);
+        int twoStepHeight = Integer.MAX_VALUE;
+        if(n>1){
+            twoStepHeight = Math.abs(arr[n]-arr[n-2]) + energy(arr, n-2, dp);
+        }
+        return dp[n] = Math.min(oneStepHeight, twoStepHeight);
     }
 }
