@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
@@ -447,5 +448,29 @@ public class Recursion {
         int ans1 = sum(nums, start+1, currSum);
         int ans2 = sum(nums, start+1, currSum^nums[start]);
         return ans1+ans2;
+    }
+
+    //https://www.geeksforgeeks.org/problems/geek-jump/1
+    public int minimumEnergy(int arr[],int n){
+        //code here
+        int[] dp = new int[n+1];
+        Arrays.fill(dp, -1);
+        return energy(arr, n-1, dp);
+    }
+
+    public int energy(int[] arr, int n, int[] dp){
+        if(n==0){
+            return 0;
+        }
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+
+        int oneStepHeight = Math.abs(arr[n]-arr[n-1]) + energy(arr, n-1, dp);
+        int twoStepHeight = Integer.MAX_VALUE;
+        if(n>1){
+            twoStepHeight = Math.abs(arr[n]-arr[n-2]) + energy(arr, n-2, dp);
+        }
+        return dp[n] = Math.min(oneStepHeight, twoStepHeight);
     }
 }
