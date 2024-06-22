@@ -698,4 +698,73 @@ public class GraphProblems {
         return false;
     }
 
+    //Approach 1: keep track of levels
+    public int[] shortestPath(int[][] edges,int n,int m ,int src) {
+        int[] distance = new int[n];
+        List<ArrayList<Integer>> adj = new ArrayList<>(n);
+        for(int i = 0; i<n; i++){
+            adj.add(new ArrayList<>());
+            distance[i] = Integer.MAX_VALUE;
+        }
+        for(int i = 0; i<m; i++){
+            adj.get(edges[i][0]).add(edges[i][1]);
+            adj.get(edges[i][1]).add(edges[i][0]);
+        }
+        distance[src] = 0;
+        Queue<Integer> q = new LinkedList<>();
+        q.add(src);
+        int currentDistance = 0;
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i<size; i++){
+                int curr = q.remove();
+                distance[curr] = Math.min(distance[curr], currentDistance);
+                for(int j : adj.get(curr)){
+                    if(distance[j]==Integer.MAX_VALUE){ //not visited before
+                        q.add(j);
+                    }
+                }
+            }
+            currentDistance++;
+        }
+        for(int i = 0; i<n; i++){
+            if(distance[i]==Integer.MAX_VALUE){
+                distance[i]=-1;
+            }
+        }
+        return distance;
+    }
+
+    //Approach 2:
+    public int[] shortestPath2(int[][] edges,int n,int m ,int src) {
+        // Code here
+        int[] distance = new int[n];
+        List<ArrayList<Integer>> adj = new ArrayList<>(n);
+        for(int i = 0; i<n; i++){
+            adj.add(new ArrayList<>());
+            distance[i] = Integer.MAX_VALUE-1; //-1 coz we add 1 to compare if we need to update distance or not so we dont want int overflow
+        }
+        for(int i = 0; i<m; i++){
+            adj.get(edges[i][0]).add(edges[i][1]);
+            adj.get(edges[i][1]).add(edges[i][0]);
+        }
+        distance[src] = 0;
+        Queue<Integer> q = new LinkedList<>();
+        q.add(src);
+        while(!q.isEmpty()){
+            int node = q.remove();
+            for(int neighbour : adj.get(node)){
+                if(distance[node]+1<distance[neighbour]){
+                    distance[neighbour] = distance[node]+1;
+                    q.add(neighbour);
+                }
+            }
+        }
+        for(int i = 0; i<n; i++){
+            if(distance[i]==Integer.MAX_VALUE-1){
+                distance[i]=-1;
+            }
+        }
+        return distance;
+    }
 }
