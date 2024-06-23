@@ -434,4 +434,41 @@ public class StackProblems {
         }
         return res;
     }
+
+    public static String infixToPostfix(String exp) {
+        // Your code here
+        HashMap<Character, Integer> prec = new HashMap<>();
+        prec.put('^', 2);
+        prec.put('/', 3);
+        prec.put('*', 3);
+        prec.put('+', 4);
+        prec.put('-', 4);
+        prec.put('(', 5);
+        StringBuilder op = new StringBuilder();
+        Stack<Character> s = new Stack<>();
+        for(char c : exp.toCharArray()){
+            if (Character.isLetterOrDigit(c)) {
+                op.append(c);
+            }
+            else if(c=='('){
+                s.push('(');
+            }
+            else if(c==')'){
+                while(!s.isEmpty() && s.peek()!='('){
+                    op.append(s.pop());
+                }
+                s.pop();
+            }
+            else{ //operand encountered
+                while(!s.isEmpty() && prec.get(c)>=prec.get(s.peek())){
+                    op.append(s.pop());
+                }
+                s.push(c);
+            }
+        }
+        while(!s.isEmpty()){
+            op.append(s.pop());
+        }
+        return op.toString();
+    }
 }
