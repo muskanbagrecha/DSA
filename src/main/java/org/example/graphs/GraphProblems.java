@@ -597,6 +597,34 @@ public class GraphProblems {
         return ctr;
     }
 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj)
+    {
+        // add your code here
+        boolean[] vis = new boolean[V];
+        Stack<Integer> s = new Stack<>();
+        for(int i = 0; i<V; i++){
+            if(!vis[i]){
+                toposortHelper(i, adj, vis, s);
+            }
+        }
+        int[] res = new int[V]; int j = 0;
+        while(!s.isEmpty()){
+            res[j] = s.pop();
+            j++;
+        }
+        return res;
+    }
+
+    public static void toposortHelper(int i, ArrayList<ArrayList<Integer>> adj, boolean[] vis, Stack<Integer> s){
+        vis[i] = true;
+        for(int neighbour : adj.get(i)){
+            if(!vis[neighbour]){
+                toposortHelper(neighbour, adj, vis, s);
+            }
+        }
+        s.push(i);
+    }
+
     //Function to return list containing vertices in Topological order.
     static int[] topoSortKahn(int V, ArrayList<ArrayList<Integer>> adj)
     {
