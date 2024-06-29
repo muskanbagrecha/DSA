@@ -680,6 +680,37 @@ public class GraphProblems {
         return true;
     }
 
+    //Course schedule using Kahn's algo
+    public boolean canFinishKahn(int numCourses, int[][] prerequisites) {
+        Queue<Integer> q = new LinkedList<>();
+        int count = numCourses;
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        int[] indegrees = new int[numCourses];
+        for (int i = 0; i < prerequisites.length; i++) {
+            adj.get(prerequisites[i][1]).add(prerequisites[i][0]);
+            indegrees[prerequisites[i][0]]++;
+        }
+        for (int i = 0; i < indegrees.length; i++) {
+            if (indegrees[i] == 0) {
+                q.add(i);
+            }
+        }
+        while (!q.isEmpty()) {
+            int currNode = q.remove();
+            for (int neighbour : adj.get(currNode)) {
+                indegrees[neighbour]--;
+                if (indegrees[neighbour] == 0) {
+                    q.add(neighbour);
+                }
+            }
+            count--;
+        }
+        return count == 0;
+    }
+
     private boolean dfs(int node, List<List<Integer>> graph, boolean[] visited, boolean[] onPath) {
         visited[node] = true;
         onPath[node] = true;
