@@ -711,6 +711,39 @@ public class GraphProblems {
         return count == 0;
     }
 
+    //Course schedule 2 - Kahn's algo
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] courses = new int[numCourses];
+        List<List<Integer>> adj = new ArrayList<>();
+        for(int i = 0; i<numCourses; i++){
+            adj.add(new ArrayList<>());
+        }
+        int[] indegrees = new int[numCourses];
+        for(int i = 0; i<prerequisites.length; i++){
+            adj.get(prerequisites[i][1]).add(prerequisites[i][0]);
+            indegrees[prerequisites[i][0]]++;
+        }
+        int count = 0;
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i<indegrees.length; i++){
+            if(indegrees[i]==0){
+                q.add(i);
+            }
+        }
+        while(!q.isEmpty()){
+            int currCourse = q.remove();
+            courses[count] = currCourse;
+            for(int neighbour : adj.get(currCourse)){
+                indegrees[neighbour]--;
+                if(indegrees[neighbour]==0){
+                    q.add(neighbour);
+                }
+            }
+            count++;
+        }
+        return count!=numCourses ? new int[]{} : courses;
+    }
+
     private boolean dfs(int node, List<List<Integer>> graph, boolean[] visited, boolean[] onPath) {
         visited[node] = true;
         onPath[node] = true;
