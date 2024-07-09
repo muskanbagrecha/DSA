@@ -471,4 +471,31 @@ public class StackProblems {
         }
         return op.toString();
     }
+
+    //Sort a stack using recursion
+    public static Stack<Integer> sortStack(Stack<Integer> s) {
+        //Write your code here
+        sort(s);
+        return s;
+    }
+
+    public static void sort(Stack<Integer> s){
+        if(s.size()<=1){
+            return;
+        }
+        int top = s.pop();
+        sort(s);
+        insert(s, top);
+    }
+
+    public static void insert(Stack<Integer> s, int element){
+        if(s.isEmpty() || element>=s.peek()){
+            s.push(element);
+        }
+        else{
+            int temp = s.pop();
+            insert(s, element);
+            s.push(temp);
+        }
+    }
 }
