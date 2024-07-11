@@ -894,6 +894,6 @@ public class GraphProblems {
         }
         return 0;
     }
-    //TC: O(N * L * 26)
+    //TC: O(N * L * 26) => O(N*L)
     //SC: O(N)
 }
