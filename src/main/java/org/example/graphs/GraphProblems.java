@@ -896,4 +896,37 @@ public class GraphProblems {
     }
     //TC: O(N * L * 26) => O(N*L)
     //SC: O(N)
+
+    //https://leetcode.com/problems/shortest-path-in-binary-matrix/
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int[] drow = {-1, -1, -1, 0, 1, 1, 1, 0};
+        int[] dcol = {-1, 0, 1, 1, 1, 0, -1, -1};
+        int n = grid.length;
+        if(grid[0][0]!=0) return -1;
+        int distance = 1;
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(0, 0));
+        grid[0][0] = 1;
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i<size; i++){
+                Pair curr = q.remove();
+                int row = curr.first;
+                int col = curr.second;
+                if(row==n-1 && col==n-1){
+                    return distance;
+                }
+                for(int k = 0; k<8; k++){
+                    int nrow = drow[k] + row;
+                    int ncol = dcol[k] + col;
+                    if(nrow>=0 && nrow<grid.length && ncol>=0 && ncol<grid.length && grid[nrow][ncol]==0){
+                        q.add(new Pair(nrow, ncol));
+                        grid[nrow][ncol] = 1;
+                    }
+                }
+            }
+            distance++;
+        }
+        return -1;
+    }
 }
