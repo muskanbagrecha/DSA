@@ -487,4 +487,28 @@ public class DynamicProgramming {
         }
         return dp[n] = Math.min(oneStepHeight, twoStepHeight);
     }
+
+    public int minimizeCost(int arr[], int N, int K) {
+        // code here
+        int[] dp = new int[N+1];
+        Arrays.fill(dp, -1);
+        return minimizeCostHelper(arr, N, K, dp);
+    }
+
+    public int minimizeCostHelper(int[] arr, int N, int K, int[] dp){
+        if(N==1){
+            return 0;
+        }
+        if(dp[N]!=-1){
+            return dp[N];
+        }
+        int cost = Integer.MAX_VALUE;
+        for(int i = 1; i<=K; i++){
+            if(N-1-i>=0){
+                int kthStepCost = Math.abs(arr[N-1] - arr[N-1-i]) + minimizeCostHelper(arr, N-i, K, dp);
+                cost = Math.min(cost, kthStepCost);
+            }
+        }
+        return dp[N] = cost;
+    }
 }
