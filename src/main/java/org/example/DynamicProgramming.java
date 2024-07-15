@@ -511,4 +511,55 @@ public class DynamicProgramming {
         }
         return dp[N] = cost;
     }
+
+    //https://leetcode.com/problems/house-robber
+    // Memoization
+    public int rob(int[] nums) {
+        int[] dp = new int[nums.length+1];
+        Arrays.fill(dp, -1);
+        return robHelper(nums, nums.length, dp);
+    }
+
+    public int robHelper(int[] nums, int n, int[] dp){
+        if(n==0){
+            return 0;
+        }
+        if(n==1){
+            return nums[n-1];
+        }
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+        return dp[n] = Math.max(robHelper(nums, n-1, dp), nums[n-1] + robHelper(nums, n-2, dp));
+    }
+    //Time: O(N)
+    //Space: O(N)
+
+    //Tabulation
+    public int robTabulation(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = nums[0];
+        for (int i = 2; i <= n; i++) {
+            dp[i] = Math.max(dp[i - 1], nums[i - 1] + dp[i - 2]);
+        }
+        return dp[n];
+    }
+    //Space: O(n)
+
+    //Using constant space
+    public int rob3(int[] nums) {
+        int n = nums.length;
+        int prev2 = 0;
+        int prev = nums[0];
+        int curr = nums[0];
+        for(int i = 2; i<=n; i++){
+            curr = Math.max(prev, nums[i-1] + prev2);
+            prev2 = prev;
+            prev = curr;
+        }
+        return curr;
+    }
+    //SC: O(1)
 }
