@@ -590,4 +590,37 @@ public class LinkedListProblems {
         odd.next = evenHead;
         return head;
     }
+
+    //https://leetcode.com/problems/add-two-numbers
+    public ListNode<Integer> addTwoNumbers(ListNode<Integer> first, ListNode<Integer> second) {
+        int carry = 0;
+        int digit = 0;
+        ListNode<Integer> res = new ListNode<>();
+        ListNode<Integer> dummyHead = res;
+        while(first!=null || second!=null){
+            digit = 0;
+            if(first!=null){
+                digit += first.data;
+                first = first.next;
+            }
+            if(second!=null){
+                digit += second.data;
+                second = second.next;
+            }
+            digit+=carry;
+            if(digit>=10){
+                carry=1;
+                digit=digit%10;
+            }
+            else{
+                carry=0;
+            }
+            res.next = new ListNode<>(digit);
+            res = res.next;
+        }
+        if(carry==1){
+            res.next = new ListNode<>(1);
+        }
+        return dummyHead.next;
+    }
 }
