@@ -128,6 +128,21 @@ public class GreedyProblems {
         }
         return childCounter;
     }
+
+    //https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        int buyIndex = 0;
+        for(int i = 1; i<prices.length; i++){
+            if(prices[i]>prices[buyIndex]){
+                profit = Math.max(profit, prices[i]-prices[buyIndex]);
+            }
+            else if(prices[i]<prices[buyIndex]){
+                buyIndex = i;
+            }
+        }
+        return profit;
+    }
 }
 
 
