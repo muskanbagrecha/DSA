@@ -985,6 +985,31 @@ public class BinaryTreeProblems {
         }
         return root;
     }
+
+    public TreeNode createBinaryTree(int[][] descriptions) {
+        HashMap<Integer, TreeNode> map = new HashMap<>(); //map of all nodes with key as node value and value as the actual treenode
+        HashSet<Integer> children = new HashSet<>(); //to check for root
+        for(int[] desc : descriptions){
+            int parent = desc[0], child = desc[1], isLeft = desc[2];
+            map.putIfAbsent(parent, new TreeNode(parent));
+            map.putIfAbsent(child, new TreeNode(child));
+            TreeNode parentNode = map.get(parent);
+            TreeNode childNode = map.get(child);
+            if(isLeft==1){
+                parentNode.left = childNode;
+            }
+            else{
+                parentNode.right = childNode;
+            }
+            children.add(child);
+        }
+        for(int node : map.keySet()){
+            if(!children.contains(node)){
+                return map.get(node);
+            }
+        }
+        return null;
+    }
 }
 
 class NodeColumnPair{
