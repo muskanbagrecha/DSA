@@ -995,12 +995,14 @@ public class BinaryTreeProblems {
             map.putIfAbsent(child, new TreeNode(child));
             TreeNode parentNode = map.get(parent);
             TreeNode childNode = map.get(child);
-            if(isLeft==1){
+
+            if(isLeft == 1){
                 parentNode.left = childNode;
             }
             else{
                 parentNode.right = childNode;
             }
+
             children.add(child);
         }
         for(int node : map.keySet()){
