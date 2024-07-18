@@ -14,13 +14,12 @@ public class DoublyLinkedListProblems {
             front = temp.next;
             temp.next = temp.prev;
             temp.prev = front;
-            if(front==null){ //last element
-                head = temp;
-                break;
+            if(front==null){ //We dont want temp to be null. But as per the while condition temp will go to null. So either we keep track of one prev element or terminate early when temp is last element.
+                return temp;
             }
             temp = front;
         }
-        return head;
+        return null;
     }
 
     //Find pairs of nos which have sum = k in a SORTED array.
