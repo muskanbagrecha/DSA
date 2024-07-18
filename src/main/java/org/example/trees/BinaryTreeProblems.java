@@ -1027,6 +1027,61 @@ public class BinaryTreeProblems {
         }
         return right;
     }
+
+    //https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another
+    //VV IMP - medium hard
+    public String getDirections(TreeNode root, int startValue, int endValue) {
+        TreeNode LCANode = getLCA(root, startValue, endValue);
+        StringBuilder sb = new StringBuilder();
+        StringBuilder temp = new StringBuilder();
+        getChildToParentPath(LCANode, startValue, sb);
+        getParentToChildPath(LCANode, endValue, temp);
+        sb.append(temp.reverse());
+        return sb.toString();
+    }
+
+    public boolean getChildToParentPath(TreeNode root, int startValue, StringBuilder sb){
+        if(root==null){
+            return false;
+        }
+        if(root.data==startValue){
+            return true;
+        }
+        if(getChildToParentPath(root.left, startValue, sb) || getChildToParentPath(root.right, startValue, sb)){
+            sb.append("U");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean getParentToChildPath(TreeNode root, int endValue, StringBuilder sb){
+        if(root==null){
+            return false;
+        }
+        if(root.data==endValue){
+            return true;
+        }
+        if(getParentToChildPath(root.left, endValue, sb)){
+            sb.append("L");
+            return true;
+        }
+        if(getParentToChildPath(root.right, endValue, sb)){
+            sb.append("R");
+            return true;
+        }
+        return false;
+    }
+    public TreeNode getLCA(TreeNode root, int p, int q){
+        if(root==null || root.data==p || root.data==q){
+            return root;
+        }
+        TreeNode left = getLCA(root.left, p, q);
+        TreeNode right = getLCA(root.right, p, q);
+        if(left!=null && right!=null){
+            return root; //found LCA
+        }
+        return left==null?right:left;
+    }
 }
 
 class NodeColumnPair{
