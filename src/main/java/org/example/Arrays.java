@@ -1050,4 +1050,63 @@ public class Arrays {
         }
     }
 
+    //Based on Kadane's algo
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        int buy = prices[0];
+        for(int i = 1; i<prices.length; i++){
+            if(prices[i]-buy>profit){
+                profit = prices[i]-buy;
+            }
+            else if(prices[i]<buy){
+                buy = prices[i];
+            }
+        }
+        return profit;
+    }
+
+    //https://leetcode.com/problems/merge-sorted-array
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m-1;
+        int j = n-1;
+        int k = m+n-1;
+        while(i>=0 && j>=0){
+            if(nums2[j]>nums1[i]){
+                nums1[k] = nums2[j];
+                j--;
+            }
+            else{
+                nums1[k] = nums1[i];
+                i--;
+            }
+            k--;
+        }
+        while(i>=0){
+            nums1[k] = nums1[i];
+            i--;
+            k--;
+        }
+        while(j>=0){
+            nums1[k] = nums2[j];
+            k--;
+            j--;
+        }
+    }
+    //Combining the conditions for cleaner code.
+    public void merge2(int[] nums1, int m, int[] nums2, int n) {
+        int i = m-1;
+        int j = n-1;
+        int k = m+n-1;
+        while(i>=0 || j>=0){
+            if(i<0|| (j>=0 && nums2[j]>nums1[i])){
+                nums1[k] = nums2[j];
+                j--;
+            }
+            else{
+                nums1[k] = nums1[i];
+                i--;
+            }
+            k--;
+        }
+    }
 }
