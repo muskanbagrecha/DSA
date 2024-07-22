@@ -1,6 +1,7 @@
 package org.example.sorting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,7 +35,6 @@ public class SortingProblems {
         int leftPointer = low;
         int rightPointer = mid+1;
         List<Integer> list = new ArrayList<>();
-        int k = 0;
         while(leftPointer<=mid && rightPointer<=high){
             if(arr[leftPointer]>=arr[rightPointer]){
                 list.add(arr[leftPointer++]);
@@ -49,10 +49,31 @@ public class SortingProblems {
         while(rightPointer<=high){
             list.add(arr[rightPointer++]);
         }
-        System.out.println(list.toString());
-        System.out.println(low + " " + high);
         for(int i = low; i<=high; i++){
             arr[i] = list.get(i-low);
         }
+    }
+
+    //Approach 2:
+    //Sorting  using Arrays.sort() will sort in asc order, but you cannot directly pass comparator to sort in desc order for primitive types. So instead sort in asc order and reverse the array.
+    public String[] sortPeople2(String[] names, int[] heights) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i<heights.length; i++){
+            map.put(heights[i], i);
+        }
+        Arrays.sort(heights);
+        int l = 0; int r = heights.length-1;
+        while(l<r){
+            int temp = heights[l];
+            heights[l] = heights[r];
+            heights[r] = temp;
+            l++;
+            r--;
+        }
+        String[] sorted = new String[names.length];
+        for(int i = 0; i<names.length; i++){
+            sorted[i] = names[map.get(heights[i])];
+        }
+        return sorted;
     }
 }
