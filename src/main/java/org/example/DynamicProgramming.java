@@ -579,17 +579,19 @@ public class DynamicProgramming {
         if(N==0){
             return 0;
         }
-        int temp = 0;
+        int maxi = 0;
         for(int i = 0; i<3; i++){
             if(i!=prev){
-                temp = Math.max(temp, points[N-1][i] + findMaxPoints(points, N-1, i, dp));
+                maxi = Math.max(maxi, points[N-1][i] + findMaxPoints(points, N-1, i, dp));
             }
         }
         if(prev!=-1){
-            dp[N][prev] = temp;
+            dp[N][prev] = maxi;
         }
-        return temp;
+        return maxi;
     }
+    //Above TC: O(N*3)
+    //SC: O(N) - recursion at max N days before you explore different pattern + O(N*3) - dp array
 
     //Tabulation
     public int maximumPointsTabulation(int points[][], int N) {
@@ -603,12 +605,14 @@ public class DynamicProgramming {
             dp[i][1] = points[i][1] + Math.max(dp[i-1][0], dp[i-1][2]);
             dp[i][2] = points[i][2] + Math.max(dp[i-1][0], dp[i-1][1]);
         }
-        int temp = 0;
+        int maxi = 0;
         for(int i = 0; i<3; i++){
-            temp = Math.max(temp, dp[N-1][i]);
+            maxi = Math.max(maxi, dp[N-1][i]);
         }
-        return temp;
+        return maxi;
     }
+    //TC: O(N*3)
+    //SC: O(N*3)
 
     //https://leetcode.com/problems/unique-paths/
     //Without DP
@@ -661,5 +665,20 @@ public class DynamicProgramming {
             }
         }
         return dp[m-1][n-1];
+    }
+
+    //Space optimization
+    public int uniquePathsTabulation2(int m, int n){
+        int[] prevRow = new int[n];
+        Arrays.fill(prevRow, 1);
+        for(int i = 1; i<m; i++){
+            int[] current = new int[n];
+            Arrays.fill(current, 1);
+            for(int j = 1; j<n; j++){
+                current[j] = current[j-1] + prevRow[j];
+            }
+            prevRow=current;
+        }
+        return prevRow[n-1];
     }
 }
