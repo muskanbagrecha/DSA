@@ -41,6 +41,31 @@ public class HeapProblems {
         return res;
     }
     //TC: O(n log k) + O(k) + O(klogk) => O(nlogk) + O(klogk)
+
+    //VVIMP
+    //https://leetcode.com/problems/find-k-pairs-with-smallest-sums
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0]-b[0]); //min-heap
+        for(int i = 0; i<nums1.length; i++){
+            pq.add(new int[]{nums1[i]+nums2[0], 0});
+        }
+        while(k>0 && !pq.isEmpty()){
+            int[] curr = pq.remove();
+            int u = curr[0]-nums2[curr[1]];
+            int v = nums2[curr[1]];
+            List<Integer> currentPair = new ArrayList<>();
+            currentPair.add(u);
+            currentPair.add(v);
+            res.add(currentPair);
+            int nextIndex = curr[1] + 1;
+            if(nextIndex<nums2.length){
+                pq.add(new int[]{u+nums2[nextIndex], nextIndex});
+            }
+            k--;
+        }
+        return res;
+    }
 }
 
 class ClosestElementsComparator implements Comparator<Pair> {
