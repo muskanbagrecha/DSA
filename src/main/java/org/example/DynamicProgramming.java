@@ -681,4 +681,92 @@ public class DynamicProgramming {
         }
         return prevRow[n-1];
     }
+
+    //https://leetcode.com/problems/unique-paths-ii/
+    //Memo
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        int[][] dp = new int[m+1][n+1];
+        for(int i = 0; i<=m; i++){
+            Arrays.fill(dp[i], -1);
+        }
+        return countPaths(obstacleGrid, 0, 0, dp);
+    }
+
+    public int countPaths(int[][] grid, int m, int n, int[][] dp){
+        if(dp[m][n]!=-1){
+            return dp[m][n];
+        }
+        if(m>=grid.length || n>=grid[0].length || grid[m][n]==1){
+            return 0;
+        }
+        if(m==grid.length-1 && n==grid[0].length-1){
+            return 1;
+        }
+        return dp[m][n] = countPaths(grid, m+1, n, dp) + countPaths(grid, m, n+1, dp);
+    }
+
+    //Tabulation
+    public int uniquePathsWithObstaclestabulation(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        int[][] dp = new int[m][n];
+        dp[0][0] = obstacleGrid[0][0]==1?0:1;
+        for(int i = 1; i<m; i++){
+            if(obstacleGrid[i][0]==1 || dp[i-1][0]==0){
+                dp[i][0] = 0;
+            }
+            else{
+                dp[i][0] = 1;
+            }
+        }
+        for(int j = 1; j<n; j++){
+            if(obstacleGrid[0][j]==1 || dp[0][j-1]==0){
+                dp[0][j] = 0;
+            }
+            else{
+                dp[0][j] = 1;
+            }
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (obstacleGrid[i][j] == 1) {
+                    dp[i][j] = 0;
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+        return dp[m-1][n-1];
+    }
+
+    //Space optimized
+    public int uniquePathsWithObstaclesSpaceOptimized(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        int[] dp = new int[n];
+        dp[0] = obstacleGrid[0][0]==1?0:1;
+        for(int j = 1; j<n; j++){
+            if(obstacleGrid[0][j]==1 || dp[j-1]==0){
+                dp[j] = 0;
+            }
+            else{
+                dp[j] = 1;
+            }
+        }
+        int[] current = new int[n];
+        for (int i = 1; i < m; i++) {
+            current[0] = obstacleGrid[i][0] == 1 ? 0 : dp[0];
+            for (int j = 1; j < n; j++) {
+                if (obstacleGrid[i][j] == 1) {
+                    current[j] = 0;
+                } else {
+                    current[j] = dp[j] + current[j - 1];
+                }
+            }
+            dp = current;
+        }
+        return dp[n-1];
+    }
 }
