@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.HashMap;
+
 public class MathematicalOperations {
 
     /*Check if n is prime*/
@@ -75,5 +77,84 @@ public class MathematicalOperations {
             }
         }
         return candidates;
+    }
+
+    //https://leetcode.com/problems/roman-to-integer/
+    public int romanToInt(String s) {
+        char[] arr = s.toCharArray();
+        int n = arr.length;
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            switch (arr[i]) {
+                case 'I': {
+                    if (i < n - 1 && arr[i + 1] == 'V') {
+                        sum += 4;
+                        i++;
+                    } else if (i < n - 1 && arr[i + 1] == 'X') {
+                        sum += 9;
+                        i++;
+                    } else {
+                        sum += 1;
+                    }
+                    break;
+                }
+                case 'V': sum+=5; break;
+                case 'X': {
+                    if(i < n - 1 && arr[i+1]=='L'){
+                        sum+=40;
+                        i++;
+                    }
+                    else if(i<n-1 && arr[i+1]=='C'){
+                        sum+=90;
+                        i++;
+                    }
+                    else{
+                        sum+=10;
+                    }
+                    break;
+                }
+                case 'L': sum+=50; break;
+                case 'C': {
+                    if(i < n - 1 && arr[i+1]=='D'){
+                        sum+=400;
+                        i++;
+                    }
+                    else if(i<n-1 && arr[i+1]=='M'){
+                        sum+=900;
+                        i++;
+                    }
+                    else{
+                        sum+=100;
+                    }
+                    break;
+                }
+                case 'D': sum+=500; break;
+                case 'M': sum+=1000; break;
+            }
+        }
+        return sum;
+    }
+    //Soln is fast but very verbose. Can be optimized by using a hashmap to store the values of each roman numeral and then checking if the next numeral is greater than the current numeral. If yes, then subtract the current numeral from the sum, else add it.
+    public int romanToInt2(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+        char[] arr = s.toCharArray();
+        int sum = 0;
+        for(int i = 0; i<arr.length; i++){
+            int current = map.get(arr[i]);
+            if(i<arr.length-1 && current<map.get(arr[i+1])){
+                sum-=current;
+            }
+            else{
+                sum+=current;
+            }
+        }
+        return sum;
     }
 }
