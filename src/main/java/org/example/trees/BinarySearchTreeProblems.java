@@ -28,4 +28,27 @@ public class BinarySearchTreeProblems {
         }
         return root.val;
     }
+
+    //https://leetcode.com/problems/kth-smallest-element-in-a-bst
+
+    public int kthSmallest(TreeNode root, int k) {
+        int[] count = new int[]{0};
+        return helper(root, k, count);
+    }
+
+    public Integer helper(TreeNode root, int k, int[] count){
+        if(root==null){
+            return null;
+        }
+        Integer left = helper(root.left, k, count);
+        if(left!=null){ //we need to check if left subtree has the smallest index, if yes return it before computing further.
+            return left;
+        }
+        count[0]++;
+        if(count[0]==k){
+            return root.data;
+        }
+        return helper(root.right, k, count);
+    }
 }
+
