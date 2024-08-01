@@ -769,4 +769,35 @@ public class DynamicProgramming {
         }
         return dp[n-1];
     }
+
+
+    //https://leetcode.com/problems/word-break
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Boolean[][] dp = new Boolean[s.length()+2][s.length()+2];
+        return segment(s, wordDict, 0, 1, dp);
+    }
+
+    public boolean segment(String s, List<String> wordDict, int start, int curr, Boolean[][] dp){
+        if(dp[start][curr]!=null){
+            return dp[start][curr];
+        }
+        if(curr>s.length()){
+            return false; //it was not able to satisfy
+        }
+        String word = s.substring(start, curr);
+        boolean selectCurrentWord = false;
+        if(wordDict.contains(word)){
+            if(curr==s.length()){
+                return dp[start][curr] = true;
+            }
+            selectCurrentWord = segment(s, wordDict, curr, curr+1, dp);
+            dp[curr][curr+1] = selectCurrentWord;
+        }
+        if(selectCurrentWord || segment(s, wordDict, start, curr+1, dp)){
+            return dp[start][curr] = true;
+        }
+        return dp[start][curr] = false;
+    }
+
+    //TODO: implement space optimized soln in memo and tabulation.
 }
