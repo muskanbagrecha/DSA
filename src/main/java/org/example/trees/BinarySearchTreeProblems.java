@@ -1,5 +1,8 @@
 package org.example.trees;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BinarySearchTreeProblems {
 
     //https://leetcode.com/problems/search-in-a-binary-search-tree
@@ -50,5 +53,27 @@ public class BinarySearchTreeProblems {
         }
         return helper(root.right, k, count);
     }
+
+    //https://leetcode.com/problems/validate-binary-search-tree
+    public boolean isValidBST(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        isValid(root, list);
+        for(int i = 0; i<list.size()-1; i++){
+            if(list.get(i)>=list.get(i+1)){
+                return false;
+            }
+        }
+        return true;
+    }
+    public void isValid(TreeNode root, List<Integer> list){
+        if(root==null){
+            return;
+        }
+        isValid(root.left, list);
+        list.add(root.data);
+        isValid(root.right, list);
+    }
+    //TC: O(n) as we are traversing through the list and SC: O(n) for recursive stack.
+    //The sorted check is making it slow.
 }
 
