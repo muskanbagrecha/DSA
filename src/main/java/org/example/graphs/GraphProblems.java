@@ -929,4 +929,41 @@ public class GraphProblems {
         }
         return -1;
     }
+
+    public int minMutation(String startGene, String endGene, String[] bank) {
+        HashSet<String> bankSet = new HashSet<>(Arrays.asList(bank));
+        if(!bankSet.contains(endGene)) return -1;
+        Queue<String> q = new LinkedList<>();
+        char[] geneChars = {'A', 'C', 'G', 'T'};
+        HashSet<String> visited = new HashSet<>();
+        q.add(startGene);
+        visited.add(startGene);
+        int distance = 0;
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int j = 0; j<size; j++){
+                String curr = q.remove();
+                char[] arr = curr.toCharArray();
+                for(int i = 0; i<8; i++){
+                    for(char c : geneChars){
+                        if(c==arr[i]) continue;
+                        arr[i] = c;
+                        String tempWord = String.valueOf(arr);
+                        if(tempWord.equals(endGene)){
+                            return distance+1;
+                        }
+                        if(bankSet.contains(tempWord) && !visited.contains(tempWord)){
+                            q.add(tempWord);
+                            visited.add(tempWord);
+                        }
+                        arr[i] = curr.charAt(i);
+                    }
+                }
+            }
+            distance++;
+        }
+        return -1;
+    }
+    //TC: O(N*8) -> O(N)
+    //SC: O(N)
 }
