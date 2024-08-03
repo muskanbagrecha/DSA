@@ -2,6 +2,7 @@ package org.example.trees;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class BinarySearchTreeProblems {
 
@@ -52,6 +53,21 @@ public class BinarySearchTreeProblems {
             return root.data;
         }
         return helper(root.right, k, count);
+    }
+
+    //Without stack
+    public int kthSmallestwithStack(TreeNode root, int k) {
+        Stack<TreeNode> stack = new Stack<>();
+        while(root!=null || !stack.isEmpty()){
+            while(root!=null){
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(--k==0) return root.data;
+            root = root.right;
+        }
+        return -1;
     }
 
     //https://leetcode.com/problems/validate-binary-search-tree
