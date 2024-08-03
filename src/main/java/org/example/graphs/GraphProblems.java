@@ -930,6 +930,7 @@ public class GraphProblems {
         return -1;
     }
 
+    //https://leetcode.com/problems/minimum-genetic-mutation
     public int minMutation(String startGene, String endGene, String[] bank) {
         HashSet<String> bankSet = new HashSet<>(Arrays.asList(bank));
         if(!bankSet.contains(endGene)) return -1;
@@ -966,4 +967,5 @@ public class GraphProblems {
     }
     //TC: O(N*8) -> O(N)
     //SC: O(N)
+    //Above problem is similar to word ladder.
 }
