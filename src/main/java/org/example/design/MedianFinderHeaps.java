@@ -40,3 +40,6 @@ public class MedianFinderHeaps {
         return maxHeap.peek();
     }
 }
+
+//TC: O(Log n) - coz adding a num to PQ or removing a num is O(log n) operation. So in worst case, we add a num and remove it and re-add it to another heap all O(log n) ops.
+//TC for findMedian: O(1)
