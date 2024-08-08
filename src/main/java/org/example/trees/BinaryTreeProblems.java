@@ -1109,10 +1109,39 @@ public class BinaryTreeProblems {
             temp = String.valueOf(root.data);
         }
         else{
-            temp = curr + "->" + root.val;
+            temp = curr + "->" + root.data;
         }
         paths(root.left, list, temp);
         paths(root.right, list, temp);
+    }
+
+    //Using string builder
+    public List<String> binaryTreePaths2(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        if(root==null) return res;
+        paths2(root, res, new StringBuilder());
+        return res;
+    }
+
+    public void paths2(TreeNode root, List<String> res, StringBuilder sb){
+        int length = sb.length();
+        if(length!=0){
+            sb.append("->");
+        }
+        sb.append(root.data);
+        if(root.left==null && root.right==null)//leaf
+        {
+            res.add(sb.toString());
+        }
+        else{
+            if(root.left!=null){
+                paths2(root.left, res, sb);
+            }
+            if(root.right!=null){
+                paths2(root.right, res, sb);
+            }
+        }
+        sb.setLength(length);
     }
 }
 
