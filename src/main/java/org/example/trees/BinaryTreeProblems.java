@@ -1082,6 +1082,38 @@ public class BinaryTreeProblems {
         }
         return left==null?right:left;
     }
+
+    //https://leetcode.com/problems/binary-tree-paths/
+
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> list = new ArrayList<>();
+        paths(root, list, "");
+        return list;
+    }
+
+    public void paths(TreeNode root, List<String> list, String curr){
+        if(root!=null && root.left==null && root.right==null){
+            if(curr==""){
+                list.add(String.valueOf(root.data));
+            }
+            else{
+                list.add(curr + "->" + root.data);
+            }
+            return;
+        }
+        if(root==null){
+            return;
+        }
+        String temp;
+        if(curr==""){
+            temp = String.valueOf(root.data);
+        }
+        else{
+            temp = curr + "->" + root.val;
+        }
+        paths(root.left, list, temp);
+        paths(root.right, list, temp);
+    }
 }
 
 class NodeColumnPair{
