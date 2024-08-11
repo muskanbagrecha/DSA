@@ -76,4 +76,28 @@ public class SortingProblems {
         }
         return sorted;
     }
+
+    //https://leetcode.com/problems/merge-intervals
+    public int[][] merge(int[][] intervals) {
+        List<int[]> op = new ArrayList<>();
+        Arrays.sort(intervals, (a, b) -> a[0]-b[0]);
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+        for(int i = 1; i<intervals.length; i++){
+            if(intervals[i][0]<=end){
+                end = Math.max(end, intervals[i][1]);
+            }
+            else{
+                op.add(new int[]{start, end});
+                start = intervals[i][0];
+                end = intervals[i][1];
+            }
+        }
+        op.add(new int[]{start, end});
+        int[][] res = new int[op.size()][];
+        for(int i = 0; i<op.size(); i++){
+            res[i] = op.get(i);
+        }
+        return res;
+    }
 }
