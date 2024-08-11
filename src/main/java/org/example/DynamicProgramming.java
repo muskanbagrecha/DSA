@@ -800,4 +800,45 @@ public class DynamicProgramming {
     }
 
     //TODO: implement space optimized soln in memo and tabulation.
+
+    //https://leetcode.com/problems/jump-game
+    public boolean canJump(int[] nums) {
+        Boolean[] dp = new Boolean[nums.length];
+        return jump(0, nums, dp);
+    }
+
+    public boolean jump(int index, int[] nums, Boolean[] dp){
+        if(dp[index]!=null){
+            return dp[index];
+        }
+        if(index==nums.length-1){
+            return dp[index] = true;
+        }
+        for(int i = 1; i<=nums[index]; i++){
+            if(jump(index + i, nums, dp)){
+                return dp[index] = true;
+            }
+        }
+        return dp[index] = false;
+    }
+
+    //Tabulation
+    public boolean canJumpTabulation(int[] nums) {
+        int n = nums.length;
+        boolean[] dp = new boolean[n];
+        dp[0] = true;
+        for(int i = 0; i<n; i++){
+            if(!dp[i])
+                continue;
+            int farthestJump = i+nums[i];
+            if(farthestJump>=n){
+                farthestJump = n-1;
+            }
+            for(int j = i+1; j<=farthestJump; j++){
+                dp[j] = true;
+            }
+        }
+        return dp[n-1];
+    }
+
 }
