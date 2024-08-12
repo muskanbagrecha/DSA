@@ -1,7 +1,5 @@
 package org.example.trees;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class BinarySearchTreeProblems {
@@ -71,25 +69,37 @@ public class BinarySearchTreeProblems {
     }
 
     //https://leetcode.com/problems/validate-binary-search-tree
-    public boolean isValidBST(TreeNode root) {
-        List<Integer> list = new ArrayList<>();
-        isValid(root, list);
-        for(int i = 0; i<list.size()-1; i++){
-            if(list.get(i)>=list.get(i+1)){
-                return false;
-            }
-        }
-        return true;
+     TreeNode prev = null;
+    public boolean isValidBSTRecursive(TreeNode root) {
+        return isValid(root);
     }
-    public void isValid(TreeNode root, List<Integer> list){
+
+    public boolean isValid(TreeNode root){
         if(root==null){
-            return;
+            return true;
         }
-        isValid(root.left, list);
-        list.add(root.data);
-        isValid(root.right, list);
+        if(!isValid(root.left)) return false;
+        if(prev!=null && root.data<=prev.data) return false;
+        prev = root;
+        if(!isValid(root.right)) return false;
+        return true;
     }
     //TC: O(n) as we are traversing through the list and SC: O(n) for recursive stack.
     //The sorted check is making it slow.
+    public boolean isValidBST(TreeNode root) {
+        TreeNode prev = null;
+        Stack<TreeNode> stack = new Stack<>();
+        while(root!=null || !stack.isEmpty()){
+            while(root!=null){
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(prev!=null && prev.data>=root.data) return false;
+            prev = root;
+            root = root.right;
+        }
+        return true;
+    }
 }
 
