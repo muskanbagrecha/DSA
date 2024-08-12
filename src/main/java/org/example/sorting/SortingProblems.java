@@ -100,4 +100,31 @@ public class SortingProblems {
         }
         return res;
     }
+
+    //https://leetcode.com/problems/top-k-frequent-elements/
+    //bucket sort
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        List<Integer>[] list = new List[nums.length+1];
+        for(int key : map.keySet()){
+            if(list[map.get(key)]==null){
+                list[map.get(key)] = new ArrayList<>();
+            }
+            list[map.get(key)].add(key);
+        }
+        int[] res = new int[k];
+        for(int i = list.length-1; i>=0; i--){
+            if(list[i]==null) continue;
+            for(int j = 0; j<list[i].size(); j++){
+                res[--k]=list[i].get(j);
+                if(k==0){
+                    return res;
+                }
+            }
+        }
+        return null;
+    }
 }
