@@ -143,6 +143,18 @@ public class GreedyProblems {
         }
         return profit;
     }
+
+    //https://leetcode.com/problems/jump-game
+    public boolean canJump(int[] nums) {
+        int maxDistance = 0;
+        for(int i = 0; i<=maxDistance; i++){
+            maxDistance = Math.max(maxDistance, i+nums[i]);
+            if(maxDistance>=nums.length-1){
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 
