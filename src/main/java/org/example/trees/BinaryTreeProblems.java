@@ -1143,6 +1143,27 @@ public class BinaryTreeProblems {
         }
         sb.setLength(length);
     }
+
+    public boolean findTarget(TreeNode root, int k) {
+        HashSet<Integer> set = new HashSet<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode curr = q.remove();
+            int complement = k - curr.data;
+            if(set.contains(complement)){
+                return true;
+            }
+            set.add(curr.data);
+            if(curr.left!=null){
+                q.add(curr.left);
+            }
+            if(curr.right!=null){
+                q.add(curr.right);
+            }
+        }
+        return false;
+    }
 }
 
 class NodeColumnPair{
