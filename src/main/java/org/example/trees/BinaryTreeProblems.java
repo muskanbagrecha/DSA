@@ -1164,6 +1164,28 @@ public class BinaryTreeProblems {
         }
         return false;
     }
+
+    public boolean findTargetDFS(TreeNode root, int k) {
+        HashSet<Integer> set = new HashSet<>();
+        return findDFS(root, set, k);
+    }
+
+    public boolean findDFS(TreeNode root, HashSet<Integer> set, int k){
+        if(root==null){
+            return false;
+        }
+        if(set.contains(k-root.data)){
+            return true;
+        }
+        set.add(root.data);
+        if(findDFS(root.left, set, k)){
+            return true;
+        }
+        if(findDFS(root.right, set, k)){
+            return true;
+        }
+        return false;
+    }
 }
 
 class NodeColumnPair{
