@@ -427,6 +427,34 @@ public class DynamicProgramming {
     //TC: O(M*N)
     //SC: O(M*N)
 
+    public int longestCommonSubsequence1D(String text1, String text2) {
+        if (text2.length() > text1.length()) {
+            String temp = text1;
+            text1 = text2;
+            text2 = temp;
+        }
+        int m = text1.length(), n = text2.length();
+        int[] prev = new int[n+1];
+        int[] curr = new int[n+1];
+        for(int i = 1; i<=m; i++){
+            for(int j = 1; j<=n; j++){
+                if(text1.charAt(i-1)==text2.charAt(j-1)){
+                    curr[j] = 1 + prev[j-1];
+                }
+                else{
+                    curr[j] = Math.max(curr[j-1], prev[j]);
+                }
+            }
+            int[] temp = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev[n];
+    }
+    //Space optimized.
+    //TC: O(m*n)
+    //SC: O(n)
+
     public static String printLcs(int n, int m, String text1, String text2){
         // Write your code here.
         StringBuffer sb = new StringBuffer();
