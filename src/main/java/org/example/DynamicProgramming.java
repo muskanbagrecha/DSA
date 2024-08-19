@@ -890,4 +890,36 @@ public class DynamicProgramming {
     }
 
     //Actually this problem can be solvewd using greedy in O(N) -> refer greedy problems for the soln.
+
+    //DP on stocks
+    //Buy and sell stocks - 2
+    public int maxProfit(int[] prices) {
+        int[][] dp = new int[prices.length][2];
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
+        }
+        return profit(prices, 0, 0, dp);
+    }
+
+    public int profit(int[] prices, int buy, int index, int[][] dp) {
+        if (index == prices.length) {
+            return 0;
+        }
+
+        if (dp[index][buy] != -1) {
+            return dp[index][buy];
+        }
+
+        if (buy == 0) { // Nothing is bought
+            int buyToday = -prices[index] + profit(prices, 1, index + 1, dp); // Buy today
+            int skipToday = profit(prices, 0, index + 1, dp); // Skip today
+            return dp[index][buy] = Math.max(buyToday, skipToday);
+        } else { // A stock is already bought
+            int sellToday = prices[index] + profit(prices, 0, index + 1, dp); // Sell today
+            int hold = profit(prices, 1, index + 1, dp); // Hold the stock
+            return dp[index][buy] = Math.max(sellToday, hold);
+        }
+    }
+    //TC: O(N*2) + O(N) - recstack
+    //SC: O(N*2)
 }
