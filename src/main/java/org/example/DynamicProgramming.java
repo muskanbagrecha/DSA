@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 //Tabulation is also known as bottom up
-//Memoization is also know as top down
+//Memoization is also known as top down
 
 public class DynamicProgramming {
     //https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1
@@ -946,4 +946,31 @@ public class DynamicProgramming {
     }
     //TC: O(N*2)
     //SC: O(N*2)
+
+    public int maxProfitSpaceOptimized(int[] prices) {
+        int n = prices.length;
+        int[] prev = new int[2];
+        int[] curr = new int[2];
+        prev[0] = -prices[0];
+        prev[1] = 0;
+        for(int index = 1; index<n; index++){
+            for(int buy = 0; buy<2; buy++){
+                if(buy==0){
+                    int buyToday = -prices[index] + prev[1];
+                    int skipToday = prev[0];
+                    curr[0] = Math.max(buyToday, skipToday);
+                }
+                else{
+                    int sellStock = prices[index] + prev[0];
+                    int holdStock = prev[1];
+                    curr[1] = Math.max(sellStock, holdStock);
+                }
+            }
+            prev = curr;
+        }
+        return prev[1];
+    }
+    //space optimized
+    //TC: O(N*2)
+    //SC: O(1)
 }
