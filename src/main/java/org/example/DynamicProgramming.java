@@ -922,4 +922,28 @@ public class DynamicProgramming {
     }
     //TC: O(N*2) + O(N) - recstack
     //SC: O(N*2)
+
+    public int maxProfitTabulation(int[] prices) {
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        for(int index = 1; index<n; index++){
+            for(int buy = 0; buy<2; buy++){
+                if(buy==0){
+                    int buyToday = -prices[index] + dp[index - 1][1];
+                    int skipToday = dp[index - 1][0];
+                    dp[index][0] = Math.max(buyToday, skipToday);
+                }
+                else{
+                    int sellStock = prices[index] + dp[index - 1][0];
+                    int holdStock = dp[index - 1][1];
+                    dp[index][1] = Math.max(sellStock, holdStock);
+                }
+            }
+        }
+        return dp[n-1][1];
+    }
+    //TC: O(N*2)
+    //SC: O(N*2)
 }
