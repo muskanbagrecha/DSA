@@ -1178,13 +1178,95 @@ public class BinaryTreeProblems {
             return true;
         }
         set.add(root.data);
-        if(findDFS(root.left, set, k)){
-            return true;
-        }
-        if(findDFS(root.right, set, k)){
-            return true;
+        return findDFS(root.left, set, k) || findDFS(root.right, set, k);
+    }
+
+    //Using two pointer
+    public boolean findTargetTwoPointer(TreeNode root, int k) {
+        List<Integer> list = new ArrayList<>();
+        inorder(root, list);
+        for(int i = 0, j=list.size()-1; i<j; ){
+            int sum = list.get(i) + list.get(j);
+            if(sum==k){
+                return true;
+            }
+            if(sum>k){
+                j--;
+            }
+            else{
+                i++;
+            }
         }
         return false;
+    }
+
+    public void inorder(TreeNode root, List<Integer> list){
+        if(root==null){
+            return;
+        }
+        inorder(root.left, list);
+        list.add(root.data);
+        inorder(root.right, list);
+    }
+
+    //https://www.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1
+    //IMPP
+    ArrayList<Integer> boundary(TreeNode node) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if (node == null) return res;
+
+        if (!isLeaf(node)) {
+            res.add(node.data);
+        }
+
+        addLeftBoundary(node.left, res);
+        addLeaves(node, res);
+        addRightBoundary(node.right, res);
+
+        return res;
+    }
+
+    void addLeftBoundary(TreeNode node, ArrayList<Integer> res) {
+        while (node != null) {
+            if (!isLeaf(node)) {
+                res.add(node.data);
+            }
+            if (node.left != null) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+    }
+
+    void addRightBoundary(TreeNode node, ArrayList<Integer> res) {
+        Stack<Integer> stack = new Stack<>();
+        while (node != null) {
+            if (!isLeaf(node)) {
+                stack.push(node.data);
+            }
+            if (node.right != null) {
+                node = node.right;
+            } else {
+                node = node.left;
+            }
+        }
+        while (!stack.isEmpty()) {
+            res.add(stack.pop());
+        }
+    }
+
+    void addLeaves(TreeNode node, ArrayList<Integer> res) {
+        if (isLeaf(node)) {
+            res.add(node.data);
+            return;
+        }
+        if (node.left != null) addLeaves(node.left, res);
+        if (node.right != null) addLeaves(node.right, res);
+    }
+
+    boolean isLeaf(TreeNode node) {
+        return node.left == null && node.right == null;
     }
 }
 
