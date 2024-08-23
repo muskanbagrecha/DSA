@@ -999,4 +999,32 @@ public class DynamicProgramming {
     //space optimized
     //TC: O(N*2)
     //SC: O(1)
+
+    //https://www.geeksforgeeks.org/problems/shortest-common-supersequence0322/1
+    public static int shortestCommonSuperSequence(String X,String Y,int m,int n)
+    {
+        if(m<n){
+            String temp = X;
+            X = Y;
+            Y = temp;
+        }
+        m = X.length();
+        n = Y.length();
+        int[] prev = new int[n+1];
+        int[] curr = new int[n+1];
+        for(int i = 1; i<=m; i++){
+            for(int j = 1; j<=n; j++){
+                if(X.charAt(i-1)==Y.charAt(j-1)){
+                    curr[j] = 1 + prev[j-1];
+                }
+                else{
+                    curr[j] = Math.max(prev[j], curr[j-1]);
+                }
+            }
+            int[] temp = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev[n] + (m-prev[n]) + (n-prev[n]);
+    }
 }
