@@ -447,16 +447,10 @@ public class DynamicProgramming {
     //TC: O(M*N)
     //SC: O(M*N)
 
-    public int longestCommonSubsequenceTabulation(String text1, String text2) {
+    public static int longestCommonSubsequenceTabulation(String text1, String text2) {
         int m = text1.length();
         int n = text2.length();
         int[][] dp = new int[m+1][n+1];
-        for(int i = 0; i<=m; i++){
-            dp[i][0] = 0;
-        }
-        for(int j = 0; j<=n; j++){
-            dp[0][j] = 0;
-        }
         for(int i = 1; i<=m; i++){
             for(int j = 1; j<=n; j++){
                 if(text1.charAt(i-1)==text2.charAt(j-1)){
@@ -469,6 +463,13 @@ public class DynamicProgramming {
                     dp[i][j] = dp[i][j-1];
                 }
             }
+        }
+        //print dp table
+        for(int i = 0; i<=m; i++){
+            for(int j = 0; j<=n; j++){
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
         }
         return dp[m][n];
     }
@@ -1026,5 +1027,58 @@ public class DynamicProgramming {
             curr = temp;
         }
         return prev[n] + (m-prev[n]) + (n-prev[n]);
+    }
+
+    //print SCS
+    public String shortestCommonSupersequence(String str1, String str2) {
+        // Convert the strings to char arrays
+        char[] arr1 = str1.toCharArray();
+        char[] arr2 = str2.toCharArray();
+
+        int m = arr1.length;
+        int n = arr2.length;
+        int[][] dp = new int[m+1][n+1];
+        int i, j;
+
+        // Fill the dp table
+        for(i = 1; i <= m; i++) {
+            for(j = 1; j <= n; j++) {
+                if(arr1[i-1] == arr2[j-1]) {
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                } else {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+
+        // Build the shortest common supersequence from the dp table
+        i = m; j = n;
+        StringBuilder sb = new StringBuilder();
+        while(i > 0 && j > 0) {
+            if(arr1[i-1] == arr2[j-1]) {
+                sb.append(arr1[i-1]);
+                i--;
+                j--;
+            } else if(dp[i-1][j] > dp[i][j-1]) {
+                sb.append(arr1[i-1]);
+                i--;
+            } else {
+                sb.append(arr2[j-1]);
+                j--;
+            }
+        }
+
+        // Add the remaining characters from arr1 and arr2
+        while(i > 0) {
+            sb.append(arr1[i-1]);
+            i--;
+        }
+        while(j > 0) {
+            sb.append(arr2[j-1]);
+            j--;
+        }
+
+        // Return the result as a string
+        return sb.reverse().toString();
     }
 }
