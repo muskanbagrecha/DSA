@@ -1102,6 +1102,7 @@ public class DynamicProgramming {
         return Math.max(sellStock, holdStock);
     }
     //above is brute force.
+    //TC: O(2^N) as at each price we have to choices - to buy or not.
 
     public int maxProfitBuyAndSell3Memo(int[] prices) {
         int[][][] dp = new int[prices.length][2][2];
@@ -1130,4 +1131,58 @@ public class DynamicProgramming {
         int holdStock = maxProfitBuyAndSell3MemoProfit(prices, n+1, noOfTxn, 0, dp);
         return dp[n][noOfTxn][ableToBuyStock] = Math.max(sellStock, holdStock);
     }
+
+    //tc: o(n*3*2) -> o(n)
+    //sc: o(n*3*2) + o(n) -> o(n)
+    public int maxProfitTBuyAndSell3Tabulation(int[] prices) {
+        //unabletobuy
+        int n = prices.length;
+        int[][][] dp = new int[n+1][3][2];
+        for(int i = n-1; i>=0; i--){
+            for(int txn = 1; txn<=2; txn++){
+                for(int buy = 0; buy<2; buy++){
+                    if(buy==1){
+                        int bought = -prices[i] + dp[i+1][txn][0];
+                        int skip = dp[i+1][txn][1];
+                        dp[i][txn][buy] = Math.max(bought, skip);
+                    }
+                    else{
+                        int sell = prices[i] + dp[i+1][txn-1][1];
+                        int hold = dp[i+1][txn][0];
+                        dp[i][txn][buy] = Math.max(sell, hold);
+                    }
+                }
+            }
+        }
+        return dp[0][2][1];
+    }
+    //tc: o(n*3*2) -> o(n)
+    //sc: o(n*3*2)
+
+    public int maxProfitBuyAndSellSpaceoptimized(int[] prices) {
+        //unabletobuy
+        int n = prices.length;
+        int[][] after = new int[3][2];
+        int[][] curr = new int[3][2];
+        for(int i = n-1; i>=0; i--){
+            for(int txn = 1; txn<=2; txn++){
+                for(int buy = 0; buy<2; buy++){
+                    if(buy==1){
+                        int bought = -prices[i] + after[txn][0];
+                        int skip = after[txn][1];
+                        curr[txn][buy] = Math.max(bought, skip);
+                    }
+                    else{
+                        int sell = prices[i] + after[txn-1][1];
+                        int hold = after[txn][0];
+                        curr[txn][buy] = Math.max(sell, hold);
+                    }
+                }
+            }
+            after = curr;
+        }
+        return curr[2][1];
+    }
+    //TC: O(N*3*2) -> O(N)
+    //SC: O(3*2) -> O(1)
 }
