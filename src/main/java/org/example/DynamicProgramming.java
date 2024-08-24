@@ -1081,4 +1081,24 @@ public class DynamicProgramming {
         // Return the result as a string
         return sb.reverse().toString();
     }
+
+    //Buy and sell stock - 3 //HARD
+    public int maxProfitBuyAndSell3(int[] prices) {
+        return profitHelper(prices, 0, 0, true);
+    }
+
+    public int profitHelper(int[] prices, int n, int noOfTxn, boolean ableToBuyStock){
+        if(n==prices.length || noOfTxn==2){
+            return 0;
+        }
+        if(ableToBuyStock){
+            int bought = -prices[n] + profitHelper(prices, n+1, noOfTxn, false);
+            int skip = profitHelper(prices, n+1, noOfTxn, true);
+            return Math.max(bought, skip);
+        }
+        //sell
+        int sellStock = prices[n] + profitHelper(prices, n+1, noOfTxn+1, true);
+        int holdStock = profitHelper(prices, n+1, noOfTxn, false);
+        return Math.max(sellStock, holdStock);
+    }
 }
