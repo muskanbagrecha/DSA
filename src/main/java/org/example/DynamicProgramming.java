@@ -1101,4 +1101,33 @@ public class DynamicProgramming {
         int holdStock = profitHelper(prices, n+1, noOfTxn, false);
         return Math.max(sellStock, holdStock);
     }
+    //above is brute force.
+
+    public int maxProfitBuyAndSell3Memo(int[] prices) {
+        int[][][] dp = new int[prices.length][2][2];
+        for(int[][] row1: dp){
+            for(int[] row2: row1){
+                Arrays.fill(row2, -1);
+            }
+        }
+        return maxProfitBuyAndSell3MemoProfit(prices, 0, 0, 1, dp);
+    }
+
+    public int maxProfitBuyAndSell3MemoProfit(int[] prices, int n, int noOfTxn, int ableToBuyStock, int[][][] dp){
+        if(n==prices.length || noOfTxn==2){
+            return 0;
+        }
+        if(dp[n][noOfTxn][ableToBuyStock]!=-1){
+            return dp[n][noOfTxn][ableToBuyStock];
+        }
+        if(ableToBuyStock==1){
+            int bought = -prices[n] + maxProfitBuyAndSell3MemoProfit(prices, n+1, noOfTxn, 0, dp);
+            int skip = maxProfitBuyAndSell3MemoProfit(prices, n+1, noOfTxn, 1, dp);
+            return dp[n][noOfTxn][ableToBuyStock] = Math.max(bought, skip);
+        }
+        //sell
+        int sellStock = prices[n] + maxProfitBuyAndSell3MemoProfit(prices, n+1, noOfTxn+1, 1, dp);
+        int holdStock = maxProfitBuyAndSell3MemoProfit(prices, n+1, noOfTxn, 0, dp);
+        return dp[n][noOfTxn][ableToBuyStock] = Math.max(sellStock, holdStock);
+    }
 }
