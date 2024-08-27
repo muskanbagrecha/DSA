@@ -1,5 +1,7 @@
 package org.example.top150;
 
+import org.example.trees.TreeNode;
+
 import java.util.Arrays;
 
 public class Problems {
@@ -236,5 +238,27 @@ public class Problems {
             curr = temp;
         }
         return prev[n];
+    }
+    //Sum root to leaf numbers
+    public int sumNumbers(TreeNode root) {
+        int[] sum = {0};
+        StringBuilder sb = new StringBuilder();
+        findSum(root, sum, sb);
+        return sum[0];
+    }
+
+    public void findSum(TreeNode root, int[] sum, StringBuilder sb){
+        if(root==null){
+            return;
+        }
+        sb.append(root.data);
+        if(root.left==null && root.right==null){
+            sum[0]+=Integer.parseInt(sb.toString());
+        }
+        else{
+            findSum(root.left, sum, sb);
+            findSum(root.right, sum, sb);
+        }
+        sb.setLength(sb.length()-1);
     }
 }
