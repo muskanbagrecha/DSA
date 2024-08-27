@@ -261,4 +261,20 @@ public class Problems {
         }
         sb.setLength(sb.length()-1);
     }
+
+    public int sumNumbersSecond(TreeNode root) {
+        return findSum(root, 0);
+    }
+
+    public int findSum(TreeNode root, int sum){
+        if(root==null){
+            return 0;
+        }
+        sum = (root.data + sum*10);
+        if(root.left==null && root.right==null){
+            return sum;
+        }
+
+        return findSum(root.left, sum) + findSum(root.right, sum);
+    }
 }
