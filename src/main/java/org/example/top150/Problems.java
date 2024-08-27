@@ -1,5 +1,7 @@
 package org.example.top150;
 
+import java.util.Arrays;
+
 public class Problems {
 
     //https://leetcode.com/problems/merge-sorted-array/?envType=study-plan-v2&envId=top-interview-150
@@ -158,5 +160,81 @@ public class Problems {
                 board[i][j] = board[i][j]==2 || board[i][j]==3 ? 1 : 0;
             }
         }
+    }
+
+    //https://leetcode.com/problems/minimum-path-sum/description/?envType=study-plan-v2&envId=top-interview-150
+    public int minPathSum(int[][] grid) {
+        int[][] dp = new int[grid.length+1][grid[0].length+1];
+        for(int[] row: dp){
+            Arrays.fill(row, -1);
+        }
+        return findminsum(grid, 0, 0, dp);
+    }
+    public int findminsum(int[][] grid, int m, int n, int[][] dp){
+        if(dp[m][n]!=-1){
+            return dp[m][n];
+        }
+        if(m==grid.length && n==grid[0].length){
+            return 0; //reached end
+        }
+        if(m>=grid.length || n>=grid[0].length){
+            return Integer.MAX_VALUE;
+        }
+
+        int right = findminsum(grid, m, n+1, dp);
+        int down = findminsum(grid, m+1, n, dp);
+
+        if(right==Integer.MAX_VALUE && down==Integer.MAX_VALUE){
+            return grid[m][n];
+        }
+        return dp[m][n] = grid[m][n] + Math.min(right, down);
+    }
+
+    //tabulation
+    public int minPathSumTabulation(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] dp = new int[m+1][n+1];
+        for(int i = 0; i<=m; i++){
+            dp[i][0] = Integer.MAX_VALUE;
+        }
+        for(int j = 0; j<=n; j++){
+            dp[0][j] = Integer.MAX_VALUE;
+        }
+        for(int i = 1; i<=m; i++){
+            for(int j = 1; j<=n; j++){
+                if(dp[i-1][j]==Integer.MAX_VALUE && dp[i][j-1]==Integer.MAX_VALUE){
+                    dp[i][j] = grid[i-1][j-1];
+                }
+                else{
+                    dp[i][j] = grid[i-1][j-1] + Math.min(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    //Space optimized
+    public int minPathSumSO(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int[] prev = new int[n+1]; // should be the longer one
+        int[] curr = new int[n+1];
+        Arrays.fill(prev, Integer.MAX_VALUE);
+        Arrays.fill(curr, Integer.MAX_VALUE);
+        for(int i = 1; i<=m; i++){
+            for(int j = 1; j<=n; j++){
+                if(prev[j]==Integer.MAX_VALUE && curr[j-1]==Integer.MAX_VALUE){
+                    curr[j] = grid[i-1][j-1];
+                }
+                else{
+                    curr[j] = grid[i-1][j-1] + Math.min(prev[j], curr[j-1]);
+                }
+            }
+            int[] temp = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev[n];
     }
 }
