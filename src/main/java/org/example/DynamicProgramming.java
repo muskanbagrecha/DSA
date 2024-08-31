@@ -1185,4 +1185,54 @@ public class DynamicProgramming {
     }
     //TC: O(N*3*2) -> O(N)
     //SC: O(3*2) -> O(1)
+
+    //Minimum path sum
+    public int minPathSum(int[][] grid) {
+        int[][] dp = new int[grid.length+1][grid[0].length+1];
+        for(int[] row: dp){
+            Arrays.fill(row, -1);
+        }
+        return findminsum(grid, 0, 0, dp);
+    }
+    public int findminsum(int[][] grid, int m, int n, int[][] dp){
+        if(dp[m][n]!=-1){
+            return dp[m][n];
+        }
+        if(m==grid.length && n==grid[0].length){
+            return 0; //reached end
+        }
+        if(m>=grid.length || n>=grid[0].length){
+            return Integer.MAX_VALUE;
+        }
+
+        int right = findminsum(grid, m, n+1, dp);
+        int down = findminsum(grid, m+1, n, dp);
+
+        if(right==Integer.MAX_VALUE && down==Integer.MAX_VALUE){
+            return grid[m][n];
+        }
+        return dp[m][n] = grid[m][n] + Math.min(right, down);
+    }
+
+    //https://www.geeksforgeeks.org/problems/minimum-number-of-deletions-and-insertions0209/1
+    public int minOperations(String str1, String str2)
+    {
+        // Your code goes here
+        int m = str1.length();
+        int n = str2.length();
+        int[][] dp = new int[m+1][n+1];
+        for(int i = 1; i<=m; i++){
+            for(int j = 1; j<=n; j++){
+                if(str1.charAt(i-1)==str2.charAt(j-1)){
+                    dp[i][j] = 1+ dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        int lcs = dp[m][n];
+        // System.out.println(lcs);
+        return n+m-(2*lcs);
+    }
 }
