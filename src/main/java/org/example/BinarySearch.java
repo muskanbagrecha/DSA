@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.ArrayList;
+
 public class BinarySearch {
 
     //input: 2, 4, 10, 10, 10, 18, 20
@@ -854,5 +856,43 @@ public class BinarySearch {
     }
 
     //https://www.geeksforgeeks.org/allocate-minimum-number-pages/
+    public static int findPages(ArrayList<Integer> arr, int n, int m) {
+        if(m>n) return -1;
+        // Write your code here.
+        int low = Integer.MIN_VALUE;
+        int high = 0;
+        for(int el : arr){
+            low = Math.max(low, el);
+            high+=el;
+        }
+        int res = Integer.MAX_VALUE;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(isValid(arr, mid, m)){
+                res = mid;
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return res;
+    }
+
+    public static boolean isValid(ArrayList<Integer> arr, int max, int students){
+        int currentStudentCount = 1;
+        int currentPages = 0;
+        for(int book : arr){
+            currentPages+=book;
+            if(currentPages>max){
+                currentStudentCount++;
+                currentPages = book;
+                if(currentStudentCount>students){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 }
