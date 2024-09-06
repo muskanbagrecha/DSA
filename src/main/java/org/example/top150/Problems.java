@@ -314,4 +314,62 @@ public class Problems {
         return jumps;
     }
     //TC:: O(n) -- dp soln for this is O(n^2)
+
+    //find ceil in BST
+    int findCeil(TreeNode root, int key) {
+        // Code here
+        int ceil = -1;
+        while(root!=null){
+            if(root.data==key){
+                return root.data;
+            }
+            else if(root.data<key){
+                root = root.right;
+            }
+            else{
+                ceil = root.data;
+                root = root.left;
+            }
+        }
+        return ceil;
+    }
+
+    //https://leetcode.com/problems/insert-into-a-binary-search-tree/
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if(root==null){
+            return new TreeNode(root.data);
+        }
+        if(val<root.data){
+            root.left = insertIntoBST(root.left, val);
+        }
+        else{
+            root.right = insertIntoBST(root.right, val);
+        }
+        return root;
+    }
+
+    //Minimum falling path sum
+    public int minFallingPathSum(int[][] matrix) {
+        int col = matrix.length;
+        int[] prev = new int[col+1];
+        prev[0] = Integer.MAX_VALUE;
+        for(int i = 1; i<=col; i++){
+            int[] curr = new int[col+1];
+            curr[0] = Integer.MAX_VALUE;
+            for(int j = 1; j<=col; j++){
+                if(j==col){
+                    curr[j] = matrix[i-1][j-1] + Math.min(prev[j], prev[j-1]);
+                }
+                else{
+                    curr[j] = matrix[i-1][j-1] + Math.min(prev[j], Math.min(prev[j-1], prev[j+1]));
+                }
+            }
+            prev = curr;
+        }
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i<=col; i++){
+            min = Math.min(min, prev[i]);
+        }
+        return min;
+    }
 }
