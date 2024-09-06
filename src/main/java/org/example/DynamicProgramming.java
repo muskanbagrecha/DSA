@@ -1235,4 +1235,32 @@ public class DynamicProgramming {
         // System.out.println(lcs);
         return n+m-(2*lcs);
     }
+
+    public int minInsertions(String s) {
+        String rev = new StringBuilder(s).reverse().toString();
+        System.out.println(rev);
+        int common = lcs(s, rev);
+        System.out.println(common);
+        return s.length()-common;
+    }
+
+    public int lcs(String s, String rev){
+        int n = s.length();
+        int[] prev = new int[n+1];
+        int[] curr = new int[n+1];
+        for(int i = 1; i<=n; i++){
+            for(int j = 1; j<=n; j++){
+                if(s.charAt(i-1)==rev.charAt(j-1)){
+                    curr[j] = 1 + prev[j-1];
+                }
+                else{
+                    curr[j] = Math.max(prev[j], curr[j-1]);
+                }
+            }
+            int[] temp = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev[n];
+    }
 }
