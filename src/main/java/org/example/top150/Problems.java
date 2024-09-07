@@ -372,4 +372,31 @@ public class Problems {
         }
         return min;
     }
+
+    //count and say
+    public String countAndSay(int n) {
+        return recurse(1, n, "");
+    }
+
+    public String recurse(int index, int n, String op){
+        if(index>n){
+            return op;
+        }
+        if(index==1){
+            return recurse(index+1, n, "1");
+        }
+        int count = 1;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 1; i<op.length(); i++){
+            if(op.charAt(i-1)==op.charAt(i)){
+                count++;
+            }
+            else{
+                sb.append(count).append(op.charAt(i-1));
+                count=1;
+            }
+        }
+        sb.append(count).append(op.charAt(op.length()-1));
+        return recurse(index+1, n, sb.toString());
+    }
 }
