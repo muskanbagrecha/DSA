@@ -1,7 +1,9 @@
 package org.example.top150;
 
+import org.example.ListNode;
 import org.example.trees.TreeNode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Problems {
@@ -398,5 +400,31 @@ public class Problems {
         }
         sb.append(count).append(op.charAt(op.length()-1));
         return recurse(index+1, n, sb.toString());
+    }
+
+    public static ArrayList<ArrayList<Integer>> findPairsWithGivenSum(int target, ListNode<Integer> head) {
+        // code here
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        ListNode<Integer> front = head;
+        ListNode<Integer> end = head;
+        while(end.next!=null){
+            end = end.next;
+        }
+        while(front!=end){
+            if(front.data + end.data == target){
+                ArrayList<Integer> pair = new ArrayList<>();
+                pair.add(front.data);
+                pair.add(end.data);
+                res.add(pair);
+                front = front.next;
+            }
+            else if(front.data + end.data > target){
+                end = end.prev;
+            }
+            else{
+                front = front.next;
+            }
+        }
+        return res;
     }
 }
