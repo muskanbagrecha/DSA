@@ -3,8 +3,10 @@ package org.example.top150;
 import org.example.ListNode;
 import org.example.trees.TreeNode;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 
 public class Problems {
 
@@ -427,4 +429,44 @@ public class Problems {
         }
         return res;
     }
+
+    //Largest rectangle in histogram
+    public int largestRectangleArea(int[] heights) {
+        int max = 0;
+        int[] smallestOnLeft = sol(heights);
+        int[] smallestOnRight = sor(heights);
+        for(int i = 0; i<heights.length; i++){
+            int currHeight = (smallestOnRight[i]-smallestOnLeft[i]-1) * heights[i];
+            max = Math.max(currHeight, max);
+        }
+        return max;
+    }
+
+    public int[] sol(int[] heights){
+        int[] smallestOnLeft = new int[heights.length];
+        Deque<Integer> s = new ArrayDeque<>();
+        for(int i = 0; i<heights.length; i++){
+            while(!s.isEmpty() && heights[s.peek()]>=heights[i]){
+                s.pop();
+            }
+            smallestOnLeft[i] = s.isEmpty() ? -1 : s.peek();
+            s.push(i);
+        }
+        return smallestOnLeft;
+    }
+
+    public int[] sor(int[] heights){
+        int n = heights.length;
+        int[] smallestOnRight = new int[n];
+        Deque<Integer> s = new ArrayDeque<>();
+        for(int i = heights.length-1; i>=0; i--){
+            while(!s.isEmpty() && heights[s.peek()]>=heights[i]){
+                s.pop();
+            }
+            smallestOnRight[i] = s.isEmpty() ? n : s.peek();
+            s.push(i);
+        }
+        return smallestOnRight;
+    }
+    //Above soln is brute force.
 }
