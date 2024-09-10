@@ -469,4 +469,27 @@ public class Problems {
         return smallestOnRight;
     }
     //Above soln is brute force.
+
+    public int largestRectangleAreaOptimized(int[] heights) {
+        int max = 0;
+        Deque<Integer> s = new ArrayDeque<>();
+        for(int i = 0; i<heights.length; i++){
+            while(!s.isEmpty() && heights[s.peek()]>heights[i]){
+                int barIndex = s.pop();
+                int pse = s.isEmpty() ? -1 : s.peek();
+                int area = heights[barIndex] * (i - pse - 1);
+                max = Math.max(max, area);
+            }
+            s.push(i);
+        }
+        while(!s.isEmpty()){
+            int barIndex = s.pop();
+            int pse = s.isEmpty() ? -1 : s.peek();
+            int nse = heights.length;
+            int area = heights[barIndex] * (nse - pse - 1);
+            max = Math.max(max, area);
+        }
+        return max;
+    }
+    //ONE PASS SOLN
 }
