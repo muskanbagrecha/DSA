@@ -492,4 +492,124 @@ public class Problems {
         return max;
     }
     //ONE PASS SOLN
+
+    //https://leetcode.com/problems/reverse-words-in-a-string
+    public String reverseWords(String s) {
+        String[] words = s.trim().split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = words.length - 1; i >= 0; i--) {
+            if (words[i] != "") {
+                sb.append(words[i]);
+                if (i != 0) {
+                    sb.append(" ");
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    private static int mod = (int)1e9+7;
+    public static int countPartitions(int n, int d, int[] arr) {
+        // code here
+        int sum = 0;
+        for(int i = 0; i<n; i++){
+            sum+=arr[i];
+        }
+        if ((sum + d) % 2 != 0) {
+            return 0;
+        }
+        int targetSum = (sum + d)/2;
+        int[][] dp = new int[n+1][targetSum+1];
+        for(int[] row: dp){
+            Arrays.fill(row, -1);
+        }
+        int partitions = findSubsetWithSum(arr, targetSum, 0, dp);
+        return partitions % mod;
+    }
+
+    public static int findSubsetWithSum(int[] arr, int sum, int index, int[][] dp){
+        if(index==arr.length){
+            return sum==0 ? 1 : 0;
+        }
+        if(dp[index][sum]!=-1){
+            return dp[index][sum];
+        }
+        int pick = 0;
+        if(arr[index]<=sum){
+            pick = findSubsetWithSum(arr, sum-arr[index], index+1, dp) % mod;
+        }
+        int dontPick = findSubsetWithSum(arr, sum, index+1, dp) % mod;
+        return dp[index][sum] = (pick + dontPick) % mod;
+    }
+
+    public int minEatingSpeed(int[] piles, int h) {
+        int low = 1;
+        int high = 0;
+        int res = 0;
+        for(int pile : piles){
+            high = Math.max(high, pile);
+        }
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(isValid(piles, mid, h)){
+                res = mid;
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return res;
+    }
+
+    public boolean isValid(int[] piles, int k, int h){
+        int currHour = 0;
+        for(int i=0; i<piles.length; i++){
+            int currPile = piles[i];
+            currHour+=Math.ceil((double)currPile/k);
+            if(currHour>h){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int splitArray(int[] nums, int k) {
+        int low = 0;
+        int high = 0;
+        int res = 0;
+        for(int num : nums){
+            low = Math.max(low, num);
+            high+=num;
+        }
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(canBeSplit(mid, nums, k)){
+                res = mid;
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return res;
+    }
+
+    public boolean canBeSplit(int largestSum, int[] nums, int maxSubArrays){
+        int curSubArrays = 1;
+        int currSum = 0;
+        for(int num : nums){
+            if(currSum+num<=largestSum){
+                currSum+=num;
+            }
+            else{
+                currSum=num;
+                curSubArrays++;
+                if(curSubArrays>maxSubArrays){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
