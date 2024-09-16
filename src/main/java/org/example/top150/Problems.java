@@ -649,4 +649,24 @@ public class Problems {
         }
         return res;
     }
+    //TC: O(mlogn)
+
+    TreeNode prev = null;
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root);
+    }
+
+    public boolean isValid(TreeNode root){
+        if(root==null)
+            return true;
+        boolean leftValid = isValid(root.left);
+        if(!leftValid) return false;
+        if(prev!=null && root.data<=prev.data){
+            return false;
+        }
+        prev = root;
+        boolean rightValid = isValid(root.right);
+        if(!rightValid) return false;
+        return true;
+    }
 }
