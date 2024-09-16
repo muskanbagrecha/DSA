@@ -669,4 +669,22 @@ public class Problems {
         if(!rightValid) return false;
         return true;
     }
+
+    //approach 2:
+    public boolean isValidBST2(TreeNode root) {
+        return isValid(root, null, null);
+    }
+
+    public boolean isValid(TreeNode root, Integer low, Integer high){
+        if(root==null)
+            return true;
+        boolean leftValid = isValid(root.left, low, root.data);
+        if(!leftValid) return false;
+        if((low!=null && root.data<=low) || (high!=null && root.data>=high)){
+            return false;
+        }
+        boolean rightValid = isValid(root.right, root.data, high);
+        if(!rightValid) return false;
+        return true;
+    }
 }
