@@ -612,4 +612,41 @@ public class Problems {
         }
         return true;
     }
+
+    public static int maximumOnesRow(ArrayList<ArrayList<Integer>> matrix, int n, int m)
+    {
+        //	  Write your code here.
+        int maxOne = 0;
+        int index = 0;
+        int max = 0;
+        for(int i=0; i<matrix.size(); i++){
+            int j = getFirstOccurrenceOfOne(matrix.get(i));
+            if(j==-1){
+                continue;
+            }
+            int ctr = matrix.get(i).size()-j;
+            if(ctr>maxOne){
+                maxOne = ctr;
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public static int getFirstOccurrenceOfOne(ArrayList<Integer> list){
+        int low = 0;
+        int high = list.size()-1;
+        int res = -1;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(list.get(mid)==1){
+                res = mid;
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return res;
+    }
 }
