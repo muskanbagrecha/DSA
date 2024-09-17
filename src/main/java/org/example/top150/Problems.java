@@ -710,4 +710,30 @@ public class Problems {
         }
         return dp[m][n];
     }
+
+    public int longestRepeatingSubstring(String s) {
+        return longestRepeatingSubstringHelper(s, s);
+    }
+
+    public int longestRepeatingSubstringHelper(String str1, String str2) {
+        int m = str1.length();
+        int maxlen = 0;
+        int[] prev = new int[m+1];
+        for(int i = 1; i<=m; i++){
+            int[] curr = new int[m+1];
+            for(int j = 1; j<=m; j++){
+                if(str1.charAt(i-1)==str2.charAt(j-1) && i!=j ){
+                    curr[j] = 1 + prev[j-1];
+                    maxlen = Math.max(maxlen, curr[j]);
+                }
+                else{
+                    curr[j] = 0;
+                }
+            }
+            prev = curr;
+        }
+        return maxlen;
+    }
+    //TC: O(M**2)
+    //SC: O(M)
 }
