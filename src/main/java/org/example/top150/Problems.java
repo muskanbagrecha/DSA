@@ -736,4 +736,65 @@ public class Problems {
     }
     //TC: O(M**2)
     //SC: O(M)
+
+    //https://leetcode.com/problems/product-of-array-except-self/
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] div = new int[n];
+        div[0]=1;
+        for(int i = 1; i<n; i++){
+            div[i] = div[i-1] * nums[i-1];
+        }
+        int suffix = 1;
+        for(int i=n-1; i>=0; i--){
+            div[i] = suffix * div[i];
+            suffix = suffix * nums[i];
+        }
+        return div;
+    }
+
+    public int minMoves2(int[] nums) {
+        int mid = findMedian(nums, 0, nums.length-1, nums.length/2);
+        int count = 0;
+        for(int i = 0; i<nums.length; i++){
+            count+=Math.abs(nums[i]-mid);
+        }
+        return count;
+    }
+
+    public void swap(int[] arr, int i, int j){
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    public int findMedian(int[] nums, int low, int high, int k){
+        if(low==high) return nums[low];
+        int pivot = low;
+        int i = pivot;
+        int j = high;
+        while(i<=j){
+            if(nums[i]<=nums[pivot]){
+                i++;
+            }
+            else if(nums[j]>nums[pivot]){
+                j--;
+            }
+            else{
+                swap(nums, i, j);
+                i++;
+                j--;
+            }
+        }
+        swap(nums, pivot, j);
+        pivot = j;
+        if(pivot==k){
+            return nums[j];
+        }
+        else if(pivot<k){
+            return findMedian(nums, pivot + 1, high, k);
+        }
+        return findMedian(nums, low, pivot-1, k);
+    }
+
 }
